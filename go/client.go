@@ -12,6 +12,9 @@ package openapi
 import (
 	"bytes"
 	"context"
+	"crypto/hmac"
+	"crypto/sha1"
+	"encoding/hex"
 	"encoding/json"
 	"encoding/xml"
 	"errors"
@@ -24,6 +27,7 @@ import (
 	"path/filepath"
 	"reflect"
 	"regexp"
+	"sort"
 	"strconv"
 	"strings"
 	"time"
@@ -35,6 +39,18 @@ import (
 var (
 	jsonCheck = regexp.MustCompile("(?i:[application|text]/json)")
 	xmlCheck  = regexp.MustCompile("(?i:[application|text]/xml)")
+)
+
+const (
+	DefaultSendBufferSize = 8192
+	DefaultGetBufferSize  = 1024 * 1024 * 10
+	DefaultAuthTimeout    = time.Second * 1200
+	provider              = "CAS"
+
+	DEFAULT_NORMAL_UPLOAD_THRESHOLD = 100 * 1024 * 1024              // 单文件的默认最大上传阈值
+	RECOMMEND_MIN_PART_SIZE         = 16 * 1024 * 1024               // 推荐的最小分片大小
+	MAX_PART_NUM                    = 10000                          // 最大的分片数目
+	MAX_FILE_SIZE                   = 4 * 10000 * 1024 * 1024 * 1024 //最大支持40TB的文件存储
 )
 
 // APIClient manages communication with the Sample Access Code Flow OAuth2 Project API v1.1.0
@@ -162,6 +178,90 @@ func (c *APIClient) callAPI(request *http.Request) (*http.Response, error) {
 // Change base path to allow switching to mocks
 func (c *APIClient) ChangeBasePath(path string) {
 	c.cfg.BasePath = path
+}
+
+// create authorization
+func (c *APIClient) createAuth(method, url, host string,
+	headers http.Header, params url.Values, expire time.Duration) string {
+
+	var accessKey, accessSecret = c.cfg.AccessKey, c.cfg.AccessSecret
+
+	/*
+		if isinstance(sk, unicode) {
+		}
+	*/
+	var headerKeys = make([]string, len(headers))
+	var count int
+	for hk, _ := range headers {
+		headerKeys[count] = headers.Get(hk)
+		count++
+	}
+	sort.Strings(headerKeys)
+
+	var paramsKeys = make([]string, len(params))
+	count = 0
+	for pk, _ := range params {
+		paramsKeys[count] = params.Get(pk)
+		count++
+	}
+	sort.Strings(paramsKeys)
+
+	if c.cfg.SignKeyExpire == 0 {
+		expire = DefaultAuthTimeout
+	}
+
+	//cal signKey
+	var now = time.Now()
+	var timeRange = fmt.Sprintf(`%d;%d`, now.Unix(), now.Add(expire).Unix())
+	mac := hmac.New(sha1.New, []byte(accessSecret))
+	mac.Write([]byte(timeRange))
+	var signKey = hex.EncodeToString(mac.Sum(nil))
+
+	//formating string
+	var formatString bytes.Buffer
+	formatString.WriteString(strings.ToLower(method))
+	formatString.WriteByte('\n')
+	formatString.WriteString(strings.ToLower(url))
+	formatString.WriteByte('\n')
+
+	for i := 0; i < len(paramsKeys); i++ {
+		var key = paramsKeys[i]
+		var value = params.Get(key)
+		formatString.WriteString(fmt.Sprintf(`%v=%v`, key, value))
+		if i < len(headerKeys)-1 {
+			formatString.WriteByte('&')
+		}
+	}
+	formatString.WriteByte('\n')
+
+	for i := 0; i < len(headerKeys); i++ {
+		var key = headerKeys[i]
+		var value = headers.Get(key)
+		formatString.WriteString(fmt.Sprintf(`%v=%v`, key, value))
+		if i < len(headerKeys)-1 {
+			formatString.WriteByte('&')
+		}
+	}
+	formatString.WriteByte('\n')
+
+	var stringToSign bytes.Buffer
+	stringToSign.WriteString("sha1\n")
+	stringToSign.WriteString(timeRange)
+	stringToSign.WriteByte('\n')
+
+	h := sha1.New()
+	h.Write(formatString.Bytes())
+	stringToSign.WriteString(hex.EncodeToString(h.Sum(nil)))
+	stringToSign.WriteByte('\n')
+
+	mac2 := hmac.New(sha1.New, []byte(signKey))
+	mac2.Write(stringToSign.Bytes())
+	var sign = hex.EncodeToString(mac2.Sum(nil))
+
+	return fmt.Sprintf(`q-sign-algorithm=sha1&q-ak=%s&q-sign-time=%s&q-key-time=%s&q-header-list=%s&q-url-param-list=%s&q-signature=%s`,
+		accessKey, timeRange, timeRange,
+		strings.Join(paramsKeys, ";"),
+		strings.Join(headerKeys, ";"), sign)
 }
 
 // prepareRequest build the request
@@ -318,21 +418,26 @@ func (c *APIClient) prepareRequest(
 		localVarRequest.Header.Add(header, value)
 	}
 
+	//post add Authorization
+	authorization := c.createAuth(method, path, localVarRequest.Host,
+		localVarRequest.Header, query, DefaultAuthTimeout)
+	localVarRequest.Header.Add("Authorization", authorization)
+
 	return localVarRequest, nil
 }
 
 func (c *APIClient) decode(v interface{}, b []byte, contentType string) (err error) {
-		if strings.Contains(contentType, "application/xml") {
-			if err = xml.Unmarshal(b, v); err != nil {
-				return err
-			}
-			return nil
-		} else if strings.Contains(contentType, "application/json") {
-			if err = json.Unmarshal(b, v); err != nil {
-				return err
-			}
-			return nil
+	if strings.Contains(contentType, "application/xml") {
+		if err = xml.Unmarshal(b, v); err != nil {
+			return err
 		}
+		return nil
+	} else if strings.Contains(contentType, "application/json") {
+		if err = json.Unmarshal(b, v); err != nil {
+			return err
+		}
+		return nil
+	}
 	return errors.New("undefined response type")
 }
 

@@ -5,9 +5,9 @@ import (
 	"flag"
 	"fmt"
 
-	"strings"
-
 	"github.com/google/subcommands"
+
+	openapi "gogs.fastapi.org/gitadmin/cas/go"
 )
 
 func init() {
@@ -15,28 +15,33 @@ func init() {
 }
 
 type deleteArchiveCmd struct {
-	capitalize bool
+	vaultName string
+	archiveId string
 }
 
-func (*deleteArchiveCmd) Name() string     { return "print" }
-func (*deleteArchiveCmd) Synopsis() string { return "Print args to stdout." }
+func (*deleteArchiveCmd) Name() string     { return "delete_archive" }
+func (*deleteArchiveCmd) Synopsis() string { return "Delete an archive." }
 func (*deleteArchiveCmd) Usage() string {
-	return `print [-capitalize] <some text>:
-  Print args to stdout.
+	return `delete_archive -vault <cas://vault-name> -achive_id <achiveid>:
+  Delete an archive.
 `
 }
 
 func (p *deleteArchiveCmd) SetFlags(f *flag.FlagSet) {
-	f.BoolVar(&p.capitalize, "capitalize", false, "capitalize output")
+	f.StringVar(&p.vaultName, "vault", "", "format cas://vault-name")
+	f.StringVar(&p.archiveId, "archive_id", "", "ID of archive to be deleted")
 }
 
-func (p *deleteArchiveCmd) Execute(_ context.Context, f *flag.FlagSet, _ ...interface{}) subcommands.ExitStatus {
-	for _, arg := range f.Args() {
-		if p.capitalize {
-			arg = strings.ToUpper(arg)
-		}
-		fmt.Printf("%s ", arg)
+func (p *deleteArchiveCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...interface{}) subcommands.ExitStatus {
+	client := openapi.NewAPIClient(nil)
+	archive := client.ArchiveApi
+
+	_, err := archive.UIDVaultsVaultNameMultipartUploadsUploadIDDelete(ctx, p.vaultName, "-", p.archiveId)
+	if err != nil {
+		fmt.Println("ERROR:", err)
+		return subcommands.ExitFailure
 	}
+
 	fmt.Println()
 	return subcommands.ExitSuccess
 }

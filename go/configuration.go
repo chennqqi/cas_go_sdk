@@ -11,6 +11,8 @@ package openapi
 
 import (
 	"net/http"
+
+	"github.com/chennqqi/goutils/utime"
 )
 
 // contextKeys are used to identify the type of value in the context.
@@ -55,6 +57,9 @@ type Configuration struct {
 	Scheme        string            `json:"scheme,omitempty"`
 	DefaultHeader map[string]string `json:"defaultHeader,omitempty"`
 	UserAgent     string            `json:"userAgent,omitempty"`
+	AccessKey     string            `json:"accessKey"`
+	AccessSecret  string            `json:"accessSecret"`
+	SignKeyExpire utime.Duration    `json:"signKeyExpire,omitempty"`
 	HTTPClient    *http.Client
 }
 

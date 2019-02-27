@@ -3,40 +3,28 @@ package main
 import (
 	"context"
 	"flag"
-	"fmt"
-
-	"strings"
 
 	"github.com/google/subcommands"
 )
 
 func init() {
-	subcommands.Register(&cvCmd{}, "")
+	subcommands.Register(&cvCmd{new(createVaultCmd)}, "")
 }
 
 type cvCmd struct {
-	capitalize bool
+	*createVaultCmd
 }
 
-func (*cvCmd) Name() string     { return "print" }
-func (*cvCmd) Synopsis() string { return "Print args to stdout." }
-func (*cvCmd) Usage() string {
-	return `print [-capitalize] <some text>:
-  Print args to stdout.
-`
+func (p *cvCmd) Name() string     { return "cv" }
+func (p *cvCmd) Synopsis() string { return p.createVaultCmd.Synopsis() }
+func (p *cvCmd) Usage() string {
+	return p.createVaultCmd.Usage()
 }
 
 func (p *cvCmd) SetFlags(f *flag.FlagSet) {
-	f.BoolVar(&p.capitalize, "capitalize", false, "capitalize output")
+	p.createVaultCmd.SetFlags(f)
 }
 
-func (p *cvCmd) Execute(_ context.Context, f *flag.FlagSet, _ ...interface{}) subcommands.ExitStatus {
-	for _, arg := range f.Args() {
-		if p.capitalize {
-			arg = strings.ToUpper(arg)
-		}
-		fmt.Printf("%s ", arg)
-	}
-	fmt.Println()
-	return subcommands.ExitSuccess
+func (p *cvCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...interface{}) subcommands.ExitStatus {
+	return p.createVaultCmd.Execute(ctx, f)
 }

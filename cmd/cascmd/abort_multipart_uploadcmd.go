@@ -4,9 +4,11 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"strings"
 
 	"github.com/google/subcommands"
+
+	//	"github.com/antihax/optional"
+	openapi "gogs.fastapi.org/gitadmin/cas/go"
 )
 
 func init() {
@@ -14,11 +16,12 @@ func init() {
 }
 
 type abortMultipartUploadCmd struct {
-	capitalize bool
+	vaultName string
+	uploadId  string
 }
 
-func (*abortMultipartUploadCmd) Name() string     { return "print" }
-func (*abortMultipartUploadCmd) Synopsis() string { return "Print args to stdout." }
+func (*abortMultipartUploadCmd) Name() string     { return "abort_multipart_upload" }
+func (*abortMultipartUploadCmd) Synopsis() string { return "abort a multipart upload." }
 func (*abortMultipartUploadCmd) Usage() string {
 	return `print [-capitalize] <some text>:
   Print args to stdout.
@@ -26,15 +29,18 @@ func (*abortMultipartUploadCmd) Usage() string {
 }
 
 func (p *abortMultipartUploadCmd) SetFlags(f *flag.FlagSet) {
-	f.BoolVar(&p.capitalize, "capitalize", false, "capitalize output")
+	f.StringVar(&p.vaultName, "vault", "", `format cas://vault-name`)
+	f.StringVar(&p.uploadId, "upload_id", "", "ID of multipart upload to be aborted")
 }
 
-func (p *abortMultipartUploadCmd) Execute(_ context.Context, f *flag.FlagSet, _ ...interface{}) subcommands.ExitStatus {
-	for _, arg := range f.Args() {
-		if p.capitalize {
-			arg = strings.ToUpper(arg)
-		}
-		fmt.Printf("%s ", arg)
+func (p *abortMultipartUploadCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...interface{}) subcommands.ExitStatus {
+	client := openapi.NewAPIClient(openapi.NewConfiguration())
+	archive := client.ArchiveApi
+
+	_, err := archive.UIDVaultsVaultNameMultipartUploadsUploadIDDelete(ctx, "-", p.vaultName, p.uploadId)
+	if err != nil {
+		fmt.Println("ERROR:", err)
+		return subcommands.ExitFailure
 	}
 	fmt.Println()
 	return subcommands.ExitSuccess

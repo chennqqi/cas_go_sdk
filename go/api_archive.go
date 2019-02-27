@@ -17,6 +17,7 @@ import (
 	"strings"
 	"fmt"
 	"github.com/antihax/optional"
+	"os"
 )
 
 // Linger please
@@ -627,8 +628,9 @@ Complete Multipart Upload请求实现结束分段上传，形成文件。发起�
  * @param uploadID
  * @param xCasSha256TreeHash
  * @param xCasArchiveSize
+ * @param body
 */
-func (a *ArchiveApiService) UIDVaultsVaultNameMultipartUploadsUploadIDPost(ctx context.Context, uID string, vaultName string, uploadID string, xCasSha256TreeHash string, xCasArchiveSize string) (*http.Response, error) {
+func (a *ArchiveApiService) UIDVaultsVaultNameMultipartUploadsUploadIDPost(ctx context.Context, uID string, vaultName string, uploadID string, xCasSha256TreeHash string, xCasArchiveSize string, body *os.File) (*http.Response, error) {
 	var (
 		localVarHttpMethod   = strings.ToUpper("Post")
 		localVarPostBody     interface{}
@@ -648,7 +650,7 @@ func (a *ArchiveApiService) UIDVaultsVaultNameMultipartUploadsUploadIDPost(ctx c
 	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
-	localVarHttpContentTypes := []string{}
+	localVarHttpContentTypes := []string{"application/octet-stream"}
 
 	// set Content-Type header
 	localVarHttpContentType := selectHeaderContentType(localVarHttpContentTypes)
@@ -666,6 +668,8 @@ func (a *ArchiveApiService) UIDVaultsVaultNameMultipartUploadsUploadIDPost(ctx c
 	}
 	localVarHeaderParams["x-cas-sha256-tree-hash"] = parameterToString(xCasSha256TreeHash, "")
 	localVarHeaderParams["x-cas-archive-size"] = parameterToString(xCasArchiveSize, "")
+	// body params
+	localVarPostBody = &body
 	if ctx != nil {
 		// API Key Authentication
 		if auth, ok := ctx.Value(ContextAPIKey).(APIKey); ok {

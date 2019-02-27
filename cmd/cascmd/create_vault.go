@@ -4,10 +4,11 @@ import (
 	"context"
 	"flag"
 	"fmt"
-
-	"strings"
+	"net/url"
 
 	"github.com/google/subcommands"
+
+	openapi "gogs.fastapi.org/gitadmin/cas/go"
 )
 
 func init() {
@@ -15,28 +16,39 @@ func init() {
 }
 
 type createVaultCmd struct {
-	capitalize bool
+	vaultName string
 }
 
-func (*createVaultCmd) Name() string     { return "print" }
-func (*createVaultCmd) Synopsis() string { return "Print args to stdout." }
+func (*createVaultCmd) Name() string     { return "create_vault" }
+func (*createVaultCmd) Synopsis() string { return "create a vault" }
 func (*createVaultCmd) Usage() string {
-	return `print [-capitalize] <some text>:
-  Print args to stdout.
+	return `create_vault format <cas://vaultname>':
+  Create a vault as 'vaultname'.
 `
 }
 
 func (p *createVaultCmd) SetFlags(f *flag.FlagSet) {
-	f.BoolVar(&p.capitalize, "capitalize", false, "capitalize output")
+	f.StringVar(&p.vaultName, "vault", "", `format cas://vault-name'`)
 }
 
-func (p *createVaultCmd) Execute(_ context.Context, f *flag.FlagSet, _ ...interface{}) subcommands.ExitStatus {
-	for _, arg := range f.Args() {
-		if p.capitalize {
-			arg = strings.ToUpper(arg)
-		}
-		fmt.Printf("%s ", arg)
+func (p *createVaultCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...interface{}) subcommands.ExitStatus {
+	client := openapi.NewAPIClient(nil)
+	vault := client.VaultApi
+
+	u, e := url.Parse(p.vaultName)
+	if e != nil || p.vaultName == "" {
+		fmt.Println("ERROR parse vault:", e)
+		return subcommands.ExitFailure
 	}
+	var vaultName = u.Path
+
+	resp, err := vault.CreateVault(ctx, "-", vaultName)
+	if err != nil {
+		fmt.Println("ERROR:", err)
+		return subcommands.ExitFailure
+	}
+	location := resp.Header.Get("Location")
+	fmt.Printf(`Vault Location: %s\n`, location)
 	fmt.Println()
 	return subcommands.ExitSuccess
 }

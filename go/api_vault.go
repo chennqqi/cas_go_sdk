@@ -11,11 +11,12 @@ package openapi
 
 import (
 	"context"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
-	"fmt"
+
 	"github.com/antihax/optional"
 )
 
@@ -221,7 +222,7 @@ List Vaults 接口实现列出该账户下所有的文件库。档案数与档�
 */
 
 type UIDVaultsGetOpts struct {
-	Limit optional.Int64
+	Limit  optional.Int64
 	Marker optional.String
 }
 
@@ -514,7 +515,7 @@ Set Vault Access Policy 请求实现为一个 Vault 设置权限。具体策略�
  * @param uID
  * @param vaultName
  * @param optional nil or *UIDVaultsVaultNameAccessPolicyPutOpts - Optional Parameters:
- * @param "Policy" (optional.Interface of Policy) - 
+ * @param "Policy" (optional.Interface of Policy) -
 */
 
 type UIDVaultsVaultNameAccessPolicyPutOpts struct {
@@ -871,7 +872,7 @@ Set Vault Access Policy 请求实现为一个 Vault 设置权限。具体策略�
  * @param uID
  * @param vaultName
  * @param optional nil or *UIDVaultsVaultNameNotificationConfigurationPutOpts - Optional Parameters:
- * @param "NotificationConfiguration" (optional.Interface of NotificationConfiguration) - 
+ * @param "NotificationConfiguration" (optional.Interface of NotificationConfiguration) -
 */
 
 type UIDVaultsVaultNameNotificationConfigurationPutOpts struct {

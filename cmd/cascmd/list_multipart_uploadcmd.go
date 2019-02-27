@@ -5,9 +5,9 @@ import (
 	"flag"
 	"fmt"
 
-	"strings"
-
+	"github.com/antihax/optional"
 	"github.com/google/subcommands"
+	openapi "gogs.fastapi.org/gitadmin/cas/go"
 )
 
 func init() {
@@ -15,28 +15,36 @@ func init() {
 }
 
 type listMultriPartCmd struct {
-	capitalize bool
+	vaultName string
+	marker    string
+	limit     int64
 }
 
-func (*listMultriPartCmd) Name() string     { return "print" }
-func (*listMultriPartCmd) Synopsis() string { return "Print args to stdout." }
+func (*listMultriPartCmd) Name() string     { return "list_multipart_upload" }
+func (*listMultriPartCmd) Synopsis() string { return "list all multipart uploads in a vault." }
 func (*listMultriPartCmd) Usage() string {
 	return `print [-capitalize] <some text>:
-  Print args to stdout.
+  list all multipart uploads in a vault.
 `
 }
 
 func (p *listMultriPartCmd) SetFlags(f *flag.FlagSet) {
-	f.BoolVar(&p.capitalize, "capitalize", false, "capitalize output")
+	f.StringVar(&p.vaultName, "vault", "", "format cas://vault-name")
+	f.StringVar(&p.marker, "marker", "", "list start multiupload position marker")
+	f.Int64Var(&p.limit, "limit", 0, "number to be listed, max 1000")
 }
 
-func (p *listMultriPartCmd) Execute(_ context.Context, f *flag.FlagSet, _ ...interface{}) subcommands.ExitStatus {
-	for _, arg := range f.Args() {
-		if p.capitalize {
-			arg = strings.ToUpper(arg)
-		}
-		fmt.Printf("%s ", arg)
+func (p *listMultriPartCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...interface{}) subcommands.ExitStatus {
+	client := openapi.NewAPIClient(openapi.NewConfiguration())
+	archive := client.ArchiveApi
+	var opt openapi.UIDVaultsVaultNameMultipartUploadsGetOpts
+	if p.marker != "" {
+		opt.Marker = optional.NewString(p.vaultName)
+		opt.Limit = optional.NewInt64(p.limit)
 	}
+	archive.UIDVaultsVaultNameMultipartUploadsGet(ctx, "-", p.vaultName, &opt)
+	//TODO: fmt.Println result
+
 	fmt.Println()
 	return subcommands.ExitSuccess
 }

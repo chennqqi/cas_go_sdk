@@ -18,7 +18,7 @@ type rmCmd struct {
 	capitalize bool
 }
 
-func (*rmCmd) Name() string     { return "print" }
+func (*rmCmd) Name() string     { return "rm" }
 func (*rmCmd) Synopsis() string { return "Print args to stdout." }
 func (*rmCmd) Usage() string {
 	return `print [-capitalize] <some text>:

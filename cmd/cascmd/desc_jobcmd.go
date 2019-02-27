@@ -5,9 +5,10 @@ import (
 	"flag"
 	"fmt"
 
-	"strings"
-
 	"github.com/google/subcommands"
+
+	//	"github.com/antihax/optional"
+	openapi "gogs.fastapi.org/gitadmin/cas/go"
 )
 
 func init() {
@@ -15,11 +16,12 @@ func init() {
 }
 
 type descJobCmd struct {
-	capitalize bool
+	vaultName string
+	jobId     string
 }
 
-func (*descJobCmd) Name() string     { return "print" }
-func (*descJobCmd) Synopsis() string { return "Print args to stdout." }
+func (*descJobCmd) Name() string     { return "desc_job" }
+func (*descJobCmd) Synopsis() string { return "get job status description" }
 func (*descJobCmd) Usage() string {
 	return `print [-capitalize] <some text>:
   Print args to stdout.
@@ -27,16 +29,20 @@ func (*descJobCmd) Usage() string {
 }
 
 func (p *descJobCmd) SetFlags(f *flag.FlagSet) {
-	f.BoolVar(&p.capitalize, "capitalize", false, "capitalize output")
+	f.StringVar(&p.vaultName, "vault", "", `format cas://vault-name`)
+	f.StringVar(&p.jobId, "jobid", "", "the id of createjob returned")
 }
 
-func (p *descJobCmd) Execute(_ context.Context, f *flag.FlagSet, _ ...interface{}) subcommands.ExitStatus {
-	for _, arg := range f.Args() {
-		if p.capitalize {
-			arg = strings.ToUpper(arg)
-		}
-		fmt.Printf("%s ", arg)
+func (p *descJobCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...interface{}) subcommands.ExitStatus {
+	client := openapi.NewAPIClient(openapi.NewConfiguration())
+	job := client.JobApi
+	desc, _, err := job.UIDVaultsVaultNameJobsJobIDGet(ctx, "-", p.vaultName, p.jobId)
+	if err != nil {
+		fmt.Println("ERROR:", err)
+		return subcommands.ExitFailure
 	}
+	fmt.Println(desc)
+
 	fmt.Println()
 	return subcommands.ExitSuccess
 }

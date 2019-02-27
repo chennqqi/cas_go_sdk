@@ -1,13 +1,17 @@
 package main
 
 import (
+	"bufio"
 	"context"
+	"crypto/sha256"
+	"encoding/hex"
 	"flag"
 	"fmt"
-
-	"strings"
+	"io"
+	"os"
 
 	"github.com/google/subcommands"
+	"gogs.fastapi.org/gitadmin/cas/treehash"
 )
 
 func init() {
@@ -15,11 +19,11 @@ func init() {
 }
 
 type fileTreeCmd struct {
-	capitalize bool
+	localFile string
 }
 
-func (*fileTreeCmd) Name() string     { return "print" }
-func (*fileTreeCmd) Synopsis() string { return "Print args to stdout." }
+func (*fileTreeCmd) Name() string     { return "file_tree_etag" }
+func (*fileTreeCmd) Synopsis() string { return "calculate tree sha256 hash of a file" }
 func (*fileTreeCmd) Usage() string {
 	return `print [-capitalize] <some text>:
   Print args to stdout.
@@ -27,16 +31,30 @@ func (*fileTreeCmd) Usage() string {
 }
 
 func (p *fileTreeCmd) SetFlags(f *flag.FlagSet) {
-	f.BoolVar(&p.capitalize, "capitalize", false, "capitalize output")
+	f.StringVar(&p.localFile, "local_file", "", "file to be calculated")
 }
 
 func (p *fileTreeCmd) Execute(_ context.Context, f *flag.FlagSet, _ ...interface{}) subcommands.ExitStatus {
-	for _, arg := range f.Args() {
-		if p.capitalize {
-			arg = strings.ToUpper(arg)
-		}
-		fmt.Printf("%s ", arg)
+	fp, err := os.Open(p.localFile)
+	if err != nil {
+		fmt.Println("ERROR:", err)
+		return subcommands.ExitFailure
 	}
+	defer fp.Close()
+
+	cacheReader := bufio.NewReader(fp)
+
+	h := sha256.New()
+	tree := treehash.New(1024*1024, sha256.New())
+	mw := io.MultiWriter(h, tree)
+	io.Copy(mw, cacheReader)
+
+	contentHash := hex.EncodeToString(h.Sum(nil))
+	treeHash := hex.EncodeToString(tree.Sum(nil))
+
+	fmt.Println("content-hash:", contentHash)
+	fmt.Println("tree-hash,", treeHash)
+
 	fmt.Println()
 	return subcommands.ExitSuccess
 }

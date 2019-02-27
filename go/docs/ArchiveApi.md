@@ -243,7 +243,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **UIDVaultsVaultNameMultipartUploadsUploadIDPost**
-> UIDVaultsVaultNameMultipartUploadsUploadIDPost(ctx, uID, vaultName, uploadID, xCasSha256TreeHash, xCasArchiveSize)
+> UIDVaultsVaultNameMultipartUploadsUploadIDPost(ctx, uID, vaultName, uploadID, xCasSha256TreeHash, xCasArchiveSize, body)
 Complete Multipart Upload
 
 Complete Multipart Upload请求实现结束分段上传，形成文件。发起该请求时必须携带全文件的树形哈希值，服务端将比较用户上传的全文树形哈希和利用已上传分块得到的树形哈希，一致则请求成功，不一致则返回失败
@@ -258,6 +258,7 @@ Name | Type | Description  | Notes
   **uploadID** | **string**|  | 
   **xCasSha256TreeHash** | **string**|  | 
   **xCasArchiveSize** | **string**|  | 
+  **body** | ***os.File*****os.File**|  | 
 
 ### Return type
 
@@ -269,7 +270,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
+ - **Content-Type**: application/octet-stream
  - **Accept**: Not defined
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
