@@ -11,6 +11,7 @@ package openapi
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/chennqqi/goutils/utime"
 )
@@ -52,9 +53,9 @@ type APIKey struct {
 }
 
 type Configuration struct {
-	BasePath string `json:"basePath,omitempty"`
-	Host     string `json:"host,omitempty"`
-	//	Scheme        string            `json:"scheme,omitempty"`
+	BasePath      string            `json:"basePath,omitempty"`
+	Host          string            `json:"host,omitempty"`
+	Scheme        string            `json:"scheme,omitempty"`
 	DefaultHeader map[string]string `json:"defaultHeader,omitempty"`
 	UserAgent     string            `json:"userAgent,omitempty"`
 	AppId         string            `json:"appId"`
@@ -66,10 +67,11 @@ type Configuration struct {
 
 func NewConfiguration() *Configuration {
 	cfg := &Configuration{
-		BasePath: "",
-		//Scheme:        "http://",
+		BasePath:      "",
+		Scheme:        "http",
 		DefaultHeader: make(map[string]string),
 		UserAgent:     "OpenAPI-Generator/1.0.0/go",
+		SignKeyExpire: utime.Duration(time.Second * 1200),
 	}
 	return cfg
 }

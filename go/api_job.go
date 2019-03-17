@@ -59,7 +59,7 @@ func (a *JobApiService) UIDVaultsVaultNameJobsGet(ctx context.Context, uID strin
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/<UID>/vaults/<VaultName>/jobs"
+	localVarPath := a.client.cfg.BasePath + "/{UID}/vaults/{VaultName}/jobs"
 	localVarPath = strings.Replace(localVarPath, "{"+"UID"+"}", fmt.Sprintf("%v", uID), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", fmt.Sprintf("%v", vaultName), -1)
 
@@ -174,7 +174,7 @@ func (a *JobApiService) UIDVaultsVaultNameJobsJobIDGet(ctx context.Context, uID 
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/<UID>/vaults/<VaultName>/jobs/<JobID>"
+	localVarPath := a.client.cfg.BasePath + "/{UID}/vaults/{VaultName}/jobs/<JobID>"
 	localVarPath = strings.Replace(localVarPath, "{"+"UID"+"}", fmt.Sprintf("%v", uID), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", fmt.Sprintf("%v", vaultName), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"JobID"+"}", fmt.Sprintf("%v", jobID), -1)
@@ -286,7 +286,7 @@ func (a *JobApiService) UIDVaultsVaultNameJobsJobIDOutputGet(ctx context.Context
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/<UID>/vaults/<VaultName>/jobs/<JobID>/output"
+	localVarPath := a.client.cfg.BasePath + "/{UID}/vaults/{VaultName}/jobs/<JobID>/output"
 	localVarPath = strings.Replace(localVarPath, "{"+"UID"+"}", fmt.Sprintf("%v", uID), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", fmt.Sprintf("%v", vaultName), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"JobID"+"}", fmt.Sprintf("%v", jobID), -1)
@@ -416,7 +416,7 @@ func (a *JobApiService) UIDVaultsVaultNameJobsPost(ctx context.Context, uID stri
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/<UID>/vaults/<VaultName>/jobs"
+	localVarPath := a.client.cfg.BasePath + "/{UID}/vaults/{VaultName}/jobs"
 	localVarPath = strings.Replace(localVarPath, "{"+"UID"+"}", fmt.Sprintf("%v", uID), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", fmt.Sprintf("%v", vaultName), -1)
 

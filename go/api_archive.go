@@ -46,7 +46,7 @@ func (a *ArchiveApiService) UIDVaultsVaultNameArchivesArchiveIDDelete(ctx contex
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/<UID>/vaults/<VaultName>/archives/<ArchiveID>"
+	localVarPath := a.client.cfg.BasePath + "/{UID}/vaults/{VaultName}/archives/<ArchiveID>"
 	localVarPath = strings.Replace(localVarPath, "{"+"UID"+"}", fmt.Sprintf("%v", uID), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", fmt.Sprintf("%v", vaultName), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"ArchiveID"+"}", fmt.Sprintf("%v", archiveID), -1)
@@ -138,7 +138,7 @@ func (a *ArchiveApiService) UIDVaultsVaultNameArchivesPost(ctx context.Context, 
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/<UID>/vaults/<VaultName>/archives"
+	localVarPath := a.client.cfg.BasePath + "/{UID}/vaults/{VaultName}/archives"
 	localVarPath = strings.Replace(localVarPath, "{"+"UID"+"}", fmt.Sprintf("%v", uID), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", fmt.Sprintf("%v", vaultName), -1)
 
@@ -238,7 +238,7 @@ func (a *ArchiveApiService) UIDVaultsVaultNameMultipartUploadsGet(ctx context.Co
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/<UID>/vaults/<VaultName>/multipart-uploads"
+	localVarPath := a.client.cfg.BasePath + "/{UID}/vaults/{VaultName}/multipart-uploads"
 	localVarPath = strings.Replace(localVarPath, "{"+"UID"+"}", fmt.Sprintf("%v", uID), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", fmt.Sprintf("%v", vaultName), -1)
 
@@ -352,7 +352,7 @@ func (a *ArchiveApiService) UIDVaultsVaultNameMultipartUploadsPost(ctx context.C
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/<UID>/vaults/<VaultName>/multipart-uploads"
+	localVarPath := a.client.cfg.BasePath + "/{UID}/vaults/{VaultName}/multipart-uploads"
 	localVarPath = strings.Replace(localVarPath, "{"+"UID"+"}", fmt.Sprintf("%v", uID), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", fmt.Sprintf("%v", vaultName), -1)
 
@@ -438,7 +438,7 @@ func (a *ArchiveApiService) UIDVaultsVaultNameMultipartUploadsUploadIDDelete(ctx
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/<UID>/vaults/<VaultName>/multipart-uploads/<uploadID>"
+	localVarPath := a.client.cfg.BasePath + "/{UID}/vaults/{VaultName}/multipart-uploads/<uploadID>"
 	localVarPath = strings.Replace(localVarPath, "{"+"UID"+"}", fmt.Sprintf("%v", uID), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", fmt.Sprintf("%v", vaultName), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"uploadID"+"}", fmt.Sprintf("%v", uploadID), -1)
@@ -532,7 +532,7 @@ func (a *ArchiveApiService) UIDVaultsVaultNameMultipartUploadsUploadIDGet(ctx co
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/<UID>/vaults/<VaultName>/multipart-uploads/<uploadID>"
+	localVarPath := a.client.cfg.BasePath + "/{UID}/vaults/{VaultName}/multipart-uploads/<uploadID>"
 	localVarPath = strings.Replace(localVarPath, "{"+"UID"+"}", fmt.Sprintf("%v", uID), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", fmt.Sprintf("%v", vaultName), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"uploadID"+"}", fmt.Sprintf("%v", uploadID), -1)
@@ -642,7 +642,7 @@ func (a *ArchiveApiService) UIDVaultsVaultNameMultipartUploadsUploadIDPost(ctx c
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/<UID>/vaults/<VaultName>/multipart-uploads/<uploadID>"
+	localVarPath := a.client.cfg.BasePath + "/{UID}/vaults/{VaultName}/multipart-uploads/<uploadID>"
 	localVarPath = strings.Replace(localVarPath, "{"+"UID"+"}", fmt.Sprintf("%v", uID), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", fmt.Sprintf("%v", vaultName), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"uploadID"+"}", fmt.Sprintf("%v", uploadID), -1)
@@ -738,7 +738,7 @@ func (a *ArchiveApiService) UIDVaultsVaultNameMultipartUploadsUploadIDPut(ctx co
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/<UID>/vaults/<VaultName>/multipart-uploads/<uploadID>"
+	localVarPath := a.client.cfg.BasePath + "/{UID}/vaults/{VaultName}/multipart-uploads/<uploadID>"
 	localVarPath = strings.Replace(localVarPath, "{"+"UID"+"}", fmt.Sprintf("%v", uID), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", fmt.Sprintf("%v", vaultName), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"uploadID"+"}", fmt.Sprintf("%v", uploadID), -1)

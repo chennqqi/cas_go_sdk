@@ -236,7 +236,7 @@ func (a *VaultApiService) UIDVaultsGet(ctx context.Context, uID string, localVar
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/<UID>/vaults"
+	localVarPath := a.client.cfg.BasePath + "/{UID}/vaults"
 	localVarPath = strings.Replace(localVarPath, "{"+"UID"+"}", fmt.Sprintf("%v", uID), -1)
 
 	localVarHeaderParams := make(map[string]string)
@@ -341,7 +341,7 @@ func (a *VaultApiService) UIDVaultsVaultNameAccessPolicyDelete(ctx context.Conte
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/<UID>/vaults/<VaultName>/access-policy"
+	localVarPath := a.client.cfg.BasePath + "/{UID}/vaults/{VaultName}/access-policy"
 	localVarPath = strings.Replace(localVarPath, "{"+"UID"+"}", fmt.Sprintf("%v", uID), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", fmt.Sprintf("%v", vaultName), -1)
 
@@ -424,7 +424,7 @@ func (a *VaultApiService) UIDVaultsVaultNameAccessPolicyGet(ctx context.Context,
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/<UID>/vaults/<VaultName>/access-policy"
+	localVarPath := a.client.cfg.BasePath + "/{UID}/vaults/{VaultName}/access-policy"
 	localVarPath = strings.Replace(localVarPath, "{"+"UID"+"}", fmt.Sprintf("%v", uID), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", fmt.Sprintf("%v", vaultName), -1)
 
@@ -531,7 +531,7 @@ func (a *VaultApiService) UIDVaultsVaultNameAccessPolicyPut(ctx context.Context,
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/<UID>/vaults/<VaultName>/access-policy"
+	localVarPath := a.client.cfg.BasePath + "/{UID}/vaults/{VaultName}/access-policy"
 	localVarPath = strings.Replace(localVarPath, "{"+"UID"+"}", fmt.Sprintf("%v", uID), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", fmt.Sprintf("%v", vaultName), -1)
 
@@ -702,7 +702,7 @@ func (a *VaultApiService) UIDVaultsVaultNameNotificationConfigurationDelete(ctx 
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/<UID>/vaults/<VaultName>/notification-configuration"
+	localVarPath := a.client.cfg.BasePath + "/{UID}/vaults/{VaultName}/notification-configuration"
 	localVarPath = strings.Replace(localVarPath, "{"+"UID"+"}", fmt.Sprintf("%v", uID), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", fmt.Sprintf("%v", vaultName), -1)
 
@@ -783,7 +783,7 @@ func (a *VaultApiService) UIDVaultsVaultNameNotificationConfigurationGet(ctx con
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/<UID>/vaults/<VaultName>/notification-configuration"
+	localVarPath := a.client.cfg.BasePath + "/{UID}/vaults/{VaultName}/notification-configuration"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -888,7 +888,7 @@ func (a *VaultApiService) UIDVaultsVaultNameNotificationConfigurationPut(ctx con
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/<UID>/vaults/<VaultName>/notification-configuration"
+	localVarPath := a.client.cfg.BasePath + "/{UID}/vaults/{VaultName}/notification-configuration"
 	localVarPath = strings.Replace(localVarPath, "{"+"UID"+"}", fmt.Sprintf("%v", uID), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", fmt.Sprintf("%v", vaultName), -1)
 

@@ -170,6 +170,26 @@ func parameterToString(obj interface{}, collectionFormat string) string {
 	return fmt.Sprintf("%v", obj)
 }
 
+// formatParams
+func formatParams(m map[string]string) ([]string, string) {
+	keys := make([]string, len(m))
+	var count int
+	for _, v := range m {
+		keys[count] = v
+		count++
+	}
+	sort.Strings(keys)
+
+	var buf bytes.Buffer
+	for i := 0; i < len(keys); i++ {
+		buf.WriteString(fmt.Sprintf("%v=%v", keys[i], m[keys[i]]))
+		if i < len(keys)-1 {
+			buf.WriteByte('&')
+		}
+	}
+	return keys, url.QueryEscape(buf.String())
+}
+
 // callAPI do the request.
 func (c *APIClient) callAPI(request *http.Request) (*http.Response, error) {
 	return c.cfg.HTTPClient.Do(request)
@@ -186,25 +206,23 @@ func (c *APIClient) createAuth(method, url, host string,
 
 	var accessKey, accessSecret = c.cfg.AccessKey, c.cfg.AccessSecret
 
-	/*
-		if isinstance(sk, unicode) {
+	var commonHeaders = []string{
+		"Host", "x-cas-content-sha256", "Content-Length", "x-cas-sha256-tree-hash",
+	}
+	dupHeaders := make(map[string]string)
+	var headerCount int
+	for _, v := range commonHeaders {
+		nv := headers.Get(v)
+		if nv != "" {
+			dupHeaders[strings.ToLower(v)] = strings.ToLower(nv)
+			headerCount++
 		}
-	*/
-	var headerKeys = make([]string, len(headers))
-	var count int
-	for hk, _ := range headers {
-		headerKeys[count] = headers.Get(hk)
-		count++
 	}
-	sort.Strings(headerKeys)
 
-	var paramsKeys = make([]string, len(params))
-	count = 0
-	for pk, _ := range params {
-		paramsKeys[count] = params.Get(pk)
-		count++
+	var dupParams = make(map[string]string)
+	for k, _ := range params {
+		dupParams[strings.ToLower(k)] = strings.ToLower(params.Get(k))
 	}
-	sort.Strings(paramsKeys)
 
 	if c.cfg.SignKeyExpire == 0 {
 		expire = DefaultAuthTimeout
@@ -216,38 +234,32 @@ func (c *APIClient) createAuth(method, url, host string,
 	mac := hmac.New(sha1.New, []byte(accessSecret))
 	mac.Write([]byte(timeRange))
 	var signKey = hex.EncodeToString(mac.Sum(nil))
+	fmt.Println("signKey:", signKey)
 
 	//formating string
 	var formatString bytes.Buffer
 	formatString.WriteString(strings.ToLower(method))
 	formatString.WriteByte('\n')
+	//uri
 	formatString.WriteString(strings.ToLower(url))
 	formatString.WriteByte('\n')
 
-	for i := 0; i < len(paramsKeys); i++ {
-		var key = paramsKeys[i]
-		var value = params.Get(key)
-		formatString.WriteString(fmt.Sprintf(`%v=%v`, key, value))
-		if i < len(headerKeys)-1 {
-			formatString.WriteByte('&')
-		}
-	}
+	//params
+	paramKeys, fParams := formatParams(dupParams)
+	formatString.WriteString(fParams)
 	formatString.WriteByte('\n')
 
-	for i := 0; i < len(headerKeys); i++ {
-		var key = headerKeys[i]
-		var value = headers.Get(key)
-		formatString.WriteString(fmt.Sprintf(`%v=%v`, key, value))
-		if i < len(headerKeys)-1 {
-			formatString.WriteByte('&')
-		}
-	}
+	//header
+	headerKeys, fHeader := formatParams(dupHeaders)
+	formatString.WriteString(fHeader)
 	formatString.WriteByte('\n')
 
 	var stringToSign bytes.Buffer
 	stringToSign.WriteString("sha1\n")
 	stringToSign.WriteString(timeRange)
 	stringToSign.WriteByte('\n')
+
+	//fmt.Println("stringToSign:", formatString.String(), stringToSign.String())
 
 	h := sha1.New()
 	h.Write(formatString.Bytes())
@@ -260,8 +272,8 @@ func (c *APIClient) createAuth(method, url, host string,
 
 	return fmt.Sprintf(`q-sign-algorithm=sha1&q-ak=%s&q-sign-time=%s&q-key-time=%s&q-header-list=%s&q-url-param-list=%s&q-signature=%s`,
 		accessKey, timeRange, timeRange,
-		strings.Join(paramsKeys, ";"),
-		strings.Join(headerKeys, ";"), sign)
+		strings.Join(headerKeys, ";"),
+		strings.Join(paramKeys, ";"), sign)
 }
 
 // prepareRequest build the request
@@ -382,6 +394,12 @@ func (c *APIClient) prepareRequest(
 	// Override request host, if applicable
 	if c.cfg.Host != "" {
 		localVarRequest.Host = c.cfg.Host
+		localVarRequest.URL.Host = c.cfg.Host
+	}
+	if c.cfg.Scheme != "" {
+		localVarRequest.URL.Scheme = c.cfg.Scheme
+	} else if localVarRequest.URL.Scheme == "" {
+		localVarRequest.URL.Scheme = "http"
 	}
 
 	// Add the user agent to the request.
