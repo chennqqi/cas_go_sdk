@@ -25,8 +25,8 @@ type fileTreeCmd struct {
 func (*fileTreeCmd) Name() string     { return "file_tree_etag" }
 func (*fileTreeCmd) Synopsis() string { return "calculate tree sha256 hash of a file" }
 func (*fileTreeCmd) Usage() string {
-	return `print [-capitalize] <some text>:
-  Print args to stdout.
+	return `file_tree_etag <params>:
+  calculate tree sha256 hash of a file.
 `
 }
 

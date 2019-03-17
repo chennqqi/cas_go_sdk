@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"flag"
 	"fmt"
 
@@ -55,13 +56,26 @@ func (p *listPartCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...interfa
 	}
 
 	///<UID>/vaults/<VaultName>/multipart-uploads/<uploadID>
-	parts, resp, err := archive.UIDVaultsVaultNameMultipartUploadsUploadIDGet(ctx,
+	parts, _, err := archive.UIDVaultsVaultNameMultipartUploadsUploadIDGet(ctx,
 		conf.AppId, p.vaultName, p.uploadId, &opt)
 	if err != nil {
 		fmt.Println("Error:", err)
 		return subcommands.ExitFailure
 	}
+	/*
+			        self.kv_print(rjson, title)
+		        part_list = rjson['Parts']
+		        print '-' * 88
+	*/
+
 	//TODO: print result
+	txt, _ := json.MarshalIndent(parts, "", "  ")
+	fmt.Println(string(txt))
+	//	txt, err := json.MarshalIndent(part, "", "  ")
+	//	for i := 0; i < len(parts.Parts); i++ {
+	//		part := &parts.Parts[i]
+	//		fmt.Println(string(txt))
+	//	}
 
 	fmt.Println()
 	return subcommands.ExitSuccess

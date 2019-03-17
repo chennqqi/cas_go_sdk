@@ -22,7 +22,7 @@ type postArchiveCmd struct {
 func (*postArchiveCmd) Name() string     { return "post_archive" }
 func (*postArchiveCmd) Synopsis() string { return "upload a local file" }
 func (*postArchiveCmd) Usage() string {
-	return `print [-capitalize] <some text>:
+	return `post_archive <params>:
   Upload a local file.
 `
 }

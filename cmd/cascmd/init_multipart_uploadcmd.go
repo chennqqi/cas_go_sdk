@@ -21,11 +21,11 @@ type initMultipartUploadCmd struct {
 	desc      string
 }
 
-func (*initMultipartUploadCmd) Name() string     { return "print" }
+func (*initMultipartUploadCmd) Name() string     { return "init_multipart_upload" }
 func (*initMultipartUploadCmd) Synopsis() string { return "initiate a multipart upload." }
 func (*initMultipartUploadCmd) Usage() string {
-	return `print [-capitalize] <some text>:
-  Print args to stdout.
+	return `init_multipart_upload <params>:
+  initiate a multipart upload.
 `
 }
 

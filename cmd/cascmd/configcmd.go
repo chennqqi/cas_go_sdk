@@ -4,14 +4,12 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"os"
 
-	"github.com/chennqqi/goutils/jsonconfig"
 	"github.com/google/subcommands"
-	openapi "gogs.fastapi.org/gitadmin/cas/go"
 )
 
 func init() {
-	subcommands.Register(&configCmd{}, "")
 }
 
 type configCmd struct {
@@ -31,7 +29,7 @@ func (*configCmd) Usage() string {
 }
 
 func (p *configCmd) SetFlags(f *flag.FlagSet) {
-	f.StringVar(&p.endPoint, "-endpoint", "", "cas endpoint output")
+	f.StringVar(&p.endPoint, "-endpoint", "", "cas endpoint host")
 	f.StringVar(&p.appId, "-appid", "", "user appid")
 	f.StringVar(&p.secretId, "-secretid", "", "user secretid")
 	f.StringVar(&p.secretKey, "-secretkey", "", "user secretkey")
@@ -39,34 +37,25 @@ func (p *configCmd) SetFlags(f *flag.FlagSet) {
 }
 
 func (p *configCmd) Execute(_ context.Context, f *flag.FlagSet, _ ...interface{}) subcommands.ExitStatus {
-	var conf string
-	if p.configFile != "" {
-		conf = DEFAULT_CONFIG_FILE
-	}
-
-	var cfg openapi.Configuration
-
-	//load old config
-	//TODO: use loadConf
-	err := jsonconfig.Load(&cfg, conf)
-	if err != nil {
+	conf, err := loadConf(p.configFile)
+	if err != nil && os.IsNotExist(err) {
 		fmt.Println("config error:", err)
 		return subcommands.ExitFailure
 	}
 
 	if p.endPoint != "" {
-		cfg.Host = p.endPoint
+		conf.Host = p.endPoint
 	}
 	if p.appId != "" {
-		cfg.AppId = p.appId
+		conf.AppId = p.appId
 	}
 	if p.secretId != "" {
-		cfg.AccessKey = p.secretId
+		conf.AccessKey = p.secretId
 	}
 	if p.secretKey != "" {
-		cfg.AccessSecret = p.secretKey
+		conf.AccessSecret = p.secretKey
 	}
-	if err := jsonconfig.Save(cfg, conf); err != nil {
+	if err := saveConf(p.configFile, conf); err != nil {
 		fmt.Println("config ERROR:", err)
 	}
 	fmt.Println()

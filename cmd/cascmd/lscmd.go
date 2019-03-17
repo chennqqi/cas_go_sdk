@@ -18,7 +18,9 @@ type lsCmd struct {
 func (*lsCmd) Name() string     { return "ls" }
 func (*lsCmd) Synopsis() string { return "list all vaults" }
 func (c *lsCmd) Usage() string {
-	return c.listVaultCmd.Usage()
+	return `ls <params>:
+  list vaults.
+`
 }
 
 func (p *lsCmd) SetFlags(f *flag.FlagSet) {

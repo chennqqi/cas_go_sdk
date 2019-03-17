@@ -18,7 +18,7 @@ type fetchCmd struct {
 func (*fetchCmd) Name() string     { return "fetch" }
 func (*fetchCmd) Synopsis() string { return "fetch job output." }
 func (*fetchCmd) Usage() string {
-	return `print [-capitalize] <some text>:
+	return `fetch <params>:
  fetch job output.
 `
 }

@@ -24,8 +24,8 @@ type listJobCmd struct {
 func (*listJobCmd) Name() string     { return "list_job" }
 func (*listJobCmd) Synopsis() string { return "list all jobs except expired" }
 func (*listJobCmd) Usage() string {
-	return `print [-capitalize] <some text>:
-  Print args to stdout.
+	return `list_job <params>:
+  list all jobs except expired.
 `
 }
 

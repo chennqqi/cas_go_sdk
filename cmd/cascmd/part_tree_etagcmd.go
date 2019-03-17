@@ -19,12 +19,12 @@ type partTreeEtagCmd struct {
 	end       int64
 }
 
-func (*partTreeEtagCmd) Name() string { return "print" }
+func (*partTreeEtagCmd) Name() string { return "part_tree_etag" }
 func (*partTreeEtagCmd) Synopsis() string {
 	return "calculate tree sha256 hash of a multipart upload part."
 }
 func (*partTreeEtagCmd) Usage() string {
-	return `print [-capitalize] <some text>:
+	return `part_tree_etag <params>:
   calculate tree sha256 hash of a multipart upload part.
 `
 }

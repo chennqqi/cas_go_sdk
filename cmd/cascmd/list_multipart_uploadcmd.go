@@ -23,7 +23,7 @@ type listMultriPartCmd struct {
 func (*listMultriPartCmd) Name() string     { return "list_multipart_upload" }
 func (*listMultriPartCmd) Synopsis() string { return "list all multipart uploads in a vault." }
 func (*listMultriPartCmd) Usage() string {
-	return `print [-capitalize] <some text>:
+	return `list_multipart_upload <params>:
   list all multipart uploads in a vault.
 `
 }

@@ -31,8 +31,8 @@ type uploadPartCmd struct {
 func (*uploadPartCmd) Name() string     { return "upload_part" }
 func (*uploadPartCmd) Synopsis() string { return "upload one part." }
 func (*uploadPartCmd) Usage() string {
-	return `print [-capitalize] <some text>:
-  Print args to stdout.
+	return `upload_part <params>:
+  upload one part..
 `
 }
 

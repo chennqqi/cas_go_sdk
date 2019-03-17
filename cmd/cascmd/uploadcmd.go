@@ -18,7 +18,7 @@ type uploadCmd struct {
 func (*uploadCmd) Name() string     { return "upload" }
 func (*uploadCmd) Synopsis() string { return "upload a local file." }
 func (*uploadCmd) Usage() string {
-	return `print [-capitalize] <some text>:
+	return `upload <params>:
   upload a local file.
 `
 }

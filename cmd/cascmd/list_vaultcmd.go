@@ -20,11 +20,11 @@ type listVaultCmd struct {
 	limit  int /*1-1000*/
 }
 
-func (*listVaultCmd) Name() string     { return "ls" }
+func (*listVaultCmd) Name() string     { return "list_vault" }
 func (*listVaultCmd) Synopsis() string { return "list vaults" }
 func (*listVaultCmd) Usage() string {
-	return `print [-capitalize] <some text>:
-  Print args to stdout.
+	return `list_vault <params>:
+  list vaults.
 `
 }
 

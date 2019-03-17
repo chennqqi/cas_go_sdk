@@ -267,7 +267,8 @@ JobApiService Get Job Output
  * @param jobID
  * @param optional nil or *UIDVaultsVaultNameJobsJobIDOutputGetOpts - Optional Parameters:
  * @param "Range_" (optional.String) -
-@return JobOutput
+@return JobOutput/or application/octet-stream
+如果返回是application/octet-stream, 应当在函数外面关闭response.Body
 */
 
 type UIDVaultsVaultNameJobsJobIDOutputGetOpts struct {
@@ -334,6 +335,10 @@ func (a *JobApiService) UIDVaultsVaultNameJobsJobIDOutputGet(ctx context.Context
 	localVarHttpResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHttpResponse == nil {
 		return localVarReturnValue, localVarHttpResponse, err
+	}
+	contentType := localVarHttpResponse.Header.Get("Content-Type")
+	if contentType == "application/octet-stream" {
+		return localVarReturnValue, localVarHttpResponse, nil
 	}
 
 	localVarBody, err := ioutil.ReadAll(localVarHttpResponse.Body)

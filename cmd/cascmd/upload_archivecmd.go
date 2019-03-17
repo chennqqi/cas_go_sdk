@@ -37,7 +37,7 @@ type uploadArchiveCmd struct {
 func (*uploadArchiveCmd) Name() string     { return "upload_archive" }
 func (*uploadArchiveCmd) Synopsis() string { return "upload a local file" }
 func (*uploadArchiveCmd) Usage() string {
-	return `print [-capitalize] <some text>:
+	return `upload_archive <params>:
   Upload a local file.
 `
 }

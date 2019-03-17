@@ -21,7 +21,7 @@ type rmCmd struct {
 func (*rmCmd) Name() string     { return "rm" }
 func (*rmCmd) Synopsis() string { return "remove a vault or an archive." }
 func (*rmCmd) Usage() string {
-	return `print [-capitalize] <some text>:
+	return `rm <params>:
   remove a vault or an archive.
 `
 }

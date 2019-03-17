@@ -11,7 +11,7 @@ import (
 )
 
 func init() {
-	subcommands.Register(&helpCmd{}, "")
+	//subcommands.Register(&helpCmd{}, "")
 }
 
 type helpCmd struct {
