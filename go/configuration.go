@@ -52,21 +52,22 @@ type APIKey struct {
 }
 
 type Configuration struct {
-	BasePath      string            `json:"basePath,omitempty"`
-	Host          string            `json:"host,omitempty"`
-	Scheme        string            `json:"scheme,omitempty"`
+	BasePath string `json:"basePath,omitempty"`
+	Host     string `json:"host,omitempty"`
+	//	Scheme        string            `json:"scheme,omitempty"`
 	DefaultHeader map[string]string `json:"defaultHeader,omitempty"`
 	UserAgent     string            `json:"userAgent,omitempty"`
 	AppId         string            `json:"appId"`
 	AccessKey     string            `json:"accessKey"`
 	AccessSecret  string            `json:"accessSecret"`
 	SignKeyExpire utime.Duration    `json:"signKeyExpire,omitempty"`
-	HTTPClient    *http.Client
+	HTTPClient    *http.Client      `json:"-"`
 }
 
 func NewConfiguration() *Configuration {
 	cfg := &Configuration{
-		BasePath:      "http://localhost",
+		BasePath: "",
+		//Scheme:        "http://",
 		DefaultHeader: make(map[string]string),
 		UserAgent:     "OpenAPI-Generator/1.0.0/go",
 	}

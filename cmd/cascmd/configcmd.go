@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/google/subcommands"
 )
@@ -29,22 +30,31 @@ func (*configCmd) Usage() string {
 }
 
 func (p *configCmd) SetFlags(f *flag.FlagSet) {
-	f.StringVar(&p.endPoint, "-endpoint", "", "cas endpoint host")
-	f.StringVar(&p.appId, "-appid", "", "user appid")
-	f.StringVar(&p.secretId, "-secretid", "", "user secretid")
-	f.StringVar(&p.secretKey, "-secretkey", "", "user secretkey")
-	f.StringVar(&p.configFile, "-config-file", "", "file to save configuration")
+	f.StringVar(&p.endPoint, "endpoint", "", "cas endpoint host")
+	f.StringVar(&p.appId, "appid", "", "user appid")
+	f.StringVar(&p.secretId, "secretid", "", "user secretid")
+	f.StringVar(&p.secretKey, "secretkey", "", "user secretkey")
+	f.StringVar(&p.configFile, "config-file", "", "file to save configuration")
 }
 
 func (p *configCmd) Execute(_ context.Context, f *flag.FlagSet, _ ...interface{}) subcommands.ExitStatus {
 	conf, err := loadConf(p.configFile)
-	if err != nil && os.IsNotExist(err) {
+	if err != nil && !os.IsNotExist(err) {
 		fmt.Println("config error:", err)
 		return subcommands.ExitFailure
 	}
 
 	if p.endPoint != "" {
-		conf.Host = p.endPoint
+		if strings.HasPrefix(p.endPoint, "http://") {
+			conf.BasePath = p.endPoint
+			conf.Host = p.endPoint[7:]
+		} else if strings.HasPrefix(p.endPoint, "https://") {
+			conf.BasePath = p.endPoint
+			conf.Host = p.endPoint[8:]
+		} else {
+			conf.BasePath = "http://" + p.endPoint
+			conf.Host = p.endPoint
+		}
 	}
 	if p.appId != "" {
 		conf.AppId = p.appId

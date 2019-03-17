@@ -60,10 +60,10 @@ func (p *listVaultCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...interf
 		fmt.Println("Marker:", sm.Marker)
 		fmt.Println("Vault count:", len(sm.VaultList))
 	}
-	fmt.Println()
 	for i := 0; i < len(sm.VaultList); i++ {
 		fmt.Println(sm.VaultList[i])
 	}
 
+	fmt.Println()
 	return subcommands.ExitSuccess
 }

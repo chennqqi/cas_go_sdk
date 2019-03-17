@@ -365,6 +365,7 @@ func (c *APIClient) prepareRequest(
 	} else {
 		localVarRequest, err = http.NewRequest(method, url.String(), nil)
 	}
+
 	if err != nil {
 		return nil, err
 	}
