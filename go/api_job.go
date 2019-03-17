@@ -393,8 +393,8 @@ Describe Job Initiate Job 请求实现将档案或者档案列表取出到缓存
 */
 
 type UNKNOWN_BASE_TYPE interface {
-	MarshalJSON() ([]byte, error)
-	UnMarshalJSON(interface{}) error
+	//	MarshalJSON() ([]byte, error)
+	//	UnMarshalJSON(interface{}) error
 }
 
 type UIDVaultsVaultNameJobsPostOpts struct {

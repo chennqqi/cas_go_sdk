@@ -34,7 +34,13 @@ func (p *listVaultCmd) SetFlags(f *flag.FlagSet) {
 }
 
 func (p *listVaultCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...interface{}) subcommands.ExitStatus {
-	client := openapi.NewAPIClient(&openapi.Configuration{})
+	conf, err := loadConf("")
+	if err != nil {
+		fmt.Println("load conf error:", err)
+		return subcommands.ExitFailure
+	}
+
+	client := openapi.NewAPIClient(conf)
 	vault := client.VaultApi
 
 	var opt openapi.UIDVaultsGetOpts
@@ -45,8 +51,7 @@ func (p *listVaultCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...interf
 		opt.Marker = optional.NewString(p.marker)
 	}
 
-	//TODO: set global uid
-	sm, resp, err := vault.UIDVaultsGet(ctx, "-", &opt)
+	sm, resp, err := vault.UIDVaultsGet(ctx, conf.AppId, &opt)
 	if err != nil {
 		fmt.Println("ERROR: ", err)
 		return subcommands.ExitFailure

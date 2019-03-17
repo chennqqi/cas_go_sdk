@@ -9,10 +9,82 @@
 
 package openapi
 
-type OneOfJobArchiveSearchInfoJobArchiveListSearchInfoJobArchiveImportInfoJobArchiveExportInfo interface {
+import (
+	"encoding/json"
+
+	"github.com/buger/jsonparser"
+	"github.com/pkg/errors"
+)
+
+/*
+	func UnmarshalJSON(txt []byte) error
+	func MarshalJSON() ([]byte,error)
+*/
+type OneOfJobArchiveSearchInfoJobArchiveListSearchInfoJobArchiveImportInfoJobArchiveExportInfo struct {
+	*JobArchiveListSearchInfo `json:"-"`
+	*JobArchiveSearchInfo     `json:"-"`
+	*JobArchiveExportInfo     `json:"-"`
+	*JobArchiveImportInfo     `json:"-"`
 }
 
 type JobsList struct {
 	JobList []OneOfJobArchiveSearchInfoJobArchiveListSearchInfoJobArchiveImportInfoJobArchiveExportInfo `json:"JobList,omitempty"`
 	Marker  string                                                                                      `json:"Marker,omitempty"`
+}
+
+func (t OneOfJobArchiveSearchInfoJobArchiveListSearchInfoJobArchiveImportInfoJobArchiveExportInfo) MarshalJSON() ([]byte, error) {
+	if t.JobArchiveListSearchInfo != nil {
+		return json.Marshal(t.JobArchiveListSearchInfo)
+	} else if t.JobArchiveSearchInfo != nil {
+		return json.Marshal(t.JobArchiveSearchInfo)
+	} else if t.JobArchiveExportInfo != nil {
+		return json.Marshal(t.JobArchiveExportInfo)
+	} else if t.JobArchiveImportInfo != nil {
+		return json.Marshal(t.JobArchiveImportInfo)
+	}
+	return nil, nil
+}
+
+func (t *OneOfJobArchiveSearchInfoJobArchiveListSearchInfoJobArchiveImportInfoJobArchiveExportInfo) UnmarshalJSON(data []byte) error {
+	action, _ := jsonparser.GetString(data, "Action")
+	_, err := jsonparser.GetString(data, "ArchiveId")
+
+	switch action {
+	case "ArchiveRetrieval":
+		if err == jsonparser.KeyPathNotFoundError {
+			job := new(JobArchiveListSearchInfo)
+			err := json.Unmarshal(data, job)
+			if err != nil {
+				return err
+			}
+			t.JobArchiveListSearchInfo = job
+		} else {
+			job := new(JobArchiveSearchInfo)
+			err := json.Unmarshal(data, job)
+			if err != nil {
+				return err
+			}
+			t.JobArchiveSearchInfo = job
+		}
+
+	case "PushToCOS":
+		job := new(JobArchiveImportInfo)
+		err := json.Unmarshal(data, job)
+		if err != nil {
+			return err
+		}
+		t.JobArchiveImportInfo = job
+
+	case "PullFromCOS":
+		job := new(JobArchiveExportInfo)
+		err := json.Unmarshal(data, job)
+		if err != nil {
+			return err
+		}
+		t.JobArchiveExportInfo = job
+
+	default:
+		return errors.Errorf("unknow action=[%v]", action)
+	}
+	return nil
 }

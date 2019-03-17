@@ -4,10 +4,8 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"net/url"
 
 	"github.com/google/subcommands"
-
 	openapi "gogs.fastapi.org/gitadmin/cas/go"
 )
 
@@ -32,17 +30,17 @@ func (p *createVaultCmd) SetFlags(f *flag.FlagSet) {
 }
 
 func (p *createVaultCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...interface{}) subcommands.ExitStatus {
-	client := openapi.NewAPIClient(nil)
-	vault := client.VaultApi
-
-	u, e := url.Parse(p.vaultName)
-	if e != nil || p.vaultName == "" {
-		fmt.Println("ERROR parse vault:", e)
+	conf, err := loadConf("")
+	if err != nil {
+		fmt.Println("load conf error:", err)
 		return subcommands.ExitFailure
 	}
-	var vaultName = u.Path
 
-	resp, err := vault.CreateVault(ctx, "-", vaultName)
+	p.vaultName = parseVaultName(p.vaultName)
+	client := openapi.NewAPIClient(conf)
+	vault := client.VaultApi
+
+	resp, err := vault.CreateVault(ctx, conf.AppId, p.vaultName)
 	if err != nil {
 		fmt.Println("ERROR:", err)
 		return subcommands.ExitFailure

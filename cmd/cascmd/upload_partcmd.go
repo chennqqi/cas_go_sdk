@@ -1,11 +1,14 @@
 package main
 
 import (
+	"bufio"
 	"context"
 	"flag"
 	"fmt"
+	"io"
+	"os"
 
-	//	"github.com/antihax/optional"
+	"github.com/antihax/optional"
 	"github.com/google/subcommands"
 
 	openapi "gogs.fastapi.org/gitadmin/cas/go"
@@ -44,15 +47,56 @@ func (p *uploadPartCmd) SetFlags(f *flag.FlagSet) {
 }
 
 func (p *uploadPartCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...interface{}) subcommands.ExitStatus {
-	client := openapi.NewAPIClient(openapi.NewConfiguration())
+	conf, err := loadConf("")
+	if err != nil {
+		fmt.Println("load conf error:", err)
+		return subcommands.ExitFailure
+	}
+
+	p.vaultName = parseVaultName(p.vaultName)
+	client := openapi.NewAPIClient(conf)
 	archive := client.ArchiveApi
 
-	resp, err := archive.UIDVaultsVaultNameMultipartUploadsUploadIDPost(ctx,
-		"-", p.vaultName, p.uploadId, p.eTag, p.treeTag,
-	)
+	var opt openapi.UIDVaultsVaultNameMultipartUploadsUploadIDPutOpts
+	var size = p.end - p.start
+
+	fp, err := os.Open(p.localFile)
 	if err != nil {
 		fmt.Println("ERROR:", err)
+		return subcommands.ExitFailure
 	}
+	defer fp.Close()
+	fp.Seek(p.start, os.SEEK_SET)
+
+	buf := bufio.NewReader(fp)
+	r, w := io.Pipe()
+	defer r.Close()
+	errChan := make(chan error, 1)
+
+	go func() {
+		defer w.Close()
+		if _, err := io.CopyN(w, buf, size); err != nil {
+			errChan <- err
+			return
+		}
+		errChan <- nil
+		close(errChan)
+	}()
+
+	opt.ContentLength = optional.NewString(fmt.Sprintf("%d", size))
+	contentRange := fmt.Sprintf("bytes %d-%d", p.start, p.end)
+
+	resp, err1 := archive.UIDVaultsVaultNameMultipartUploadsUploadIDPut(ctx,
+		conf.AppId, p.vaultName, p.uploadId, contentRange, p.eTag, p.treeTag, &opt, r,
+	)
+	err2 := <-errChan
+	if err1 != nil {
+		fmt.Println("ERROR:", err1)
+	}
+	if err2 != nil {
+		fmt.Println("ERROR:", err2)
+	}
+	fmt.Println("x-cas-sha256-tree-hash:", resp.Header.Get("x-cas-sha256-tree-hash"))
 
 	fmt.Println()
 	return subcommands.ExitSuccess

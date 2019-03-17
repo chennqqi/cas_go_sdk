@@ -36,7 +36,14 @@ func (p *initMultipartUploadCmd) SetFlags(f *flag.FlagSet) {
 }
 
 func (p *initMultipartUploadCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...interface{}) subcommands.ExitStatus {
-	client := openapi.NewAPIClient(openapi.NewConfiguration())
+	conf, err := loadConf("")
+	if err != nil {
+		fmt.Println("load conf error:", err)
+		return subcommands.ExitFailure
+	}
+
+	p.vaultName = parseVaultName(p.vaultName)
+	client := openapi.NewAPIClient(conf)
 	archive := client.ArchiveApi
 
 	var opt openapi.UIDVaultsVaultNameMultipartUploadsPostOpts
@@ -45,7 +52,7 @@ func (p *initMultipartUploadCmd) Execute(ctx context.Context, f *flag.FlagSet, _
 	}
 
 	resp, err := archive.UIDVaultsVaultNameMultipartUploadsPost(ctx,
-		"-", p.vaultName, fmt.Sprintf("%d", p.partSize), &opt)
+		conf.AppId, p.vaultName, fmt.Sprintf("%d", p.partSize), &opt)
 	if err != nil {
 		fmt.Println("ERROR:", err)
 	}

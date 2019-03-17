@@ -36,7 +36,13 @@ func (p *listJobCmd) SetFlags(f *flag.FlagSet) {
 }
 
 func (p *listJobCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...interface{}) subcommands.ExitStatus {
-	client := openapi.NewAPIClient(nil)
+	conf, err := loadConf("")
+	if err != nil {
+		fmt.Println("load conf error:", err)
+		return subcommands.ExitFailure
+	}
+
+	client := openapi.NewAPIClient(conf)
 	job := client.JobApi
 
 	var opt openapi.UIDVaultsVaultNameJobsGetOpts

@@ -6,8 +6,6 @@ import (
 	"fmt"
 
 	"github.com/google/subcommands"
-
-	//	"github.com/antihax/optional"
 	openapi "gogs.fastapi.org/gitadmin/cas/go"
 )
 
@@ -23,8 +21,8 @@ type abortMultipartUploadCmd struct {
 func (*abortMultipartUploadCmd) Name() string     { return "abort_multipart_upload" }
 func (*abortMultipartUploadCmd) Synopsis() string { return "abort a multipart upload." }
 func (*abortMultipartUploadCmd) Usage() string {
-	return `print [-capitalize] <some text>:
-  Print args to stdout.
+	return `abort_multipart_upload <params>:
+  Abort a multipart upload..
 `
 }
 
@@ -34,12 +32,20 @@ func (p *abortMultipartUploadCmd) SetFlags(f *flag.FlagSet) {
 }
 
 func (p *abortMultipartUploadCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...interface{}) subcommands.ExitStatus {
-	client := openapi.NewAPIClient(openapi.NewConfiguration())
+	conf, err := loadConf("")
+	if err != nil {
+		fmt.Println("load conf error:", err)
+		return subcommands.ExitFailure
+	}
+	p.vaultName = parseVaultName(p.vaultName)
+
+	client := openapi.NewAPIClient(conf)
 	archive := client.ArchiveApi
 
-	_, err := archive.UIDVaultsVaultNameMultipartUploadsUploadIDDelete(ctx, "-", p.vaultName, p.uploadId)
+	_, err = archive.UIDVaultsVaultNameMultipartUploadsUploadIDDelete(ctx,
+		conf.AppId, p.vaultName, p.uploadId)
 	if err != nil {
-		fmt.Println("ERROR:", err)
+		fmt.Println("abort_multipart_upload ERROR:", err)
 		return subcommands.ExitFailure
 	}
 	fmt.Println()

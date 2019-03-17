@@ -6,7 +6,6 @@ import (
 	"fmt"
 
 	"github.com/google/subcommands"
-
 	openapi "gogs.fastapi.org/gitadmin/cas/go"
 )
 
@@ -21,11 +20,11 @@ type completeMultiPartCmd struct {
 	treeTag   string
 }
 
-func (*completeMultiPartCmd) Name() string     { return "print" }
-func (*completeMultiPartCmd) Synopsis() string { return "Print args to stdout." }
+func (*completeMultiPartCmd) Name() string     { return "complete_multipart_upload" }
+func (*completeMultiPartCmd) Synopsis() string { return "complete the multipart upload." }
 func (*completeMultiPartCmd) Usage() string {
-	return `print [-capitalize] <some text>:
-  Print args to stdout.
+	return `complete_multipart_upload <params>:
+  complete the multipart upload.
 `
 }
 
@@ -37,21 +36,28 @@ func (p *completeMultiPartCmd) SetFlags(f *flag.FlagSet) {
 }
 
 func (p *completeMultiPartCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...interface{}) subcommands.ExitStatus {
-	client := openapi.NewAPIClient(openapi.NewConfiguration())
+	conf, err := loadConf("")
+	if err != nil {
+		fmt.Println("load conf error:", err)
+		return subcommands.ExitFailure
+	}
+
+	p.vaultName = parseVaultName(p.vaultName)
+
+	client := openapi.NewAPIClient(conf)
 	archive := client.ArchiveApi
 
-	//TODO: empty check
-	resp, err := archive.UIDVaultsVaultNameMultipartUploadsUploadIDPost(ctx, "-",
-		p.vaultName, p.uploadId, p.treeTag, fmt.Sprintf("%d", p.size))
+	resp, err := archive.UIDVaultsVaultNameMultipartUploadsUploadIDPost(ctx,
+		conf.AppId, p.vaultName, p.uploadId, p.treeTag, fmt.Sprintf("%d", p.size))
 	if err != nil {
-		fmt.Println("ERROR:", err)
+		fmt.Println("complete_multipart_upload ERROR:", err)
 		return subcommands.ExitFailure
 	}
 
 	location := resp.Header.Get("Location")
 	archiveId := resp.Header.Get("x-cas-archive-id")
 	fmt.Println("Location:", location)
-	fmt.Println("archiveId:", archiveId)
+	fmt.Println("Archive ID:", archiveId)
 
 	fmt.Println()
 	return subcommands.ExitSuccess

@@ -33,10 +33,18 @@ func (p *deleteArchiveCmd) SetFlags(f *flag.FlagSet) {
 }
 
 func (p *deleteArchiveCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...interface{}) subcommands.ExitStatus {
-	client := openapi.NewAPIClient(nil)
+	conf, err := loadConf("")
+	if err != nil {
+		fmt.Println("load conf error:", err)
+		return subcommands.ExitFailure
+	}
+	p.vaultName = parseVaultName(p.vaultName)
+
+	client := openapi.NewAPIClient(conf)
 	archive := client.ArchiveApi
 
-	_, err := archive.UIDVaultsVaultNameMultipartUploadsUploadIDDelete(ctx, p.vaultName, "-", p.archiveId)
+	_, err = archive.UIDVaultsVaultNameMultipartUploadsUploadIDDelete(ctx,
+		conf.AppId, p.vaultName, p.archiveId)
 	if err != nil {
 		fmt.Println("ERROR:", err)
 		return subcommands.ExitFailure

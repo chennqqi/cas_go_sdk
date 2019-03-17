@@ -32,7 +32,14 @@ func (p *deleteVaultCmd) SetFlags(f *flag.FlagSet) {
 }
 
 func (p *deleteVaultCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...interface{}) subcommands.ExitStatus {
-	client := openapi.NewAPIClient(nil)
+	conf, err := loadConf("")
+	if err != nil {
+		fmt.Println("load conf error:", err)
+		return subcommands.ExitFailure
+	}
+	p.vaultName = parseVaultName(p.vaultName)
+
+	client := openapi.NewAPIClient(conf)
 	vault := client.VaultApi
 
 	u, e := url.Parse(p.vaultName)
@@ -41,7 +48,7 @@ func (p *deleteVaultCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...inte
 		return subcommands.ExitFailure
 	}
 	var vaultName = u.Path
-	_, err := vault.UIDVaultsVaultNameDelete(ctx, "-", vaultName)
+	_, err = vault.UIDVaultsVaultNameDelete(ctx, conf.AppId, vaultName)
 
 	if err != nil {
 		fmt.Println("ERROR:", err)

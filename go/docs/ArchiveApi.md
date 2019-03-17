@@ -45,7 +45,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **UIDVaultsVaultNameArchivesPost**
-> UIDVaultsVaultNameArchivesPost(ctx, uID, vaultName, xCasContentSha256, contentLength, xCasSha256TreeHash, optional)
+> UIDVaultsVaultNameArchivesPost(ctx, uID, vaultName, xCasContentSha256, contentLength, xCasSha256TreeHash, body, optional)
 Upload Archive
 
 Upload Archive 请求实现上传一个 Archive 到指定 Vault。请求成功以后会返回 x-cas-archive-id 用来表示唯一的Archive 文件。请求成功返回 201 Created。上传文件时，可以指定 x-cas-archive-description 用来做文件内容备注。支持跨账户操作。当操作本账户时，UID为\"-\"。
@@ -60,6 +60,7 @@ Name | Type | Description  | Notes
   **xCasContentSha256** | **string**|  | 
   **contentLength** | **string**|  | 
   **xCasSha256TreeHash** | **string**|  | 
+  **body** | ***os.File*****os.File**|  | 
  **optional** | ***UIDVaultsVaultNameArchivesPostOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
@@ -84,7 +85,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
+ - **Content-Type**: application/octet-stream
  - **Accept**: Not defined
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -243,7 +244,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **UIDVaultsVaultNameMultipartUploadsUploadIDPost**
-> UIDVaultsVaultNameMultipartUploadsUploadIDPost(ctx, uID, vaultName, uploadID, xCasSha256TreeHash, xCasArchiveSize, body)
+> UIDVaultsVaultNameMultipartUploadsUploadIDPost(ctx, uID, vaultName, uploadID, xCasSha256TreeHash, xCasArchiveSize)
 Complete Multipart Upload
 
 Complete Multipart Upload请求实现结束分段上传，形成文件。发起该请求时必须携带全文件的树形哈希值，服务端将比较用户上传的全文树形哈希和利用已上传分块得到的树形哈希，一致则请求成功，不一致则返回失败
@@ -258,7 +259,6 @@ Name | Type | Description  | Notes
   **uploadID** | **string**|  | 
   **xCasSha256TreeHash** | **string**|  | 
   **xCasArchiveSize** | **string**|  | 
-  **body** | ***os.File*****os.File**|  | 
 
 ### Return type
 
@@ -270,13 +270,13 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/octet-stream
+ - **Content-Type**: Not defined
  - **Accept**: Not defined
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **UIDVaultsVaultNameMultipartUploadsUploadIDPut**
-> UIDVaultsVaultNameMultipartUploadsUploadIDPut(ctx, uID, vaultName, uploadID, contentRange, xCasContentSha256, xCasSha256TreeHash, optional)
+> UIDVaultsVaultNameMultipartUploadsUploadIDPut(ctx, uID, vaultName, uploadID, contentRange, xCasContentSha256, xCasSha256TreeHash, body, optional)
 Upload Part
 
 Upload Part请求实现上传档案的一段数据。支持乱序上传档案段，支持覆盖已上传的数据段。需在请求中标示该数据段在档案的字节范围。此外，支持并行上传数据段，最多可以上传 10000 段。当x-cas-sha256-tree-hash或x-cas-content-sha256与请求体中的真实文件校验和不一致时，请求返回错误。当Content-Length与请求体中的真实文件大小不一致时，请求返回错误。当Content-Range为必须以初始化分块时对应的块大小严格一致。例如，指定 4 194 304 字节 (4MB) 的段大小，则 0 到 4 194 303 字节 (4MB-1) 以及 4 194 304 (4MB) 到 8 388 607 (8MB-1) 为有效的段范围。2097152（ 2MB） 到6291456（ 6MB-1）为非法段范围。成功上传段后，将返回 204 No Content
@@ -292,6 +292,7 @@ Name | Type | Description  | Notes
   **contentRange** | **string**|  | 
   **xCasContentSha256** | **string**|  | 
   **xCasSha256TreeHash** | **string**|  | 
+  **body** | ***os.File*****os.File**|  | 
  **optional** | ***UIDVaultsVaultNameMultipartUploadsUploadIDPutOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
@@ -299,6 +300,7 @@ Optional parameters are passed through a pointer to a UIDVaultsVaultNameMultipar
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+
 
 
 
@@ -317,7 +319,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
+ - **Content-Type**: application/octet-stream
  - **Accept**: Not defined
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)

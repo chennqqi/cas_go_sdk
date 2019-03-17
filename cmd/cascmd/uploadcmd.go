@@ -3,40 +3,30 @@ package main
 import (
 	"context"
 	"flag"
-	"fmt"
-
-	"strings"
 
 	"github.com/google/subcommands"
 )
 
 func init() {
-	subcommands.Register(&uploadCmd{}, "")
+	subcommands.Register(&uploadCmd{new(uploadArchiveCmd)}, "")
 }
 
 type uploadCmd struct {
-	capitalize bool
+	*uploadArchiveCmd
 }
 
-func (*uploadCmd) Name() string     { return "print" }
-func (*uploadCmd) Synopsis() string { return "Print args to stdout." }
+func (*uploadCmd) Name() string     { return "upload" }
+func (*uploadCmd) Synopsis() string { return "upload a local file." }
 func (*uploadCmd) Usage() string {
 	return `print [-capitalize] <some text>:
-  Print args to stdout.
+  upload a local file.
 `
 }
 
 func (p *uploadCmd) SetFlags(f *flag.FlagSet) {
-	f.BoolVar(&p.capitalize, "capitalize", false, "capitalize output")
+	p.uploadArchiveCmd.SetFlags(f)
 }
 
-func (p *uploadCmd) Execute(_ context.Context, f *flag.FlagSet, _ ...interface{}) subcommands.ExitStatus {
-	for _, arg := range f.Args() {
-		if p.capitalize {
-			arg = strings.ToUpper(arg)
-		}
-		fmt.Printf("%s ", arg)
-	}
-	fmt.Println()
-	return subcommands.ExitSuccess
+func (p *uploadCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...interface{}) subcommands.ExitStatus {
+	return p.uploadArchiveCmd.Execute(ctx, f)
 }

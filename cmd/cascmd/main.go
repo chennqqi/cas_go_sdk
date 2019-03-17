@@ -53,22 +53,13 @@ Supported actions:
 }
 
 const (
-	//	DEFAULT_CONFIG_FILE = os.path.expanduser('~') + `/.cascmd_credentials`
-	CONFIG_SECTION = `CASCredentials`
+	DEFAULT_CONFIG_FILE = `~/.cascmdgo.json`
 )
 
 func main() {
 	subcommands.Register(subcommands.HelpCommand(), "")
 	subcommands.Register(subcommands.FlagsCommand(), "")
 	subcommands.Register(subcommands.CommandsCommand(), "")
-
-	//subcommands.Register(&printCmd{}, "")
-	//	var endpoint, appid, secretid, secretkey string
-	//	flag.StringVar(&endpoint, "endpoint", "", "endpoint")
-	//	flag.StringVar(&appid, "endpoint", "", "endpoint")
-	//	flag.StringVar(&secretid, "endpoint", "", "endpoint")
-	//	flag.StringVar(&secretkey, "endpoint", "", "endpoint")
-	//	flag.Parse()
 
 	ctx := context.Background()
 	os.Exit(int(subcommands.Execute(ctx)))

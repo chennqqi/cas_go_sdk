@@ -35,14 +35,21 @@ func (p *listMultriPartCmd) SetFlags(f *flag.FlagSet) {
 }
 
 func (p *listMultriPartCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...interface{}) subcommands.ExitStatus {
-	client := openapi.NewAPIClient(openapi.NewConfiguration())
+	conf, err := loadConf("")
+	if err != nil {
+		fmt.Println("load conf error:", err)
+		return subcommands.ExitFailure
+	}
+
+	p.vaultName = parseVaultName(p.vaultName)
+	client := openapi.NewAPIClient(conf)
 	archive := client.ArchiveApi
 	var opt openapi.UIDVaultsVaultNameMultipartUploadsGetOpts
 	if p.marker != "" {
 		opt.Marker = optional.NewString(p.vaultName)
 		opt.Limit = optional.NewInt64(p.limit)
 	}
-	archive.UIDVaultsVaultNameMultipartUploadsGet(ctx, "-", p.vaultName, &opt)
+	archive.UIDVaultsVaultNameMultipartUploadsGet(ctx, conf.AppId, p.vaultName, &opt)
 	//TODO: fmt.Println result
 
 	fmt.Println()

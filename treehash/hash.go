@@ -11,6 +11,8 @@ package treehash
 
 import (
 	"bytes"
+	"crypto/sha256"
+	"encoding/hex"
 	"hash"
 
 	"gitlab.com/NebulousLabs/merkletree"
@@ -73,4 +75,12 @@ func (h *TreeHash) Size() int {
 
 func (h *TreeHash) BlockSize() int {
 	return h.segmentSize
+}
+
+func ComputeHashFromList(list []string) string {
+	h := merkletree.New(sha256.New())
+	for i := 0; i < len(list); i++ {
+		h.Push([]byte(list[i]))
+	}
+	return hex.EncodeToString(h.Root())
 }
