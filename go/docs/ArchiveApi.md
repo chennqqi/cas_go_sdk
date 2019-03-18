@@ -4,14 +4,14 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**UIDVaultsVaultNameArchivesArchiveIDDelete**](ArchiveApi.md#UIDVaultsVaultNameArchivesArchiveIDDelete) | **Delete** /&lt;UID&gt;/vaults/&lt;VaultName&gt;/archives/&lt;ArchiveID&gt; | Delete Archive
-[**UIDVaultsVaultNameArchivesPost**](ArchiveApi.md#UIDVaultsVaultNameArchivesPost) | **Post** /&lt;UID&gt;/vaults/&lt;VaultName&gt;/archives | Upload Archive
-[**UIDVaultsVaultNameMultipartUploadsGet**](ArchiveApi.md#UIDVaultsVaultNameMultipartUploadsGet) | **Get** /&lt;UID&gt;/vaults/&lt;VaultName&gt;/multipart-uploads | List Multipart Uploads
-[**UIDVaultsVaultNameMultipartUploadsPost**](ArchiveApi.md#UIDVaultsVaultNameMultipartUploadsPost) | **Post** /&lt;UID&gt;/vaults/&lt;VaultName&gt;/multipart-uploads | Initiate Multipart Upload
-[**UIDVaultsVaultNameMultipartUploadsUploadIDDelete**](ArchiveApi.md#UIDVaultsVaultNameMultipartUploadsUploadIDDelete) | **Delete** /&lt;UID&gt;/vaults/&lt;VaultName&gt;/multipart-uploads/&lt;uploadID&gt; | Abort Multipart Upload
-[**UIDVaultsVaultNameMultipartUploadsUploadIDGet**](ArchiveApi.md#UIDVaultsVaultNameMultipartUploadsUploadIDGet) | **Get** /&lt;UID&gt;/vaults/&lt;VaultName&gt;/multipart-uploads/&lt;uploadID&gt; | List Parts
-[**UIDVaultsVaultNameMultipartUploadsUploadIDPost**](ArchiveApi.md#UIDVaultsVaultNameMultipartUploadsUploadIDPost) | **Post** /&lt;UID&gt;/vaults/&lt;VaultName&gt;/multipart-uploads/&lt;uploadID&gt; | Complete Multipart Upload
-[**UIDVaultsVaultNameMultipartUploadsUploadIDPut**](ArchiveApi.md#UIDVaultsVaultNameMultipartUploadsUploadIDPut) | **Put** /&lt;UID&gt;/vaults/&lt;VaultName&gt;/multipart-uploads/&lt;uploadID&gt; | Upload Part
+[**UIDVaultsVaultNameArchivesArchiveIDDelete**](ArchiveApi.md#UIDVaultsVaultNameArchivesArchiveIDDelete) | **Delete** /{UID}/vaults/{VaultName}/archives/{ArchiveID} | Delete Archive
+[**UIDVaultsVaultNameArchivesPost**](ArchiveApi.md#UIDVaultsVaultNameArchivesPost) | **Post** /{UID}/vaults/{VaultName}/archives | Upload Archive
+[**UIDVaultsVaultNameMultipartUploadsGet**](ArchiveApi.md#UIDVaultsVaultNameMultipartUploadsGet) | **Get** /{UID}/vaults/{VaultName}/multipart-uploads | List Multipart Uploads
+[**UIDVaultsVaultNameMultipartUploadsPost**](ArchiveApi.md#UIDVaultsVaultNameMultipartUploadsPost) | **Post** /{UID}/vaults/{VaultName}/multipart-uploads | Initiate Multipart Upload
+[**UIDVaultsVaultNameMultipartUploadsUploadIDDelete**](ArchiveApi.md#UIDVaultsVaultNameMultipartUploadsUploadIDDelete) | **Delete** /{UID}/vaults/{VaultName}/multipart-uploads/{uploadID} | Abort Multipart Upload
+[**UIDVaultsVaultNameMultipartUploadsUploadIDGet**](ArchiveApi.md#UIDVaultsVaultNameMultipartUploadsUploadIDGet) | **Get** /{UID}/vaults/{VaultName}/multipart-uploads/{uploadID} | List Parts
+[**UIDVaultsVaultNameMultipartUploadsUploadIDPost**](ArchiveApi.md#UIDVaultsVaultNameMultipartUploadsUploadIDPost) | **Post** /{UID}/vaults/{VaultName}/multipart-uploads/{uploadID} | Complete Multipart Upload
+[**UIDVaultsVaultNameMultipartUploadsUploadIDPut**](ArchiveApi.md#UIDVaultsVaultNameMultipartUploadsUploadIDPut) | **Put** /{UID}/vaults/{VaultName}/multipart-uploads/{uploadID} | Upload Part
 
 
 # **UIDVaultsVaultNameArchivesArchiveIDDelete**
@@ -40,7 +40,7 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
  - **Content-Type**: Not defined
- - **Accept**: Not defined
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -86,7 +86,7 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
  - **Content-Type**: application/octet-stream
- - **Accept**: Not defined
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -167,7 +167,7 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
  - **Content-Type**: Not defined
- - **Accept**: Not defined
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -197,7 +197,7 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
  - **Content-Type**: Not defined
- - **Accept**: Not defined
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -271,7 +271,7 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
  - **Content-Type**: Not defined
- - **Accept**: Not defined
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -320,7 +320,7 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
  - **Content-Type**: application/octet-stream
- - **Accept**: Not defined
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

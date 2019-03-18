@@ -42,8 +42,8 @@ import (
 )
 
 var (
-	jsonCheck = regexp.MustCompile("(?i:[application|text]/json)")
-	xmlCheck  = regexp.MustCompile("(?i:[application|text]/xml)")
+	jsonCheck = regexp.MustCompile(`(?i:(?:application|text)/(?:vnd\.[^;]+\+)?json)`)
+	xmlCheck  = regexp.MustCompile(`(?i:(?:application|text)/xml)`)
 )
 
 const (
@@ -58,7 +58,7 @@ const (
 	MAX_FILE_SIZE                   = 4 * 10000 * 1024 * 1024 * 1024 //最大支持40TB的文件存储
 )
 
-// APIClient manages communication with the Sample Access Code Flow OAuth2 Project API v1.1.0
+// APIClient manages communication with the Tecent Cloud Archive Storage Golang SDK. API v1.4.3-3.0
 // In most cases there should be only one, shared, APIClient.
 type APIClient struct {
 	cfg    *Configuration
@@ -67,8 +67,6 @@ type APIClient struct {
 	// API Services
 
 	ArchiveApi *ArchiveApiService
-
-	DefaultApi *DefaultApiService
 
 	JobApi *JobApiService
 
@@ -92,7 +90,6 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 
 	// API Services
 	c.ArchiveApi = (*ArchiveApiService)(&c.common)
-	c.DefaultApi = (*DefaultApiService)(&c.common)
 	c.JobApi = (*JobApiService)(&c.common)
 	c.VaultApi = (*VaultApiService)(&c.common)
 
@@ -203,6 +200,10 @@ func (c *APIClient) callAPI(request *http.Request) (*http.Response, error) {
 // Change base path to allow switching to mocks
 func (c *APIClient) ChangeBasePath(path string) {
 	c.cfg.BasePath = path
+}
+
+func statusCode4XX(code int) bool {
+	return code < 500 && code >= 400
 }
 
 // create authorization
@@ -451,12 +452,17 @@ func (c *APIClient) prepareRequest(
 }
 
 func (c *APIClient) decode(v interface{}, b []byte, contentType string) (err error) {
-	if strings.Contains(contentType, "application/xml") {
+	if s, ok := v.(*string); ok {
+		*s = string(b)
+		return nil
+	}
+	if xmlCheck.MatchString(contentType) {
 		if err = xml.Unmarshal(b, v); err != nil {
 			return err
 		}
 		return nil
-	} else if strings.Contains(contentType, "application/json") {
+	}
+	if jsonCheck.MatchString(contentType) {
 		if err = json.Unmarshal(b, v); err != nil {
 			return err
 		}

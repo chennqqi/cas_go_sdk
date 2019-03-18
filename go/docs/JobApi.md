@@ -4,10 +4,10 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**UIDVaultsVaultNameJobsGet**](JobApi.md#UIDVaultsVaultNameJobsGet) | **Get** /&lt;UID&gt;/vaults/&lt;VaultName&gt;/jobs | List Job
-[**UIDVaultsVaultNameJobsJobIDGet**](JobApi.md#UIDVaultsVaultNameJobsJobIDGet) | **Get** /&lt;UID&gt;/vaults/&lt;VaultName&gt;/jobs/&lt;JobID&gt; | Describe Job
-[**UIDVaultsVaultNameJobsJobIDOutputGet**](JobApi.md#UIDVaultsVaultNameJobsJobIDOutputGet) | **Get** /&lt;UID&gt;/vaults/&lt;VaultName&gt;/jobs/&lt;JobID&gt;/output | Get Job Output
-[**UIDVaultsVaultNameJobsPost**](JobApi.md#UIDVaultsVaultNameJobsPost) | **Post** /&lt;UID&gt;/vaults/&lt;VaultName&gt;/jobs | Initiate Job
+[**UIDVaultsVaultNameJobsGet**](JobApi.md#UIDVaultsVaultNameJobsGet) | **Get** /{UID}/vaults/{VaultName}/jobs | List Job
+[**UIDVaultsVaultNameJobsJobIDGet**](JobApi.md#UIDVaultsVaultNameJobsJobIDGet) | **Get** /{UID}/vaults/{VaultName}/jobs/&lt;JobID&gt; | Describe Job
+[**UIDVaultsVaultNameJobsJobIDOutputGet**](JobApi.md#UIDVaultsVaultNameJobsJobIDOutputGet) | **Get** /{UID}/vaults/{VaultName}/jobs/&lt;JobID&gt;/output | Get Job Output
+[**UIDVaultsVaultNameJobsPost**](JobApi.md#UIDVaultsVaultNameJobsPost) | **Post** /{UID}/vaults/{VaultName}/jobs | Initiate Job
 
 
 # **UIDVaultsVaultNameJobsGet**
@@ -119,7 +119,7 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
  - **Content-Type**: Not defined
- - **Accept**: application/json
+ - **Accept**: application/json, application/octet-stream
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -158,7 +158,7 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
  - **Content-Type**: application/json
- - **Accept**: Not defined
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

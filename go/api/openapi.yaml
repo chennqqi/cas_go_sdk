@@ -1,21 +1,28 @@
 openapi: 3.0.0
 info:
-  description: This is an example of using OAuth2 Access Code Flow in a specification to describe security to your API.
-  title: Sample Access Code Flow OAuth2 Project
-  version: 1.1.0
+  contact:
+    email: chennqqi@qq.com
+    name: chennqqi
+    url: http://github.com/chennqqi
+  description: Tecent Cloud Archive Storage Golang SDK.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: Tecent Cloud Archive Storage Golang SDK.
+  version: 1.4.3-3.0
+externalDocs:
+  description: Find out more
+  url: https://cloud.tencent.com/document/product/572/8742
 servers:
 - url: /
 security:
 - ApiKeyAuth: []
 tags:
-- description: vault
-  externalDocs:
-    description: Find out more
-    url: http://swagger.io
+- description: 文件库操作
   name: vault
-- description: archive
+- description: 档案操作
   name: archive
-- description: job
+- description: 任务操作
   name: job
 paths:
   /{UID}/vaults/{VaultName}:
@@ -39,8 +46,14 @@ paths:
       responses:
         204:
           description: 请求成功，返回 204 No Content
-        400:
-          description: OK
+        4XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+          description: ERROR
+        500:
+          description: server internal error
       summary: 删除vault
       tags:
       - vault
@@ -69,8 +82,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/VaultInfo'
           description: OK
-        400:
-          description: OK
+        4XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+          description: ERROR
+        500:
+          description: server internal error
       summary: Describe Vault
       tags:
       - vault
@@ -95,12 +114,18 @@ paths:
       responses:
         204:
           description: 请求成功后返回 204 NoContent。
-        400:
-          description: OK
+        4XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+          description: ERROR
+        500:
+          description: server internal error
       summary: 创建vault
       tags:
       - vault
-  /<UID>/vaults/<VaultName>/access-policy:
+  /{UID}/vaults/{VaultName}/access-policy:
     delete:
       description: Delete Vault Access Policy 请求删除 Vault 的权限。只支持所有者操作，对应 UID 值为"-"。成功后返回 204 No Content。
       parameters:
@@ -121,8 +146,14 @@ paths:
       responses:
         204:
           description: 成功后返回 204 No Content。
-        400:
-          description: OK
+        4XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+          description: ERROR
+        500:
+          description: server internal error
       summary: Delete Vault Access Policy
       tags:
       - vault
@@ -150,8 +181,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/Policy'
           description: OK
-        400:
-          description: OK
+        4XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+          description: ERROR
+        500:
+          description: server internal error
       summary: Get Vault Access Policy 请求读取一个 Vault 的权限
       tags:
       - vault
@@ -180,12 +217,18 @@ paths:
       responses:
         200:
           description: OK
-        400:
-          description: OK
+        4XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+          description: ERROR
+        500:
+          description: server internal error
       summary: Set Vault Access Policy
       tags:
       - vault
-  /<UID>/vaults/<VaultName>/notification-configuration:
+  /{UID}/vaults/{VaultName}/notification-configuration:
     delete:
       description: Delete Vault Notifications请求实现删除指定文件库通知回调策略 请求成功，返回 204 No Content
       parameters:
@@ -206,13 +249,34 @@ paths:
       responses:
         204:
           description: 204 No Content
-        400:
-          description: OK
+        4XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+          description: ERROR
+        500:
+          description: server internal error
       summary: Delete Vault Notifications
       tags:
       - vault
     get:
       description: Get Vault Notifications请求实现读取指定文件库通知回调策略
+      parameters:
+      - explode: false
+        in: path
+        name: UID
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: VaultName
+        required: true
+        schema:
+          type: string
+        style: simple
       responses:
         200:
           content:
@@ -220,8 +284,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/NotificationConfiguration'
           description: OK
-        400:
-          description: OK
+        4XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+          description: ERROR
+        500:
+          description: server internal error
       summary: Get Vault Notifications
       tags:
       - vault
@@ -250,12 +320,18 @@ paths:
       responses:
         200:
           description: OK
-        400:
-          description: OK
+        4XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+          description: ERROR
+        500:
+          description: server internal error
       summary: Set Vault Access Policy
       tags:
       - vault
-  /<UID>/vaults:
+  /{UID}/vaults:
     get:
       description: List Vaults 接口实现列出该账户下所有的文件库。档案数与档案总大小，每日盘点更新，非实时数据。支持跨账户操作。当操作本账户时，UID为"-"。
       parameters:
@@ -290,12 +366,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/VaultsSummary'
           description: OK
-        400:
-          description: OK
+        4XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+          description: ERROR
+        500:
+          description: server internal error
       summary: List Vaults
       tags:
       - vault
-  /<UID>/vaults/<VaultName>/multipart-uploads/<uploadID>:
+  /{UID}/vaults/{VaultName}/multipart-uploads/{uploadID}:
     delete:
       description: Abort Multipart Upload请求实现终止分段上传。
       parameters:
@@ -323,8 +405,14 @@ paths:
       responses:
         200:
           description: OK
-        400:
-          description: OK
+        4XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+          description: ERROR
+        500:
+          description: server internal error
       summary: Abort Multipart Upload
       tags:
       - archive
@@ -374,8 +462,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/ListParts'
           description: OK
-        400:
-          description: OK
+        4XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+          description: ERROR
+        500:
+          description: server internal error
       summary: List Parts
       tags:
       - archive
@@ -431,8 +525,14 @@ paths:
               schema:
                 type: string
               style: simple
-        400:
-          description: OK
+        4XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+          description: ERROR
+        500:
+          description: server internal error
       summary: Complete Multipart Upload
       tags:
       - archive
@@ -504,12 +604,18 @@ paths:
               schema:
                 type: string
               style: simple
-        400:
-          description: OK
+        4XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+          description: ERROR
+        500:
+          description: server internal error
       summary: Upload Part
       tags:
       - archive
-  /<UID>/vaults/<VaultName>/archives/<ArchiveID>:
+  /{UID}/vaults/{VaultName}/archives/{ArchiveID}:
     delete:
       description: Delete Archive 请求实现删除一个 Archive。请求成功以后会返回 x-cas-archive-id 用来表示唯一的 Archive 文件。请求成功返回 204 No Content。在删除 Archive 后，您仍可能成功请求启动对已删除 Archive 的检索任务，但 Archive 检索任务会失败。 在您删除 Archive 时，对相应 Archive ID 正在进行的 Archive 检索可能成功，也可能不成功，具体取决于下面的场景：收到删除 Archive 请求时，Archive 检索任务正在下载 Archive 到缓存池，则 Archive 检索操作可能会失败。 收到删除 Archive 请求时，Archive 检索任务已经下载 Archive 到缓存池，则您将能够下载输出。支持跨账户操作。当操作本账户时，UID 为"-"。
       parameters:
@@ -537,12 +643,18 @@ paths:
       responses:
         204:
           description: OK no content
-        400:
-          description: OK
+        4XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+          description: ERROR
+        500:
+          description: server internal error
       summary: Delete Archive
       tags:
       - archive
-  /<UID>/vaults/<VaultName>/multipart-uploads:
+  /{UID}/vaults/{VaultName}/multipart-uploads:
     get:
       description: List Multipart Uploads请求实现列出正在进行中的分段上传
       parameters:
@@ -633,12 +745,18 @@ paths:
               schema:
                 type: string
               style: simple
-        400:
-          description: OK
+        4XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+          description: ERROR
+        500:
+          description: server internal error
       summary: Initiate Multipart Upload
       tags:
       - archive
-  /<UID>/vaults/<VaultName>/archives:
+  /{UID}/vaults/{VaultName}/archives:
     post:
       description: Upload Archive 请求实现上传一个 Archive 到指定 Vault。请求成功以后会返回 x-cas-archive-id 用来表示唯一的Archive 文件。请求成功返回 201 Created。上传文件时，可以指定 x-cas-archive-description 用来做文件内容备注。支持跨账户操作。当操作本账户时，UID为"-"。
       parameters:
@@ -684,6 +802,13 @@ paths:
         schema:
           type: string
         style: simple
+      requestBody:
+        content:
+          application/octet-stream:
+            schema:
+              format: binary
+              type: string
+        required: true
       responses:
         200:
           description: OK
@@ -708,12 +833,18 @@ paths:
               schema:
                 type: string
               style: simple
-        400:
-          description: OK
+        4XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+          description: ERROR
+        500:
+          description: server internal error
       summary: Upload Archive
       tags:
       - archive
-  /<UID>/vaults/<VaultName>/jobs/<JobID>:
+  /{UID}/vaults/{VaultName}/jobs/<JobID>:
     get:
       description: Describe Job 请求实现获取Vault的具体任务信息。支持跨账户操作。当操作本账户时，UID为"-"
       parameters:
@@ -749,12 +880,18 @@ paths:
                 - $ref: '#/components/schemas/JobArchiveImportInfo'
                 - $ref: '#/components/schemas/JobArchiveExportInfo'
           description: OK
-        400:
-          description: OK
+        4XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+          description: ERROR
+        500:
+          description: server internal error
       summary: Describe Job
       tags:
       - job
-  /<UID>/vaults/<VaultName>/jobs/<JobID>/output:
+  /{UID}/vaults/{VaultName}/jobs/<JobID>/output:
     get:
       description: 请求用来输出缓存池中检索出来的 Archive 或Archive列表，缓存池中的内容24小时有效。请求所有数据成功后，返回 200 OK。请求部分数据成功时，返回 206 Partial Content。支持跨账户操作。当操作本账户时，UID 为"-"。
       parameters:
@@ -792,6 +929,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/JobOutput'
+            application/octet-stream:
+              schema:
+                format: binary
+                type: string
           description: OK
           headers:
             Content-Range:
@@ -843,12 +984,18 @@ paths:
               schema:
                 type: string
               style: simple
-        400:
-          description: OK
+        4XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+          description: ERROR
+        500:
+          description: server internal error
       summary: Get Job Output
       tags:
       - job
-  /<UID>/vaults/<VaultName>/jobs:
+  /{UID}/vaults/{VaultName}/jobs:
     get:
       description: List Jobs 请求实现列出 Vault 的任务，包括正在进行的任务以及最近完成的任务。支持跨账户操作。当操作本账户时，UID为"-"。。
       parameters:
@@ -906,8 +1053,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/JobsList'
           description: OK
-        400:
-          description: OK
+        4XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+          description: ERROR
+        500:
+          description: server internal error
       summary: List Job
       tags:
       - job
@@ -953,28 +1106,31 @@ paths:
               schema:
                 type: string
               style: simple
-        400:
-          description: OK
+        4XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+          description: ERROR
+        500:
+          description: server internal error
       summary: Initiate Job
       tags:
       - job
-  /example:
-    get:
-      description: This is an example opeartion to show how security is applied to the call.
-      responses:
-        200:
-          description: OK
-      summary: Server example operation
-  /ping:
-    get:
-      description: This operation shows how to override the global security defined above, as we want to open it up for all users.
-      responses:
-        200:
-          description: OK
-      security: []
-      summary: Server heartbeat operation
 components:
   schemas:
+    ErrorMessage:
+      properties:
+        code:
+          description: 错误码
+          type: string
+        message:
+          description: 错误信息
+          type: string
+        type:
+          description: 类型
+          type: string
+      type: object
     Signature:
       properties:
         q-sign-algorithm:

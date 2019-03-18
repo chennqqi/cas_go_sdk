@@ -67,7 +67,7 @@ func (a *VaultApiService) CreateVault(ctx context.Context, uID string, vaultName
 	}
 
 	// to determine the Accept header
-	localVarHttpHeaderAccepts := []string{}
+	localVarHttpHeaderAccepts := []string{"application/json"}
 
 	// set Accept header
 	localVarHttpHeaderAccept := selectHeaderAccept(localVarHttpHeaderAccepts)
@@ -106,6 +106,16 @@ func (a *VaultApiService) CreateVault(ctx context.Context, uID string, vaultName
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHttpResponse.Status,
+		}
+		if statusCode4XX(localVarHttpResponse.StatusCode) {
+			var v ErrorMessage
+			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHttpResponse, newErr
+			}
+			newErr.model = v
+			return localVarHttpResponse, newErr
 		}
 		return localVarHttpResponse, newErr
 	}
@@ -192,6 +202,16 @@ func (a *VaultApiService) GetVault(ctx context.Context, uID string, vaultName st
 		}
 		if localVarHttpResponse.StatusCode == 200 {
 			var v VaultInfo
+			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHttpResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHttpResponse, newErr
+		}
+		if statusCode4XX(localVarHttpResponse.StatusCode) {
+			var v ErrorMessage
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -315,6 +335,16 @@ func (a *VaultApiService) UIDVaultsGet(ctx context.Context, uID string, localVar
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
 		}
+		if statusCode4XX(localVarHttpResponse.StatusCode) {
+			var v ErrorMessage
+			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHttpResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHttpResponse, newErr
+		}
 		return localVarReturnValue, localVarHttpResponse, newErr
 	}
 
@@ -365,7 +395,7 @@ func (a *VaultApiService) UIDVaultsVaultNameAccessPolicyDelete(ctx context.Conte
 	}
 
 	// to determine the Accept header
-	localVarHttpHeaderAccepts := []string{}
+	localVarHttpHeaderAccepts := []string{"application/json"}
 
 	// set Accept header
 	localVarHttpHeaderAccept := selectHeaderAccept(localVarHttpHeaderAccepts)
@@ -404,6 +434,16 @@ func (a *VaultApiService) UIDVaultsVaultNameAccessPolicyDelete(ctx context.Conte
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHttpResponse.Status,
+		}
+		if statusCode4XX(localVarHttpResponse.StatusCode) {
+			var v ErrorMessage
+			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHttpResponse, newErr
+			}
+			newErr.model = v
+			return localVarHttpResponse, newErr
 		}
 		return localVarHttpResponse, newErr
 	}
@@ -498,6 +538,16 @@ func (a *VaultApiService) UIDVaultsVaultNameAccessPolicyGet(ctx context.Context,
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
 		}
+		if statusCode4XX(localVarHttpResponse.StatusCode) {
+			var v ErrorMessage
+			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHttpResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHttpResponse, newErr
+		}
 		return localVarReturnValue, localVarHttpResponse, newErr
 	}
 
@@ -555,7 +605,7 @@ func (a *VaultApiService) UIDVaultsVaultNameAccessPolicyPut(ctx context.Context,
 	}
 
 	// to determine the Accept header
-	localVarHttpHeaderAccepts := []string{}
+	localVarHttpHeaderAccepts := []string{"application/json"}
 
 	// set Accept header
 	localVarHttpHeaderAccept := selectHeaderAccept(localVarHttpHeaderAccepts)
@@ -604,6 +654,16 @@ func (a *VaultApiService) UIDVaultsVaultNameAccessPolicyPut(ctx context.Context,
 			body:  localVarBody,
 			error: localVarHttpResponse.Status,
 		}
+		if statusCode4XX(localVarHttpResponse.StatusCode) {
+			var v ErrorMessage
+			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHttpResponse, newErr
+			}
+			newErr.model = v
+			return localVarHttpResponse, newErr
+		}
 		return localVarHttpResponse, newErr
 	}
 
@@ -645,7 +705,7 @@ func (a *VaultApiService) UIDVaultsVaultNameDelete(ctx context.Context, uID stri
 	}
 
 	// to determine the Accept header
-	localVarHttpHeaderAccepts := []string{}
+	localVarHttpHeaderAccepts := []string{"application/json"}
 
 	// set Accept header
 	localVarHttpHeaderAccept := selectHeaderAccept(localVarHttpHeaderAccepts)
@@ -684,6 +744,16 @@ func (a *VaultApiService) UIDVaultsVaultNameDelete(ctx context.Context, uID stri
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHttpResponse.Status,
+		}
+		if statusCode4XX(localVarHttpResponse.StatusCode) {
+			var v ErrorMessage
+			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHttpResponse, newErr
+			}
+			newErr.model = v
+			return localVarHttpResponse, newErr
 		}
 		return localVarHttpResponse, newErr
 	}
@@ -726,7 +796,7 @@ func (a *VaultApiService) UIDVaultsVaultNameNotificationConfigurationDelete(ctx 
 	}
 
 	// to determine the Accept header
-	localVarHttpHeaderAccepts := []string{}
+	localVarHttpHeaderAccepts := []string{"application/json"}
 
 	// set Accept header
 	localVarHttpHeaderAccept := selectHeaderAccept(localVarHttpHeaderAccepts)
@@ -766,6 +836,16 @@ func (a *VaultApiService) UIDVaultsVaultNameNotificationConfigurationDelete(ctx 
 			body:  localVarBody,
 			error: localVarHttpResponse.Status,
 		}
+		if statusCode4XX(localVarHttpResponse.StatusCode) {
+			var v ErrorMessage
+			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHttpResponse, newErr
+			}
+			newErr.model = v
+			return localVarHttpResponse, newErr
+		}
 		return localVarHttpResponse, newErr
 	}
 
@@ -776,9 +856,11 @@ func (a *VaultApiService) UIDVaultsVaultNameNotificationConfigurationDelete(ctx 
 VaultApiService Get Vault Notifications
 Get Vault Notifications请求实现读取指定文件库通知回调策略
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ * @param uID
+ * @param vaultName
 @return NotificationConfiguration
 */
-func (a *VaultApiService) UIDVaultsVaultNameNotificationConfigurationGet(ctx context.Context) (NotificationConfiguration, *http.Response, error) {
+func (a *VaultApiService) UIDVaultsVaultNameNotificationConfigurationGet(ctx context.Context, uID string, vaultName string) (NotificationConfiguration, *http.Response, error) {
 	var (
 		localVarHttpMethod   = strings.ToUpper("Get")
 		localVarPostBody     interface{}
@@ -790,6 +872,8 @@ func (a *VaultApiService) UIDVaultsVaultNameNotificationConfigurationGet(ctx con
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/{UID}/vaults/{VaultName}/notification-configuration"
+	localVarPath = strings.Replace(localVarPath, "{"+"UID"+"}", fmt.Sprintf("%v", uID), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", fmt.Sprintf("%v", vaultName), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -855,6 +939,16 @@ func (a *VaultApiService) UIDVaultsVaultNameNotificationConfigurationGet(ctx con
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
 		}
+		if statusCode4XX(localVarHttpResponse.StatusCode) {
+			var v ErrorMessage
+			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHttpResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHttpResponse, newErr
+		}
 		return localVarReturnValue, localVarHttpResponse, newErr
 	}
 
@@ -912,7 +1006,7 @@ func (a *VaultApiService) UIDVaultsVaultNameNotificationConfigurationPut(ctx con
 	}
 
 	// to determine the Accept header
-	localVarHttpHeaderAccepts := []string{}
+	localVarHttpHeaderAccepts := []string{"application/json"}
 
 	// set Accept header
 	localVarHttpHeaderAccept := selectHeaderAccept(localVarHttpHeaderAccepts)
@@ -960,6 +1054,16 @@ func (a *VaultApiService) UIDVaultsVaultNameNotificationConfigurationPut(ctx con
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHttpResponse.Status,
+		}
+		if statusCode4XX(localVarHttpResponse.StatusCode) {
+			var v ErrorMessage
+			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHttpResponse, newErr
+			}
+			newErr.model = v
+			return localVarHttpResponse, newErr
 		}
 		return localVarHttpResponse, newErr
 	}

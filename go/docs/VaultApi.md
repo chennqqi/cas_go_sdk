@@ -6,14 +6,14 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**CreateVault**](VaultApi.md#CreateVault) | **Put** /{UID}/vaults/{VaultName} | 创建vault
 [**GetVault**](VaultApi.md#GetVault) | **Get** /{UID}/vaults/{VaultName} | Describe Vault
-[**UIDVaultsGet**](VaultApi.md#UIDVaultsGet) | **Get** /&lt;UID&gt;/vaults | List Vaults
-[**UIDVaultsVaultNameAccessPolicyDelete**](VaultApi.md#UIDVaultsVaultNameAccessPolicyDelete) | **Delete** /&lt;UID&gt;/vaults/&lt;VaultName&gt;/access-policy | Delete Vault Access Policy
-[**UIDVaultsVaultNameAccessPolicyGet**](VaultApi.md#UIDVaultsVaultNameAccessPolicyGet) | **Get** /&lt;UID&gt;/vaults/&lt;VaultName&gt;/access-policy | Get Vault Access Policy 请求读取一个 Vault 的权限
-[**UIDVaultsVaultNameAccessPolicyPut**](VaultApi.md#UIDVaultsVaultNameAccessPolicyPut) | **Put** /&lt;UID&gt;/vaults/&lt;VaultName&gt;/access-policy | Set Vault Access Policy
+[**UIDVaultsGet**](VaultApi.md#UIDVaultsGet) | **Get** /{UID}/vaults | List Vaults
+[**UIDVaultsVaultNameAccessPolicyDelete**](VaultApi.md#UIDVaultsVaultNameAccessPolicyDelete) | **Delete** /{UID}/vaults/{VaultName}/access-policy | Delete Vault Access Policy
+[**UIDVaultsVaultNameAccessPolicyGet**](VaultApi.md#UIDVaultsVaultNameAccessPolicyGet) | **Get** /{UID}/vaults/{VaultName}/access-policy | Get Vault Access Policy 请求读取一个 Vault 的权限
+[**UIDVaultsVaultNameAccessPolicyPut**](VaultApi.md#UIDVaultsVaultNameAccessPolicyPut) | **Put** /{UID}/vaults/{VaultName}/access-policy | Set Vault Access Policy
 [**UIDVaultsVaultNameDelete**](VaultApi.md#UIDVaultsVaultNameDelete) | **Delete** /{UID}/vaults/{VaultName} | 删除vault
-[**UIDVaultsVaultNameNotificationConfigurationDelete**](VaultApi.md#UIDVaultsVaultNameNotificationConfigurationDelete) | **Delete** /&lt;UID&gt;/vaults/&lt;VaultName&gt;/notification-configuration | Delete Vault Notifications
-[**UIDVaultsVaultNameNotificationConfigurationGet**](VaultApi.md#UIDVaultsVaultNameNotificationConfigurationGet) | **Get** /&lt;UID&gt;/vaults/&lt;VaultName&gt;/notification-configuration | Get Vault Notifications
-[**UIDVaultsVaultNameNotificationConfigurationPut**](VaultApi.md#UIDVaultsVaultNameNotificationConfigurationPut) | **Put** /&lt;UID&gt;/vaults/&lt;VaultName&gt;/notification-configuration | Set Vault Access Policy
+[**UIDVaultsVaultNameNotificationConfigurationDelete**](VaultApi.md#UIDVaultsVaultNameNotificationConfigurationDelete) | **Delete** /{UID}/vaults/{VaultName}/notification-configuration | Delete Vault Notifications
+[**UIDVaultsVaultNameNotificationConfigurationGet**](VaultApi.md#UIDVaultsVaultNameNotificationConfigurationGet) | **Get** /{UID}/vaults/{VaultName}/notification-configuration | Get Vault Notifications
+[**UIDVaultsVaultNameNotificationConfigurationPut**](VaultApi.md#UIDVaultsVaultNameNotificationConfigurationPut) | **Put** /{UID}/vaults/{VaultName}/notification-configuration | Set Vault Access Policy
 
 
 # **CreateVault**
@@ -41,7 +41,7 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
  - **Content-Type**: Not defined
- - **Accept**: Not defined
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -137,7 +137,7 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
  - **Content-Type**: Not defined
- - **Accept**: Not defined
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -205,7 +205,7 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
  - **Content-Type**: application/json
- - **Accept**: Not defined
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -234,7 +234,7 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
  - **Content-Type**: Not defined
- - **Accept**: Not defined
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -263,18 +263,23 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
  - **Content-Type**: Not defined
- - **Accept**: Not defined
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **UIDVaultsVaultNameNotificationConfigurationGet**
-> NotificationConfiguration UIDVaultsVaultNameNotificationConfigurationGet(ctx, )
+> NotificationConfiguration UIDVaultsVaultNameNotificationConfigurationGet(ctx, uID, vaultName)
 Get Vault Notifications
 
 Get Vault Notifications请求实现读取指定文件库通知回调策略
 
 ### Required Parameters
-This endpoint does not need any parameter.
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+  **uID** | **string**|  | 
+  **vaultName** | **string**|  | 
 
 ### Return type
 
@@ -326,7 +331,7 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
  - **Content-Type**: application/json
- - **Accept**: Not defined
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

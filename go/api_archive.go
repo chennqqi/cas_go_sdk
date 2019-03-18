@@ -51,7 +51,7 @@ func (a *ArchiveApiService) UIDVaultsVaultNameArchivesArchiveIDDelete(ctx contex
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/{UID}/vaults/{VaultName}/archives/<ArchiveID>"
+	localVarPath := a.client.cfg.BasePath + "/{UID}/vaults/{VaultName}/archives/{ArchiveID}"
 	localVarPath = strings.Replace(localVarPath, "{"+"UID"+"}", fmt.Sprintf("%v", uID), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", fmt.Sprintf("%v", vaultName), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"ArchiveID"+"}", fmt.Sprintf("%v", archiveID), -1)
@@ -70,7 +70,7 @@ func (a *ArchiveApiService) UIDVaultsVaultNameArchivesArchiveIDDelete(ctx contex
 	}
 
 	// to determine the Accept header
-	localVarHttpHeaderAccepts := []string{}
+	localVarHttpHeaderAccepts := []string{"application/json"}
 
 	// set Accept header
 	localVarHttpHeaderAccept := selectHeaderAccept(localVarHttpHeaderAccepts)
@@ -110,6 +110,16 @@ func (a *ArchiveApiService) UIDVaultsVaultNameArchivesArchiveIDDelete(ctx contex
 			body:  localVarBody,
 			error: localVarHttpResponse.Status,
 		}
+		if statusCode4XX(localVarHttpResponse.StatusCode) {
+			var v ErrorMessage
+			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHttpResponse, newErr
+			}
+			newErr.model = v
+			return localVarHttpResponse, newErr
+		}
 		return localVarHttpResponse, newErr
 	}
 
@@ -125,8 +135,9 @@ Upload Archive 请求实现上传一个 Archive 到指定 Vault。请求成功�
  * @param xCasContentSha256
  * @param contentLength
  * @param xCasSha256TreeHash
+ * @param body
  * @param optional nil or *UIDVaultsVaultNameArchivesPostOpts - Optional Parameters:
- * @param "XCasArchiveDescription" (optional.String) -
+ * @param "XCasArchiveDescription" (optional.String) - 
 */
 
 type UIDVaultsVaultNameArchivesPostOpts struct {
@@ -161,7 +172,7 @@ func (a *ArchiveApiService) UIDVaultsVaultNameArchivesPost(ctx context.Context, 
 	}
 
 	// to determine the Accept header
-	localVarHttpHeaderAccepts := []string{}
+	localVarHttpHeaderAccepts := []string{"application/json"}
 
 	// set Accept header
 	localVarHttpHeaderAccept := selectHeaderAccept(localVarHttpHeaderAccepts)
@@ -209,6 +220,16 @@ func (a *ArchiveApiService) UIDVaultsVaultNameArchivesPost(ctx context.Context, 
 			body:  localVarBody,
 			error: localVarHttpResponse.Status,
 		}
+		if statusCode4XX(localVarHttpResponse.StatusCode) {
+			var v ErrorMessage
+			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHttpResponse, newErr
+			}
+			newErr.model = v
+			return localVarHttpResponse, newErr
+		}
 		return localVarHttpResponse, newErr
 	}
 
@@ -222,13 +243,13 @@ List Multipart Uploads请求实现列出正在进行中的分段上传
  * @param uID
  * @param vaultName
  * @param optional nil or *UIDVaultsVaultNameMultipartUploadsGetOpts - Optional Parameters:
- * @param "Limit" (optional.Int64) -
- * @param "Marker" (optional.String) -
+ * @param "Limit" (optional.Int64) - 
+ * @param "Marker" (optional.String) - 
 @return VaultsSummary
 */
 
 type UIDVaultsVaultNameMultipartUploadsGetOpts struct {
-	Limit  optional.Int64
+	Limit optional.Int64
 	Marker optional.String
 }
 
@@ -375,7 +396,7 @@ func (a *ArchiveApiService) UIDVaultsVaultNameMultipartUploadsPost(ctx context.C
 	}
 
 	// to determine the Accept header
-	localVarHttpHeaderAccepts := []string{}
+	localVarHttpHeaderAccepts := []string{"application/json"}
 
 	// set Accept header
 	localVarHttpHeaderAccept := selectHeaderAccept(localVarHttpHeaderAccepts)
@@ -419,6 +440,16 @@ func (a *ArchiveApiService) UIDVaultsVaultNameMultipartUploadsPost(ctx context.C
 			body:  localVarBody,
 			error: localVarHttpResponse.Status,
 		}
+		if statusCode4XX(localVarHttpResponse.StatusCode) {
+			var v ErrorMessage
+			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHttpResponse, newErr
+			}
+			newErr.model = v
+			return localVarHttpResponse, newErr
+		}
 		return localVarHttpResponse, newErr
 	}
 
@@ -443,7 +474,7 @@ func (a *ArchiveApiService) UIDVaultsVaultNameMultipartUploadsUploadIDDelete(ctx
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/{UID}/vaults/{VaultName}/multipart-uploads/<uploadID>"
+	localVarPath := a.client.cfg.BasePath + "/{UID}/vaults/{VaultName}/multipart-uploads/{uploadID}"
 	localVarPath = strings.Replace(localVarPath, "{"+"UID"+"}", fmt.Sprintf("%v", uID), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", fmt.Sprintf("%v", vaultName), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"uploadID"+"}", fmt.Sprintf("%v", uploadID), -1)
@@ -462,7 +493,7 @@ func (a *ArchiveApiService) UIDVaultsVaultNameMultipartUploadsUploadIDDelete(ctx
 	}
 
 	// to determine the Accept header
-	localVarHttpHeaderAccepts := []string{}
+	localVarHttpHeaderAccepts := []string{"application/json"}
 
 	// set Accept header
 	localVarHttpHeaderAccept := selectHeaderAccept(localVarHttpHeaderAccepts)
@@ -502,6 +533,16 @@ func (a *ArchiveApiService) UIDVaultsVaultNameMultipartUploadsUploadIDDelete(ctx
 			body:  localVarBody,
 			error: localVarHttpResponse.Status,
 		}
+		if statusCode4XX(localVarHttpResponse.StatusCode) {
+			var v ErrorMessage
+			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHttpResponse, newErr
+			}
+			newErr.model = v
+			return localVarHttpResponse, newErr
+		}
 		return localVarHttpResponse, newErr
 	}
 
@@ -537,7 +578,7 @@ func (a *ArchiveApiService) UIDVaultsVaultNameMultipartUploadsUploadIDGet(ctx co
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/{UID}/vaults/{VaultName}/multipart-uploads/<uploadID>"
+	localVarPath := a.client.cfg.BasePath + "/{UID}/vaults/{VaultName}/multipart-uploads/{uploadID}"
 	localVarPath = strings.Replace(localVarPath, "{"+"UID"+"}", fmt.Sprintf("%v", uID), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", fmt.Sprintf("%v", vaultName), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"uploadID"+"}", fmt.Sprintf("%v", uploadID), -1)
@@ -612,6 +653,16 @@ func (a *ArchiveApiService) UIDVaultsVaultNameMultipartUploadsUploadIDGet(ctx co
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
 		}
+		if statusCode4XX(localVarHttpResponse.StatusCode) {
+			var v ErrorMessage
+			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHttpResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHttpResponse, newErr
+		}
 		return localVarReturnValue, localVarHttpResponse, newErr
 	}
 
@@ -647,7 +698,7 @@ func (a *ArchiveApiService) UIDVaultsVaultNameMultipartUploadsUploadIDPost(ctx c
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/{UID}/vaults/{VaultName}/multipart-uploads/<uploadID>"
+	localVarPath := a.client.cfg.BasePath + "/{UID}/vaults/{VaultName}/multipart-uploads/{uploadID}"
 	localVarPath = strings.Replace(localVarPath, "{"+"UID"+"}", fmt.Sprintf("%v", uID), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", fmt.Sprintf("%v", vaultName), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"uploadID"+"}", fmt.Sprintf("%v", uploadID), -1)
@@ -666,7 +717,7 @@ func (a *ArchiveApiService) UIDVaultsVaultNameMultipartUploadsUploadIDPost(ctx c
 	}
 
 	// to determine the Accept header
-	localVarHttpHeaderAccepts := []string{}
+	localVarHttpHeaderAccepts := []string{"application/json"}
 
 	// set Accept header
 	localVarHttpHeaderAccept := selectHeaderAccept(localVarHttpHeaderAccepts)
@@ -708,6 +759,16 @@ func (a *ArchiveApiService) UIDVaultsVaultNameMultipartUploadsUploadIDPost(ctx c
 			body:  localVarBody,
 			error: localVarHttpResponse.Status,
 		}
+		if statusCode4XX(localVarHttpResponse.StatusCode) {
+			var v ErrorMessage
+			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHttpResponse, newErr
+			}
+			newErr.model = v
+			return localVarHttpResponse, newErr
+		}
 		return localVarHttpResponse, newErr
 	}
 
@@ -743,7 +804,7 @@ func (a *ArchiveApiService) UIDVaultsVaultNameMultipartUploadsUploadIDPut(ctx co
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/{UID}/vaults/{VaultName}/multipart-uploads/<uploadID>"
+	localVarPath := a.client.cfg.BasePath + "/{UID}/vaults/{VaultName}/multipart-uploads/{uploadID}"
 	localVarPath = strings.Replace(localVarPath, "{"+"UID"+"}", fmt.Sprintf("%v", uID), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", fmt.Sprintf("%v", vaultName), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"uploadID"+"}", fmt.Sprintf("%v", uploadID), -1)
@@ -762,7 +823,7 @@ func (a *ArchiveApiService) UIDVaultsVaultNameMultipartUploadsUploadIDPut(ctx co
 	}
 
 	// to determine the Accept header
-	localVarHttpHeaderAccepts := []string{}
+	localVarHttpHeaderAccepts := []string{"application/json"}
 
 	// set Accept header
 	localVarHttpHeaderAccept := selectHeaderAccept(localVarHttpHeaderAccepts)
@@ -809,6 +870,16 @@ func (a *ArchiveApiService) UIDVaultsVaultNameMultipartUploadsUploadIDPut(ctx co
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHttpResponse.Status,
+		}
+		if statusCode4XX(localVarHttpResponse.StatusCode) {
+			var v ErrorMessage
+			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHttpResponse, newErr
+			}
+			newErr.model = v
+			return localVarHttpResponse, newErr
 		}
 		return localVarHttpResponse, newErr
 	}

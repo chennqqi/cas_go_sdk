@@ -1,59 +1,54 @@
-[![Build Status](https://travis-ci.org/chennqqi/cas_go_sdk.svg?branch=master)](https://travis-ci.org/chennqqi/cas_go_sdk) [![GoDoc](https://godoc.org/github.com/chennqqi/goutils?status.svg)](https://godoc.org/github.com/chennqqi/cas_go_sdk)  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Go Report Card](https://goreportcard.com/badge/github.com/chennqqi/goutils)](https://goreportcard.com/report/github.com/chennqqi/goutils)
+[![Build Status](https://travis-ci.org/chennqqi/cas_go_sdk.svg?branch=master)](https://travis-ci.org/chennqqi/cas_go_sdk) [![GoDoc](https://godoc.org/github.com/chennqqi/goutils?status.svg)](https://godoc.org/github.com/chennqqi/cas_go_sdk)  [![LICENSE](https://img.shields.io/github/license/cas_go_sdk/cas_go_sdk.svg?style=flat-square)](https://github.com/chennqqi/cas_go_sdk/blob/master/LICENSE) [![Go Report Card](https://goreportcard.com/badge/github.com/chennqqi/cas_go_sdk)](https://goreportcard.com/report/github.com/chennqqi/goutils)
 
-# goutils
+# `cas_go_sdk`
 
-	some useful utilities for golang
+[Tencent Cloud Archive Storage](https://cloud.tencent.com/product/cas) golang sdk
+
+## features
 
 
-## utilities
+## TODO
 
-	WildcardCmp
-
-		wildcard match (*?)
-
-	mysqldump
-	
-		dump mysql to txt or json
-
-	jsonconfig
-
-		Load and Save json config file
-	
-	yamlconfig
-
-		Load and Save yaml config file
-
-	simpleredis
-
-		read and write redis simply
-		
-	upx
-		
-		detect if an elf file is packed by upx
-
-	utils
-
-		some utilities
-
-	safeurl
-
-		unescape url safely
-
-	consul
-
-		consul api(service discovery, lock, configure)
-		
-	security
-	
-		rsaencrypt/rsadecrypt
-
-	c 
-		some utils of C(eg. md5)
 
 ## usage
 
-	go get -u github.com/chennqqi/goutils
+* install
+
+	go get -u github.com/chennqqi/cas_go_sdk
+
+## API Status
+
+### Vault APIs
+
+- [x] [Create Vault](https://cloud.tencent.com/document/product/572/8819)
+- [x] [Delete Vault](https://cloud.tencent.com/document/product/572/8821)
+- [x] [Delete Vault Access Policy](https://cloud.tencent.com/document/product/572/8820)
+- [x] [Delete Vault Notifications](https://cloud.tencent.com/document/product/572/11455)
+- [x] [Describe Vault](https://cloud.tencent.com/document/product/572/8822)
+- [x] [Get Vault Notifications](https://cloud.tencent.com/document/product/572/11454)
+- [x] [Get Vault Access Policy](https://cloud.tencent.com/document/product/572/8823)
+- [x] [List Vault](https://cloud.tencent.com/document/product/572/8824)
+- [x] [Set Vault Access Policy](https://cloud.tencent.com/document/product/572/8825)
+- [x] [Set Vault Notification Configuration](https://cloud.tencent.com/document/product/572/11453)
+
+### Archive APIs
+
+- [x] [Abort Multipart Upload](https://cloud.tencent.com/document/product/572/9184)
+- [x] [Complete Multipart Upload](https://cloud.tencent.com/document/product/572/9183)
+- [x] [Delete Archive](https://cloud.tencent.com/document/product/572/8830)
+- [x] [Initiate Multipart Upload](https://cloud.tencent.com/document/product/572/9181)
+- [x] [List Multipart Uploads](https://cloud.tencent.com/document/product/572/9186)
+- [x] [List Parts](https://cloud.tencent.com/document/product/572/9185)
+- [x] [Upload Archive](https://cloud.tencent.com/document/product/572/8831)
+- [x] [Upload Part](https://cloud.tencent.com/document/product/572/9182)
+
+### Job APIs
+
+- [x] [Describe Job](https://cloud.tencent.com/document/product/572/8826)
+- [x] [Get Job Output](https://cloud.tencent.com/document/product/572/8827)
+- [x] [Initiate Job](https://cloud.tencent.com/document/product/572/8828)
+- [x] [List Jobs](https://cloud.tencent.com/document/product/572/8829)
 
 ## License
 
-	MIT
+	Apache 2.0 license. See the [LICENSE](LICENSE) file for details.

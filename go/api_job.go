@@ -144,6 +144,16 @@ func (a *JobApiService) UIDVaultsVaultNameJobsGet(ctx context.Context, uID strin
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
 		}
+		if statusCode4XX(localVarHttpResponse.StatusCode) {
+			var v ErrorMessage
+			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHttpResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHttpResponse, newErr
+		}
 		return localVarReturnValue, localVarHttpResponse, newErr
 	}
 
@@ -248,6 +258,16 @@ func (a *JobApiService) UIDVaultsVaultNameJobsJobIDGet(ctx context.Context, uID 
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
 		}
+		if statusCode4XX(localVarHttpResponse.StatusCode) {
+			var v ErrorMessage
+			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHttpResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHttpResponse, newErr
+		}
 		return localVarReturnValue, localVarHttpResponse, newErr
 	}
 
@@ -310,7 +330,7 @@ func (a *JobApiService) UIDVaultsVaultNameJobsJobIDOutputGet(ctx context.Context
 	}
 
 	// to determine the Accept header
-	localVarHttpHeaderAccepts := []string{"application/json"}
+	localVarHttpHeaderAccepts := []string{"application/json", "application/octet-stream"}
 
 	// set Accept header
 	localVarHttpHeaderAccept := selectHeaderAccept(localVarHttpHeaderAccepts)
@@ -369,6 +389,16 @@ func (a *JobApiService) UIDVaultsVaultNameJobsJobIDOutputGet(ctx context.Context
 		}
 		if localVarHttpResponse.StatusCode == 206 {
 			var v JobOutput
+			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHttpResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHttpResponse, newErr
+		}
+		if statusCode4XX(localVarHttpResponse.StatusCode) {
+			var v ErrorMessage
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -439,7 +469,7 @@ func (a *JobApiService) UIDVaultsVaultNameJobsPost(ctx context.Context, uID stri
 	}
 
 	// to determine the Accept header
-	localVarHttpHeaderAccepts := []string{}
+	localVarHttpHeaderAccepts := []string{"application/json"}
 
 	// set Accept header
 	localVarHttpHeaderAccept := selectHeaderAccept(localVarHttpHeaderAccepts)
@@ -487,6 +517,16 @@ func (a *JobApiService) UIDVaultsVaultNameJobsPost(ctx context.Context, uID stri
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHttpResponse.Status,
+		}
+		if statusCode4XX(localVarHttpResponse.StatusCode) {
+			var v ErrorMessage
+			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHttpResponse, newErr
+			}
+			newErr.model = v
+			return localVarHttpResponse, newErr
 		}
 		return localVarHttpResponse, newErr
 	}
