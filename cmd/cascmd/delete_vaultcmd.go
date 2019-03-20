@@ -22,7 +22,7 @@ import (
 
 	"github.com/google/subcommands"
 
-	openapi "github.com/chennqqi/cas/go"
+	openapi "github.com/chennqqi/cas_go_sdk/go"
 )
 
 func init() {

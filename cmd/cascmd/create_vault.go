@@ -19,8 +19,8 @@ import (
 	"flag"
 	"fmt"
 
+	openapi "github.com/chennqqi/cas_go_sdk/go"
 	"github.com/google/subcommands"
-	openapi "github.com/chennqqi/cas/go"
 )
 
 func init() {

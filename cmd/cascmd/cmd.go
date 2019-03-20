@@ -20,8 +20,8 @@ import (
 	"runtime"
 	"strings"
 
+	openapi "github.com/chennqqi/cas_go_sdk/go"
 	"github.com/chennqqi/goutils/jsonconfig"
-	openapi "github.com/chennqqi/cas/go"
 )
 
 func homeDir() string {
