@@ -4,17 +4,21 @@
 
 [Tencent Cloud Archive Storage](https://cloud.tencent.com/product/cas) golang sdk
 
-## features
-
+not all are tested
 
 ## TODO
 
+* test all api
 
 ## usage
 
 * install
 
 	go get -u github.com/chennqqi/cas_go_sdk
+
+* example
+	
+  see [cascmd](https://github.com/chennqqi/cas_go_sdk/tree/master/cmd/cascmd)
 
 ## API Status
 

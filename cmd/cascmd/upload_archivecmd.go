@@ -25,7 +25,7 @@ import (
 	"github.com/antihax/optional"
 	"github.com/dustin/go-humanize"
 	"github.com/google/subcommands"
-	openapi "gogs.fastapi.org/gitadmin/cas/go"
+	openapi "github.com/chennqqi/cas/go"
 	"gogs.fastapi.org/gitadmin/cas/treehash"
 )
 

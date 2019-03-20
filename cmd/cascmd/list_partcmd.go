@@ -23,7 +23,7 @@ import (
 	"github.com/antihax/optional"
 	"github.com/google/subcommands"
 
-	openapi "gogs.fastapi.org/gitadmin/cas/go"
+	openapi "github.com/chennqqi/cas/go"
 )
 
 func init() {

@@ -21,7 +21,7 @@ import (
 	"strings"
 
 	"github.com/chennqqi/goutils/jsonconfig"
-	openapi "gogs.fastapi.org/gitadmin/cas/go"
+	openapi "github.com/chennqqi/cas/go"
 )
 
 func homeDir() string {
