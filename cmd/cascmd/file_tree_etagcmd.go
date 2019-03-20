@@ -25,7 +25,7 @@ import (
 	"os"
 
 	"github.com/google/subcommands"
-	"gogs.fastapi.org/gitadmin/cas/treehash"
+	"github.com/chennqqi/cas/treehash"
 )
 
 func init() {

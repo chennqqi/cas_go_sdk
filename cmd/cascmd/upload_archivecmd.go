@@ -26,7 +26,7 @@ import (
 	"github.com/dustin/go-humanize"
 	"github.com/google/subcommands"
 	openapi "github.com/chennqqi/cas/go"
-	"gogs.fastapi.org/gitadmin/cas/treehash"
+	"github.com/chennqqi/cas/treehash"
 )
 
 const (

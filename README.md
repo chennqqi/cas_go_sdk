@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/chennqqi/cas_go_sdk.svg?branch=master)](https://travis-ci.org/chennqqi/cas_go_sdk) [![GoDoc](https://godoc.org/github.com/chennqqi/goutils?status.svg)](https://godoc.org/github.com/chennqqi/cas_go_sdk)  [![LICENSE](https://img.shields.io/github/license/cas_go_sdk/cas_go_sdk.svg?style=flat-square)](https://github.com/chennqqi/cas_go_sdk/blob/master/LICENSE) [![Go Report Card](https://goreportcard.com/badge/github.com/chennqqi/cas_go_sdk)](https://goreportcard.com/report/github.com/chennqqi/goutils)
+[![Build Status](https://travis-ci.org/chennqqi/cas_go_sdk.svg?branch=master)](https://travis-ci.org/chennqqi/cas_go_sdk) [![GoDoc](https://godoc.org/github.com/chennqqi/cas_go_sdk?status.svg)](https://godoc.org/github.com/chennqqi/cas_go_sdk)  [![LICENSE](https://img.shields.io/github/license/chennqqi/cas_go_sdk.svg?style=flat-square)](https://github.com/chennqqi/cas_go_sdk/blob/master/LICENSE) [![Go Report Card](https://goreportcard.com/badge/github.com/chennqqi/cas_go_sdk/go)](https://goreportcard.com/report/github.com/chennqqi/cas_go_sdk)
 
 # `cas_go_sdk`
 
@@ -55,4 +55,4 @@ not all are tested
 
 ## License
 
-	Apache 2.0 license. See the [LICENSE](LICENSE) file for details.
+Apache 2.0 license. See the [LICENSE](https://github.com/chennqqi/cas_go_sdk/blob/master/LICENSE) file for details.
