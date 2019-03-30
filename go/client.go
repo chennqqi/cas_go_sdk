@@ -209,8 +209,8 @@ func statusCode4XX(code int) bool {
 // create authorization
 func (c *APIClient) createAuth(method, url, host string,
 	headers http.Header, params url.Values, expire time.Duration) string {
-
-	var accessKey, accessSecret = c.cfg.AccessKey, c.cfg.AccessSecret
+	cfg := c.cfg
+	var accessKey, accessSecret = cfg.AccessKey, cfg.AccessSecret
 
 	var commonHeaders = []string{
 		"Host", "x-cas-content-sha256", "Content-Length", "x-cas-sha256-tree-hash",
@@ -235,12 +235,18 @@ func (c *APIClient) createAuth(method, url, host string,
 	}
 
 	//cal signKey
-	var now = time.Now()
-	var timeRange = fmt.Sprintf(`%d;%d`, now.Unix(), now.Add(expire).Unix())
-	mac := hmac.New(sha1.New, []byte(accessSecret))
-	mac.Write([]byte(timeRange))
-	var signKey = hex.EncodeToString(mac.Sum(nil))
-	fmt.Println("signKey:", signKey)
+	var signKey, timeRange string
+	if cfg.SignKey == "" {
+		var now = time.Now()
+		timeRange = fmt.Sprintf(`%d;%d`, now.Unix(), now.Add(expire).Unix())
+		mac := hmac.New(sha1.New, []byte(accessSecret))
+		mac.Write([]byte(timeRange))
+		signKey = hex.EncodeToString(mac.Sum(nil))
+	} else {
+		ts := time.Unix(cfg.SignKeyStart, 0)
+		timeRange = fmt.Sprintf(`%d;%d`, cfg.SignKeyStart, ts.Add(expire).Unix())
+		signKey = cfg.SignKey
+	}
 
 	//formating string
 	var formatString bytes.Buffer
