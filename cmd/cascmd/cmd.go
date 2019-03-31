@@ -52,7 +52,7 @@ func loadConf(name string) (*openapi.Configuration, error) {
 		fmt.Println("load error", err)
 		jsonconfig.Save(*conf, name)
 	}
-	fmt.Println("LOAD CONF:", conf)
+	//fmt.Println("LOAD CONF:", conf)
 	if conf.AppId == "" {
 		conf.AppId = "-"
 	}
