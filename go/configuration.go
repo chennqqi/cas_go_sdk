@@ -68,17 +68,17 @@ type APIKey struct {
 }
 
 type Configuration struct {
-	BasePath      string            `json:"basePath,omitempty"`
-	Host          string            `json:"host,omitempty"`
-	Scheme        string            `json:"scheme,omitempty"`
-	DefaultHeader map[string]string `json:"defaultHeader,omitempty"`
-	UserAgent     string            `json:"userAgent,omitempty"`
-	AppId         string            `json:"appId"`
-	AccessKey     string            `json:"accessKey"`
-	AccessSecret  string            `json:"accessSecret"`
-	SignKey       string            `json:"signKey,omitempty"`
-	SignKeyStart  int64             `json:"signKeyStart,omitempty"`
-	SignKeyExpire utime.Duration    `json:"signKeyExpire,omitempty"`
+	BasePath      string            `json:"basePath,omitempty" yaml:"basePath"`
+	Host          string            `json:"host,omitempty" yaml:"host"`
+	Scheme        string            `json:"scheme,omitempty" yaml:"scheme"`
+	DefaultHeader map[string]string `json:"defaultHeader,omitempty" yaml:"defaultHeader"`
+	UserAgent     string            `json:"userAgent,omitempty" yaml:"userAgent"`
+	AppId         string            `json:"appId" yaml:"appId"`
+	AccessKey     string            `json:"accessKey" yaml:"accessKey"`
+	AccessSecret  string            `json:"accessSecret" yaml:"accessSecret"`
+	SignKey       string            `json:"signKey,omitempty" yaml:"signKey"`
+	SignKeyStart  int64             `json:"signKeyStart,omitempty" yaml:"signKeyStart"`
+	SignKeyExpire utime.Duration    `json:"signKeyExpire,omitempty" yaml:"signKeyExpire"`
 	HTTPClient    *http.Client      `json:"-"`
 }
 

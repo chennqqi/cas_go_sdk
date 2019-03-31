@@ -15,21 +15,15 @@
 package openapi
 
 import (
-	"crypto/hmac"
-	"crypto/sha1"
-	"encoding/hex"
 	"fmt"
+	"testing"
 	"time"
+
+	"github.com/stretchr/testify/assert"
 )
 
-func (s *Signature) Sign() string {
-	return ""
-}
-
-func CalSignKey(start int64, expire time.Duration, accessSecret string) string {
-	ts := time.Unix(start, 0)
-	timeRange := fmt.Sprintf(`%d;%d`, start, ts.Add(expire).Unix())
-	mac := hmac.New(sha1.New, []byte(accessSecret))
-	mac.Write([]byte(timeRange))
-	return hex.EncodeToString(mac.Sum(nil))
+func TestCalSignKey(t *testing.T) {
+	s := CalSignKey(1554025000, 2*86400*time.Second, "xxxxxxxxxxxxx")
+	fmt.Println(s)
+	assert.NotEqual(t, s, "")
 }

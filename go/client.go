@@ -229,8 +229,7 @@ func (c *APIClient) createAuth(method, url, host string,
 	for k, _ := range params {
 		dupParams[strings.ToLower(k)] = strings.ToLower(params.Get(k))
 	}
-
-	if c.cfg.SignKeyExpire == 0 {
+	if expire == 0 {
 		expire = DefaultAuthTimeout
 	}
 
@@ -451,7 +450,7 @@ func (c *APIClient) prepareRequest(
 
 	//post add Authorization
 	authorization := c.createAuth(method, path, localVarRequest.Host,
-		localVarRequest.Header, query, DefaultAuthTimeout)
+		localVarRequest.Header, query, time.Duration(c.cfg.SignKeyExpire))
 	localVarRequest.Header.Add("Authorization", authorization)
 
 	return localVarRequest, nil
