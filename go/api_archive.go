@@ -137,7 +137,7 @@ Upload Archive 请求实现上传一个 Archive 到指定 Vault。请求成功�
  * @param xCasSha256TreeHash
  * @param body
  * @param optional nil or *UIDVaultsVaultNameArchivesPostOpts - Optional Parameters:
- * @param "XCasArchiveDescription" (optional.String) - 
+ * @param "XCasArchiveDescription" (optional.String) -
 */
 
 type UIDVaultsVaultNameArchivesPostOpts struct {
@@ -186,7 +186,7 @@ func (a *ArchiveApiService) UIDVaultsVaultNameArchivesPost(ctx context.Context, 
 		localVarHeaderParams["x-cas-archive-description"] = parameterToString(localVarOptionals.XCasArchiveDescription.Value(), "")
 	}
 	// body params
-	localVarPostBody = &body
+	localVarPostBody = body
 	if ctx != nil {
 		// API Key Authentication
 		if auth, ok := ctx.Value(ContextAPIKey).(APIKey); ok {
@@ -243,13 +243,13 @@ List Multipart Uploads请求实现列出正在进行中的分段上传
  * @param uID
  * @param vaultName
  * @param optional nil or *UIDVaultsVaultNameMultipartUploadsGetOpts - Optional Parameters:
- * @param "Limit" (optional.Int64) - 
- * @param "Marker" (optional.String) - 
+ * @param "Limit" (optional.Int64) -
+ * @param "Marker" (optional.String) -
 @return VaultsSummary
 */
 
 type UIDVaultsVaultNameMultipartUploadsGetOpts struct {
-	Limit optional.Int64
+	Limit  optional.Int64
 	Marker optional.String
 }
 
@@ -837,7 +837,7 @@ func (a *ArchiveApiService) UIDVaultsVaultNameMultipartUploadsUploadIDPut(ctx co
 		localVarHeaderParams["Content-Length"] = parameterToString(localVarOptionals.ContentLength.Value(), "")
 	}
 	// body params
-	localVarPostBody = &body
+	localVarPostBody = body
 	if ctx != nil {
 		// API Key Authentication
 		if auth, ok := ctx.Value(ContextAPIKey).(APIKey); ok {
