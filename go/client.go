@@ -176,8 +176,8 @@ func parameterToString(obj interface{}, collectionFormat string) string {
 func formatParams(m map[string]string) ([]string, string) {
 	keys := make([]string, len(m))
 	var count int
-	for _, v := range m {
-		keys[count] = v
+	for k, _ := range m {
+		keys[count] = k
 		count++
 	}
 	sort.Strings(keys)
@@ -217,10 +217,10 @@ func (c *APIClient) createAuth(method, url, host string,
 	}
 	dupHeaders := make(map[string]string)
 	var headerCount int
-	for _, v := range commonHeaders {
-		nv := headers.Get(v)
-		if nv != "" {
-			dupHeaders[strings.ToLower(v)] = strings.ToLower(nv)
+	for _, hkey := range commonHeaders {
+		hv := headers.Get(hkey)
+		if hv != "" {
+			dupHeaders[hkey] = strings.ToLower(hv)
 			headerCount++
 		}
 	}
