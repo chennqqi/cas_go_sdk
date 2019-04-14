@@ -296,13 +296,13 @@ func (c *APIClient) createAuth(method, url, host string,
 
 	//params
 	paramKeys, fParams := formatParams(dupParams)
-	fmt.Println("formatParams:", fParams)
+	//fmt.Println("formatParams:", fParams)
 	formatString.WriteString(fParams)
 	formatString.WriteByte('\n')
 
 	//header
 	headerKeys, fHeader := formatHeaders(dupHeaders)
-	fmt.Println("formatHeaders:", fHeader)
+	//fmt.Println("formatHeaders:", fHeader)
 	formatString.WriteString(fHeader)
 	formatString.WriteByte('\n')
 
