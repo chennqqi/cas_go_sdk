@@ -181,19 +181,21 @@ func formatParams(m map[string]string) ([]string, string) {
 		nk := strings.ToLower(k)
 		keys[count] = nk
 		count++
-		dup[nk] = strings.ToLower(v)
+		dup[nk] = v
 	}
 	sort.Strings(keys)
 
 	var buf bytes.Buffer
 	for i := 0; i < len(keys); i++ {
 		//	Key和Value必须转为小写字符，且key值按字典序排序。
-		buf.WriteString(fmt.Sprintf("%v=%v", keys[i], dup[keys[i]]))
+		v := url.QueryEscape(dup[keys[i]])
+		v = strings.Replace(v, "+", "%20")
+		buf.WriteString(fmt.Sprintf("%v=%v", keys[i], v))
 		if i < len(keys)-1 {
 			buf.WriteByte('&')
 		}
 	}
-	return keys, url.QueryEscape(buf.String())
+	return keys, buf.String()
 }
 
 /*
@@ -216,12 +218,14 @@ func formatHeaders(m map[string]string) ([]string, string) {
 	var buf bytes.Buffer
 	for i := 0; i < len(keys); i++ {
 		//	Key和Value必须转为小写字符，且key值按字典序排序。
-		buf.WriteString(fmt.Sprintf("%v=%v", keys[i], dup[keys[i]]))
+		v := url.QueryEscape(dup[keys[i]])
+		v = strings.Replace(v, "+", "%20")
+		buf.WriteString(fmt.Sprintf("%v=%v", keys[i], v))
 		if i < len(keys)-1 {
 			buf.WriteByte('&')
 		}
 	}
-	return keys, url.QueryEscape(buf.String())
+	return keys, buf.String()
 }
 
 // callAPI do the request.
@@ -248,7 +252,9 @@ func (c *APIClient) createAuth(method, url, host string,
 		"Host", "x-cas-content-sha256", "Content-Length", "x-cas-sha256-tree-hash",
 		"x-cas-archive-description",
 	}
+
 	dupHeaders := make(map[string]string)
+	dupHeaders["Host"] = host
 	for _, hkey := range commonHeaders {
 		//这个地方不能用GET,避免CanonicalHeaderKey
 		hv, exist := headers[hkey]
@@ -256,7 +262,6 @@ func (c *APIClient) createAuth(method, url, host string,
 			dupHeaders[hkey] = hv[0]
 		}
 	}
-	dupHeaders["Host"] = host
 
 	var dupParams = make(map[string]string)
 	for k, _ := range params {
@@ -265,7 +270,7 @@ func (c *APIClient) createAuth(method, url, host string,
 	if expire == 0 {
 		expire = DefaultAuthTimeout
 	}
-	fmt.Println("DUP PARAMS:", dupParams)
+	//fmt.Println("DUP PARAMS:", dupParams)
 
 	//cal signKey
 	var signKey, timeRange string
@@ -291,11 +296,13 @@ func (c *APIClient) createAuth(method, url, host string,
 
 	//params
 	paramKeys, fParams := formatParams(dupParams)
+	fmt.Println("formatParams:", fParams)
 	formatString.WriteString(fParams)
 	formatString.WriteByte('\n')
 
 	//header
 	headerKeys, fHeader := formatHeaders(dupHeaders)
+	fmt.Println("formatHeaders:", fHeader)
 	formatString.WriteString(fHeader)
 	formatString.WriteByte('\n')
 
