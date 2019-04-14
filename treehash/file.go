@@ -57,3 +57,11 @@ func ComputeHashFromFile(file string, offset, size, chunk_size int64) (string, s
 	contentHash := hex.EncodeToString(h.Sum(nil))
 	return contentHash, treeHash, nil
 }
+
+func ComputeHashFromList(list []string) string {
+	h := New(DEFAULT_CHUNK, sha256.New())
+	for i := 0; i < len(list); i++ {
+		h.Write([]byte(list[i]))
+	}
+	return hex.EncodeToString(h.Sum(nil))
+}
