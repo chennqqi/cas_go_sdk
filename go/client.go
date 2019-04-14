@@ -189,7 +189,7 @@ func formatParams(m map[string]string) ([]string, string) {
 	for i := 0; i < len(keys); i++ {
 		//	Key和Value必须转为小写字符，且key值按字典序排序。
 		v := url.QueryEscape(dup[keys[i]])
-		v = strings.Replace(v, "+", "%20")
+		v = strings.Replace(v, "+", "%20", -1)
 		buf.WriteString(fmt.Sprintf("%v=%v", keys[i], v))
 		if i < len(keys)-1 {
 			buf.WriteByte('&')
@@ -219,7 +219,7 @@ func formatHeaders(m map[string]string) ([]string, string) {
 	for i := 0; i < len(keys); i++ {
 		//	Key和Value必须转为小写字符，且key值按字典序排序。
 		v := url.QueryEscape(dup[keys[i]])
-		v = strings.Replace(v, "+", "%20")
+		v = strings.Replace(v, "+", "%20", -1)
 		buf.WriteString(fmt.Sprintf("%v=%v", keys[i], v))
 		if i < len(keys)-1 {
 			buf.WriteByte('&')
