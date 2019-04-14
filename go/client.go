@@ -174,17 +174,49 @@ func parameterToString(obj interface{}, collectionFormat string) string {
 
 // formatParams
 func formatParams(m map[string]string) ([]string, string) {
+	dup := make(map[string]string)
 	keys := make([]string, len(m))
 	var count int
-	for k, _ := range m {
-		keys[count] = k
+	for k, v := range m {
+		nk := strings.ToLower(k)
+		keys[count] = nk
 		count++
+		dup[nk] = strings.ToLower(v)
 	}
 	sort.Strings(keys)
 
 	var buf bytes.Buffer
 	for i := 0; i < len(keys); i++ {
-		buf.WriteString(fmt.Sprintf("%v=%v", keys[i], m[keys[i]]))
+		//	Key和Value必须转为小写字符，且key值按字典序排序。
+		buf.WriteString(fmt.Sprintf("%v=%v", keys[i], dup[keys[i]]))
+		if i < len(keys)-1 {
+			buf.WriteByte('&')
+		}
+	}
+	return keys, url.QueryEscape(buf.String())
+}
+
+/*
+FormatHeaders：指请求中的 HTTP 头部信息，用 key=value 的方式表达。
+	头部的 key 必须全部小写，value 必须经过 URL Encode。
+	如果有多个参数对可使用 & 连接。key值按字典序排序
+*/
+func formatHeaders(m map[string]string) ([]string, string) {
+	dup := make(map[string]string)
+	keys := make([]string, len(m))
+	var count int
+	for k, v := range m {
+		nk := strings.ToLower(k)
+		keys[count] = nk
+		count++
+		dup[nk] = v //此处不能转小写
+	}
+	sort.Strings(keys)
+
+	var buf bytes.Buffer
+	for i := 0; i < len(keys); i++ {
+		//	Key和Value必须转为小写字符，且key值按字典序排序。
+		buf.WriteString(fmt.Sprintf("%v=%v", keys[i], dup[keys[i]]))
 		if i < len(keys)-1 {
 			buf.WriteByte('&')
 		}
@@ -214,24 +246,26 @@ func (c *APIClient) createAuth(method, url, host string,
 
 	var commonHeaders = []string{
 		"Host", "x-cas-content-sha256", "Content-Length", "x-cas-sha256-tree-hash",
+		"x-cas-archive-description",
 	}
 	dupHeaders := make(map[string]string)
-	var headerCount int
 	for _, hkey := range commonHeaders {
-		hv := headers.Get(hkey)
-		if hv != "" {
-			dupHeaders[hkey] = strings.ToLower(hv)
-			headerCount++
+		//这个地方不能用GET,避免CanonicalHeaderKey
+		hv, exist := headers[hkey]
+		if exist && len(hv) > 0 {
+			dupHeaders[hkey] = hv[0]
 		}
 	}
+	dupHeaders["Host"] = host
 
 	var dupParams = make(map[string]string)
 	for k, _ := range params {
-		dupParams[strings.ToLower(k)] = strings.ToLower(params.Get(k))
+		dupParams[k] = params.Get(k)
 	}
 	if expire == 0 {
 		expire = DefaultAuthTimeout
 	}
+	fmt.Println("DUP PARAMS:", dupParams)
 
 	//cal signKey
 	var signKey, timeRange string
@@ -261,7 +295,7 @@ func (c *APIClient) createAuth(method, url, host string,
 	formatString.WriteByte('\n')
 
 	//header
-	headerKeys, fHeader := formatParams(dupHeaders)
+	headerKeys, fHeader := formatHeaders(dupHeaders)
 	formatString.WriteString(fHeader)
 	formatString.WriteByte('\n')
 
@@ -397,7 +431,8 @@ func (c *APIClient) prepareRequest(
 	if len(headerParams) > 0 {
 		headers := http.Header{}
 		for h, v := range headerParams {
-			headers.Set(h, v)
+			//headers.Set(h, v)
+			headers[h] = []string{v}
 		}
 		localVarRequest.Header = headers
 	}
