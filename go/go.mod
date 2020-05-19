@@ -1,3 +1,3 @@
-module module github.com/chennqqi/treehash/go
+module module github.com/chennqqi/cas_go_sdk/go
 
 go 1.13
