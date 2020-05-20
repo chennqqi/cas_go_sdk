@@ -27,8 +27,6 @@ package openapi
 import (
 	"net/http"
 	"time"
-
-	"github.com/chennqqi/goutils/utime"
 )
 
 // contextKeys are used to identify the type of value in the context.
@@ -68,18 +66,18 @@ type APIKey struct {
 }
 
 type Configuration struct {
-	BasePath      string            `json:"basePath,omitempty" yaml:"basePath"`
-	Host          string            `json:"host,omitempty" yaml:"host"`
-	Scheme        string            `json:"scheme,omitempty" yaml:"scheme"`
-	DefaultHeader map[string]string `json:"defaultHeader,omitempty" yaml:"defaultHeader"`
-	UserAgent     string            `json:"userAgent,omitempty" yaml:"userAgent"`
-	AppId         string            `json:"appId" yaml:"appId"`
-	AccessKey     string            `json:"accessKey" yaml:"accessKey"`
-	AccessSecret  string            `json:"accessSecret" yaml:"accessSecret"`
-	SignKey       string            `json:"signKey,omitempty" yaml:"signKey"`
-	SignKeyStart  int64             `json:"signKeyStart,omitempty" yaml:"signKeyStart"`
-	SignKeyExpire utime.Duration    `json:"signKeyExpire,omitempty" yaml:"signKeyExpire"`
-	HTTPClient    *http.Client      `json:"-"`
+	BasePath        string            `json:"basePath,omitempty" yaml:"basePath"`
+	Host            string            `json:"host,omitempty" yaml:"host"`
+	Scheme          string            `json:"scheme,omitempty" yaml:"scheme"`
+	DefaultHeader   map[string]string `json:"defaultHeader,omitempty" yaml:"defaultHeader"`
+	UserAgent       string            `json:"userAgent,omitempty" yaml:"userAgent"`
+	AppId           string            `json:"appId" yaml:"appId"`
+	AccessKey       string            `json:"accessKey" yaml:"accessKey"`
+	AccessSecret    string            `json:"accessSecret" yaml:"accessSecret"`
+	SignKey         string            `json:"signKey,omitempty" yaml:"signKey"`
+	SignKeyStart    time.Time         `json:"signKeyStart,omitempty" yaml:"signKeyStart"`
+	SignKeyExpireAt time.Time         `json:"signKeyExpire,omitempty" yaml:"signKeyExpire"`
+	HTTPClient      *http.Client      `json:"-"`
 }
 
 func NewConfiguration() *Configuration {
@@ -88,7 +86,6 @@ func NewConfiguration() *Configuration {
 		Scheme:        "http",
 		DefaultHeader: make(map[string]string),
 		UserAgent:     "OpenAPI-Generator/1.0.0/go",
-		SignKeyExpire: utime.Duration(time.Second * 1200),
 	}
 	return cfg
 }

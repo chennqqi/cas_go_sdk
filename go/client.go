@@ -281,8 +281,7 @@ func (c *APIClient) createAuth(method, url, host string,
 		mac.Write([]byte(timeRange))
 		signKey = hex.EncodeToString(mac.Sum(nil))
 	} else {
-		ts := time.Unix(cfg.SignKeyStart, 0)
-		timeRange = fmt.Sprintf(`%d;%d`, cfg.SignKeyStart, ts.Add(expire).Unix())
+		timeRange = fmt.Sprintf(`%d;%d`, cfg.SignKeyStart.Unix(), cfg.SignKeyExpireAt.Unix())
 		signKey = cfg.SignKey
 	}
 
@@ -492,7 +491,7 @@ func (c *APIClient) prepareRequest(
 
 	//post add Authorization
 	authorization := c.createAuth(method, path, localVarRequest.Host,
-		localVarRequest.Header, query, time.Duration(c.cfg.SignKeyExpire))
+		localVarRequest.Header, query, 0)
 	localVarRequest.Header.Add("Authorization", authorization)
 
 	return localVarRequest, nil
