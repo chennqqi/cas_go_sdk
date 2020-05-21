@@ -1,4 +1,4 @@
-# Go API client for openapi
+# Go API client for cas
 
 Tecent Cloud Archive Storage Golang SDK.
 
@@ -24,7 +24,7 @@ go get github.com/antihax/optional
 Put the package under your project folder and add the following in import:
 
 ```golang
-import "./openapi"
+import "./cas"
 ```
 
 ## Documentation for API Endpoints
