@@ -19,7 +19,7 @@ import (
 	"flag"
 	"fmt"
 
-	openapi "github.com/chennqqi/cas_go_sdk/go"
+	openapi "github.com/chennqqi/cas_go_sdk/cas"
 	"github.com/google/subcommands"
 
 	"github.com/antihax/optional"
@@ -60,13 +60,13 @@ func (p *initMultipartUploadCmd) Execute(ctx context.Context, f *flag.FlagSet, _
 	client := openapi.NewAPIClient(conf)
 	archive := client.ArchiveApi
 
-	var opt openapi.UIDVaultsVaultNameMultipartUploadsPostOpts
+	var opt openapi.VaultsVaultNameMultipartUploadsPostOpts
 	if p.desc != "" {
 		opt.XCasArchiveDescription = optional.NewString(p.desc)
 	}
 
-	resp, err := archive.UIDVaultsVaultNameMultipartUploadsPost(ctx,
-		conf.AppId, p.vaultName, fmt.Sprintf("%d", p.partSize), &opt)
+	resp, err := archive.VaultsVaultNameMultipartUploadsPost(ctx,
+		p.vaultName, fmt.Sprintf("%d", p.partSize), &opt)
 	if err != nil {
 		fmt.Println("ERROR:", err)
 	}

@@ -21,7 +21,7 @@ import (
 
 	"github.com/google/subcommands"
 
-	openapi "github.com/chennqqi/cas_go_sdk/go"
+	openapi "github.com/chennqqi/cas_go_sdk/cas"
 )
 
 func init() {
@@ -57,8 +57,8 @@ func (p *deleteArchiveCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...in
 	client := openapi.NewAPIClient(conf)
 	archive := client.ArchiveApi
 
-	_, err = archive.UIDVaultsVaultNameMultipartUploadsUploadIDDelete(ctx,
-		conf.AppId, p.vaultName, p.archiveId)
+	_, err = archive.VaultsVaultNameMultipartUploadsUploadIDDelete(ctx,
+		p.vaultName, p.archiveId)
 	if err != nil {
 		fmt.Println("ERROR:", err)
 		return subcommands.ExitFailure

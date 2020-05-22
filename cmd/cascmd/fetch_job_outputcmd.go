@@ -24,7 +24,7 @@ import (
 	"strings"
 
 	"github.com/antihax/optional"
-	openapi "github.com/chennqqi/cas_go_sdk/go"
+	openapi "github.com/chennqqi/cas_go_sdk/cas"
 	"github.com/google/subcommands"
 	"gopkg.in/cheggaaa/pb.v1"
 )
@@ -70,7 +70,7 @@ func (p *fetchJobOutputCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...i
 	client := openapi.NewAPIClient(conf)
 	job := client.JobApi
 
-	desc, _, err := job.UIDVaultsVaultNameJobsJobIDGet(ctx, conf.AppId, p.vaultName, p.jobid)
+	desc, _, err := job.VaultsVaultNameJobsJobIDGet(ctx, p.vaultName, p.jobid)
 	if err != nil {
 		fmt.Println("ERROR:", err)
 	}
@@ -125,7 +125,7 @@ func (p *fetchJobOutputCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...i
 		p.start = 0
 	}
 
-	var outputOpt openapi.UIDVaultsVaultNameJobsJobIDOutputGetOpts
+	var outputOpt openapi.VaultsVaultNameJobsJobIDOutputGetOpts
 	if p.start != 0 && p.size != 0 {
 		outputOpt.Range_ = optional.NewString(fmt.Sprintf("bytes=%d-%d", p.start, p.size-1))
 	}
@@ -142,8 +142,8 @@ func (p *fetchJobOutputCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...i
 	os.Remove(p.localFile)
 
 	//get job output
-	output, resp, err := job.UIDVaultsVaultNameJobsJobIDOutputGet(ctx,
-		conf.AppId, p.vaultName, p.jobid, &outputOpt)
+	output, resp, err := job.VaultsVaultNameJobsJobIDOutputGet(ctx,
+		p.vaultName, p.jobid, &outputOpt)
 
 	if resp.Header.Get("Content-Type") != "application/octet-stream" {
 		fmt.Println("Content-Type:", resp.Header.Get("Content-Type"))

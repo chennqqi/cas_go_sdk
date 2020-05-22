@@ -24,7 +24,7 @@ import (
 	"path/filepath"
 
 	"github.com/antihax/optional"
-	openapi "github.com/chennqqi/cas_go_sdk/go"
+	openapi "github.com/chennqqi/cas_go_sdk/cas"
 	"github.com/chennqqi/cas_go_sdk/treehash"
 	"github.com/google/subcommands"
 )
@@ -96,12 +96,12 @@ func (p *postArchiveCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...inte
 		close(errChan)
 	}()
 
-	var opt openapi.UIDVaultsVaultNameArchivesPostOpts
+	var opt openapi.VaultsVaultNameArchivesPostOpts
 	opt.XCasArchiveDescription = optional.NewString(desc)
 
 	contentLength := fmt.Sprintf("%d", size)
-	resp, err1 := archive.UIDVaultsVaultNameArchivesPost(ctx,
-		conf.AppId, p.vaultName, tag, contentLength, treeEtag, r, &opt,
+	resp, err1 := archive.VaultsVaultNameArchivesPost(ctx,
+		p.vaultName, tag, contentLength, treeEtag, r, &opt,
 	)
 	err2 := <-errChan
 	if err1 != nil {

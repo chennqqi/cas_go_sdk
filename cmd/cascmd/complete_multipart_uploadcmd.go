@@ -19,7 +19,7 @@ import (
 	"flag"
 	"fmt"
 
-	openapi "github.com/chennqqi/cas_go_sdk/go"
+	openapi "github.com/chennqqi/cas_go_sdk/cas"
 	"github.com/google/subcommands"
 )
 
@@ -61,8 +61,8 @@ func (p *completeMultiPartCmd) Execute(ctx context.Context, f *flag.FlagSet, _ .
 	client := openapi.NewAPIClient(conf)
 	archive := client.ArchiveApi
 
-	resp, err := archive.UIDVaultsVaultNameMultipartUploadsUploadIDPost(ctx,
-		conf.AppId, p.vaultName, p.uploadId, p.treeTag, fmt.Sprintf("%d", p.size))
+	resp, err := archive.VaultsVaultNameMultipartUploadsUploadIDPost(ctx,
+		p.vaultName, p.uploadId, p.treeTag, fmt.Sprintf("%d", p.size))
 	if err != nil {
 		fmt.Println("complete_multipart_upload ERROR:", err)
 		return subcommands.ExitFailure

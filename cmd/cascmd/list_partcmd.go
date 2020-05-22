@@ -23,7 +23,7 @@ import (
 	"github.com/antihax/optional"
 	"github.com/google/subcommands"
 
-	openapi "github.com/chennqqi/cas_go_sdk/go"
+	openapi "github.com/chennqqi/cas_go_sdk/cas"
 )
 
 func init() {
@@ -63,15 +63,15 @@ func (p *listPartCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...interfa
 	client := openapi.NewAPIClient(conf)
 	archive := client.ArchiveApi
 
-	var opt openapi.UIDVaultsVaultNameMultipartUploadsUploadIDGetOpts
+	var opt openapi.VaultsVaultNameMultipartUploadsUploadIDGetOpts
 	if p.marker != "" {
 		opt.Marker = optional.NewString(p.vaultName)
 		opt.Limit = optional.NewInt64(p.limit)
 	}
 
 	///<UID>/vaults/<VaultName>/multipart-uploads/<uploadID>
-	parts, _, err := archive.UIDVaultsVaultNameMultipartUploadsUploadIDGet(ctx,
-		conf.AppId, p.vaultName, p.uploadId, &opt)
+	parts, _, err := archive.VaultsVaultNameMultipartUploadsUploadIDGet(ctx,
+		p.vaultName, p.uploadId, &opt)
 	if err != nil {
 		fmt.Println("Error:", err)
 		return subcommands.ExitFailure

@@ -22,7 +22,7 @@ import (
 	"github.com/antihax/optional"
 	"github.com/google/subcommands"
 
-	openapi "github.com/chennqqi/cas_go_sdk/go"
+	openapi "github.com/chennqqi/cas_go_sdk/cas"
 )
 
 func init() {
@@ -53,11 +53,11 @@ func (p *listVaultCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...interf
 		fmt.Println("load conf error:", err)
 		return subcommands.ExitFailure
 	}
-
+	conf.Debug = true
 	client := openapi.NewAPIClient(conf)
 	vault := client.VaultApi
 
-	var opt openapi.UIDVaultsGetOpts
+	var opt openapi.VaultsGetOpts
 	if p.limit != 0 {
 		opt.Limit = optional.NewInt64(int64(p.limit))
 	}
@@ -65,7 +65,7 @@ func (p *listVaultCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...interf
 		opt.Marker = optional.NewString(p.marker)
 	}
 
-	sm, resp, err := vault.UIDVaultsGet(ctx, conf.AppId, &opt)
+	sm, resp, err := vault.VaultsGet(ctx, &opt)
 	if err != nil {
 		fmt.Println("ERROR: ", err)
 		return subcommands.ExitFailure

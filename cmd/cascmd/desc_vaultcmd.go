@@ -21,7 +21,7 @@ import (
 
 	"github.com/google/subcommands"
 
-	openapi "github.com/chennqqi/cas_go_sdk/go"
+	openapi "github.com/chennqqi/cas_go_sdk/cas"
 )
 
 func init() {
@@ -54,7 +54,7 @@ func (p *descVaultCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...interf
 	client := openapi.NewAPIClient(conf)
 	vault := client.VaultApi
 
-	info, _, err := vault.GetVault(ctx, conf.AppId, p.vaultName)
+	info, _, err := vault.GetVault(ctx, p.vaultName)
 	if err != nil {
 		fmt.Println("ERROR:", err)
 		return subcommands.ExitFailure

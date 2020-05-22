@@ -19,7 +19,7 @@ import (
 	"flag"
 	"fmt"
 
-	openapi "github.com/chennqqi/cas_go_sdk/go"
+	openapi "github.com/chennqqi/cas_go_sdk/cas"
 	"github.com/google/subcommands"
 )
 
@@ -54,7 +54,7 @@ func (p *createVaultCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...inte
 	client := openapi.NewAPIClient(conf)
 	vault := client.VaultApi
 
-	resp, err := vault.CreateVault(ctx, conf.AppId, p.vaultName)
+	resp, err := vault.CreateVault(ctx, p.vaultName)
 	if err != nil {
 		if goe, ok := err.(openapi.GenericOpenAPIError); ok {
 			fmt.Println("ERROR:", goe.Model())

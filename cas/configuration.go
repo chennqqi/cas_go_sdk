@@ -69,6 +69,7 @@ type ServerConfiguration struct {
 
 // Configuration stores the configuration of the API client
 type Configuration struct {
+	Region       string        `json:"region"`
 	AppId        string        `json:"appid"`
 	AccessKey    string        `json:"access_key"`
 	AccessSecret string        `json:"access_secret"`
@@ -97,11 +98,11 @@ func NewConfiguration() *Configuration {
 		Debug:         false,
 		Servers: []ServerConfiguration{
 			{
-				Url: "http://cas.ap-{region}.myqcloud.com/{basePath}",
+				Url:         "http://cas.ap-{region}.myqcloud.com/{basePath}",
 				Description: "The production API server",
 				Variables: map[string]ServerVariable{
 					"basePath": ServerVariable{
-						Description: "appId or as named UID",
+						Description:  "appId or as named UID",
 						DefaultValue: "-",
 					},
 					"region": ServerVariable{

@@ -22,7 +22,7 @@ import (
 	"github.com/google/subcommands"
 
 	"github.com/antihax/optional"
-	openapi "github.com/chennqqi/cas_go_sdk/go"
+	openapi "github.com/chennqqi/cas_go_sdk/cas"
 )
 
 func init() {
@@ -59,7 +59,7 @@ func (p *listJobCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...interfac
 	client := openapi.NewAPIClient(conf)
 	job := client.JobApi
 
-	var opt openapi.UIDVaultsVaultNameJobsGetOpts
+	var opt openapi.VaultsVaultNameJobsGetOpts
 	if p.marker != "" {
 		opt.Marker = optional.NewString(p.marker)
 	}
@@ -67,7 +67,7 @@ func (p *listJobCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...interfac
 		opt.Limit = optional.NewInt64(int64(p.limit))
 	}
 
-	jobs, _, err := job.UIDVaultsVaultNameJobsGet(ctx, "-", p.vaultName, &opt)
+	jobs, _, err := job.VaultsVaultNameJobsGet(ctx, p.vaultName, &opt)
 	if err != nil {
 		fmt.Println("ERROR:", err)
 		return subcommands.ExitFailure

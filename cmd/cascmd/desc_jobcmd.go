@@ -22,7 +22,7 @@ import (
 	"github.com/google/subcommands"
 
 	//	"github.com/antihax/optional"
-	openapi "github.com/chennqqi/cas_go_sdk/go"
+	openapi "github.com/chennqqi/cas_go_sdk/cas"
 )
 
 func init() {
@@ -57,7 +57,7 @@ func (p *descJobCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...interfac
 
 	client := openapi.NewAPIClient(conf)
 	job := client.JobApi
-	desc, _, err := job.UIDVaultsVaultNameJobsJobIDGet(ctx, conf.AppId, p.vaultName, p.jobId)
+	desc, _, err := job.VaultsVaultNameJobsJobIDGet(ctx, p.vaultName, p.jobId)
 	if err != nil {
 		fmt.Println("ERROR:", err)
 		return subcommands.ExitFailure

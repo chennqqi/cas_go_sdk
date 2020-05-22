@@ -20,7 +20,7 @@ import (
 	"fmt"
 
 	"github.com/antihax/optional"
-	openapi "github.com/chennqqi/cas_go_sdk/go"
+	openapi "github.com/chennqqi/cas_go_sdk/cas"
 	"github.com/google/subcommands"
 )
 
@@ -110,7 +110,7 @@ func (p *createJobCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...interf
 		fmt.Println("Archive retrieval range:", byteRange)
 	}
 
-	var opt openapi.UIDVaultsVaultNameJobsPostOpts
+	var opt openapi.VaultsVaultNameJobsPostOpts
 
 	switch jtype {
 	case "archive-retrieval":
@@ -149,7 +149,7 @@ func (p *createJobCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...interf
 		opt.UNKNOWNBASETYPE = optional.NewInterface(openapi.JobArchiveExportReq{})
 	}
 
-	resp, err := job.UIDVaultsVaultNameJobsPost(ctx, conf.AppId, p.vaultName, &opt)
+	resp, err := job.VaultsVaultNameJobsPost(ctx, p.vaultName, &opt)
 	if err != nil {
 		fmt.Println("Error:", err)
 		return subcommands.ExitFailure

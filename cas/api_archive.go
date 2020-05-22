@@ -12,11 +12,12 @@ package cas
 
 import (
 	_context "context"
+	"io"
 	_ioutil "io/ioutil"
 	_nethttp "net/http"
 	_neturl "net/url"
 	"strings"
-	"os"
+
 	"github.com/antihax/optional"
 )
 
@@ -46,9 +47,9 @@ func (a *ArchiveApiService) VaultsVaultNameArchivesArchiveIDDelete(ctx _context.
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/vaults/{VaultName}/archives/{ArchiveID}"
-	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", _neturl.QueryEscape(parameterToString(vaultName, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", _neturl.QueryEscape(parameterToString(vaultName, "")), -1)
 
-	localVarPath = strings.Replace(localVarPath, "{"+"ArchiveID"+"}", _neturl.QueryEscape(parameterToString(archiveID, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"ArchiveID"+"}", _neturl.QueryEscape(parameterToString(archiveID, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -122,7 +123,7 @@ func (a *ArchiveApiService) VaultsVaultNameArchivesArchiveIDDelete(ctx _context.
 
 // VaultsVaultNameArchivesPostOpts Optional parameters for the method 'VaultsVaultNameArchivesPost'
 type VaultsVaultNameArchivesPostOpts struct {
-    XCasArchiveDescription optional.String
+	XCasArchiveDescription optional.String
 }
 
 /*
@@ -135,9 +136,9 @@ Upload Archive 请求实现上传一个 Archive 到指定 Vault。请求成功�
  * @param xCasSha256TreeHash
  * @param body
  * @param optional nil or *VaultsVaultNameArchivesPostOpts - Optional Parameters:
- * @param "XCasArchiveDescription" (optional.String) - 
+ * @param "XCasArchiveDescription" (optional.String) -
 */
-func (a *ArchiveApiService) VaultsVaultNameArchivesPost(ctx _context.Context, vaultName string, xCasContentSha256 string, contentLength string, xCasSha256TreeHash string, body *os.File, localVarOptionals *VaultsVaultNameArchivesPostOpts) (*_nethttp.Response, error) {
+func (a *ArchiveApiService) VaultsVaultNameArchivesPost(ctx _context.Context, vaultName string, xCasContentSha256 string, contentLength string, xCasSha256TreeHash string, body io.Reader, localVarOptionals *VaultsVaultNameArchivesPostOpts) (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
@@ -148,7 +149,7 @@ func (a *ArchiveApiService) VaultsVaultNameArchivesPost(ctx _context.Context, va
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/vaults/{VaultName}/archives"
-	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", _neturl.QueryEscape(parameterToString(vaultName, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", _neturl.QueryEscape(parameterToString(vaultName, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -178,7 +179,7 @@ func (a *ArchiveApiService) VaultsVaultNameArchivesPost(ctx _context.Context, va
 		localVarHeaderParams["x-cas-archive-description"] = parameterToString(localVarOptionals.XCasArchiveDescription.Value(), "")
 	}
 	// body params
-	localVarPostBody = &body
+	localVarPostBody = body
 	if ctx != nil {
 		// API Key Authentication
 		if auth, ok := ctx.Value(ContextAPIKey).(APIKey); ok {
@@ -230,8 +231,8 @@ func (a *ArchiveApiService) VaultsVaultNameArchivesPost(ctx _context.Context, va
 
 // VaultsVaultNameMultipartUploadsGetOpts Optional parameters for the method 'VaultsVaultNameMultipartUploadsGet'
 type VaultsVaultNameMultipartUploadsGetOpts struct {
-    Limit optional.Int64
-    Marker optional.String
+	Limit  optional.Int64
+	Marker optional.String
 }
 
 /*
@@ -240,8 +241,8 @@ List Multipart Uploads请求实现列出正在进行中的分段上传
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param vaultName
  * @param optional nil or *VaultsVaultNameMultipartUploadsGetOpts - Optional Parameters:
- * @param "Limit" (optional.Int64) - 
- * @param "Marker" (optional.String) - 
+ * @param "Limit" (optional.Int64) -
+ * @param "Marker" (optional.String) -
 @return VaultsSummary
 */
 func (a *ArchiveApiService) VaultsVaultNameMultipartUploadsGet(ctx _context.Context, vaultName string, localVarOptionals *VaultsVaultNameMultipartUploadsGetOpts) (VaultsSummary, *_nethttp.Response, error) {
@@ -256,7 +257,7 @@ func (a *ArchiveApiService) VaultsVaultNameMultipartUploadsGet(ctx _context.Cont
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/vaults/{VaultName}/multipart-uploads"
-	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", _neturl.QueryEscape(parameterToString(vaultName, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", _neturl.QueryEscape(parameterToString(vaultName, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -335,7 +336,7 @@ func (a *ArchiveApiService) VaultsVaultNameMultipartUploadsGet(ctx _context.Cont
 
 // VaultsVaultNameMultipartUploadsPostOpts Optional parameters for the method 'VaultsVaultNameMultipartUploadsPost'
 type VaultsVaultNameMultipartUploadsPostOpts struct {
-    XCasArchiveDescription optional.String
+	XCasArchiveDescription optional.String
 }
 
 /*
@@ -345,7 +346,7 @@ Initiate Multipart Upload请求实现初始化分段上传，此请求将返回�
  * @param vaultName
  * @param xCasPartSize
  * @param optional nil or *VaultsVaultNameMultipartUploadsPostOpts - Optional Parameters:
- * @param "XCasArchiveDescription" (optional.String) - 
+ * @param "XCasArchiveDescription" (optional.String) -
 */
 func (a *ArchiveApiService) VaultsVaultNameMultipartUploadsPost(ctx _context.Context, vaultName string, xCasPartSize string, localVarOptionals *VaultsVaultNameMultipartUploadsPostOpts) (*_nethttp.Response, error) {
 	var (
@@ -358,7 +359,7 @@ func (a *ArchiveApiService) VaultsVaultNameMultipartUploadsPost(ctx _context.Con
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/vaults/{VaultName}/multipart-uploads"
-	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", _neturl.QueryEscape(parameterToString(vaultName, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", _neturl.QueryEscape(parameterToString(vaultName, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -452,9 +453,9 @@ func (a *ArchiveApiService) VaultsVaultNameMultipartUploadsUploadIDDelete(ctx _c
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/vaults/{VaultName}/multipart-uploads/{uploadID}"
-	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", _neturl.QueryEscape(parameterToString(vaultName, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", _neturl.QueryEscape(parameterToString(vaultName, "")), -1)
 
-	localVarPath = strings.Replace(localVarPath, "{"+"uploadID"+"}", _neturl.QueryEscape(parameterToString(uploadID, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"uploadID"+"}", _neturl.QueryEscape(parameterToString(uploadID, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -528,8 +529,8 @@ func (a *ArchiveApiService) VaultsVaultNameMultipartUploadsUploadIDDelete(ctx _c
 
 // VaultsVaultNameMultipartUploadsUploadIDGetOpts Optional parameters for the method 'VaultsVaultNameMultipartUploadsUploadIDGet'
 type VaultsVaultNameMultipartUploadsUploadIDGetOpts struct {
-    Limit optional.Int64
-    Marker optional.String
+	Limit  optional.Int64
+	Marker optional.String
 }
 
 /*
@@ -539,8 +540,8 @@ List Parts请求实现列出已上传的数据段。
  * @param vaultName
  * @param uploadID
  * @param optional nil or *VaultsVaultNameMultipartUploadsUploadIDGetOpts - Optional Parameters:
- * @param "Limit" (optional.Int64) - 
- * @param "Marker" (optional.String) - 
+ * @param "Limit" (optional.Int64) -
+ * @param "Marker" (optional.String) -
 @return ListParts
 */
 func (a *ArchiveApiService) VaultsVaultNameMultipartUploadsUploadIDGet(ctx _context.Context, vaultName string, uploadID string, localVarOptionals *VaultsVaultNameMultipartUploadsUploadIDGetOpts) (ListParts, *_nethttp.Response, error) {
@@ -555,9 +556,9 @@ func (a *ArchiveApiService) VaultsVaultNameMultipartUploadsUploadIDGet(ctx _cont
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/vaults/{VaultName}/multipart-uploads/{uploadID}"
-	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", _neturl.QueryEscape(parameterToString(vaultName, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", _neturl.QueryEscape(parameterToString(vaultName, "")), -1)
 
-	localVarPath = strings.Replace(localVarPath, "{"+"uploadID"+"}", _neturl.QueryEscape(parameterToString(uploadID, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"uploadID"+"}", _neturl.QueryEscape(parameterToString(uploadID, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -664,9 +665,9 @@ func (a *ArchiveApiService) VaultsVaultNameMultipartUploadsUploadIDPost(ctx _con
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/vaults/{VaultName}/multipart-uploads/{uploadID}"
-	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", _neturl.QueryEscape(parameterToString(vaultName, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", _neturl.QueryEscape(parameterToString(vaultName, "")), -1)
 
-	localVarPath = strings.Replace(localVarPath, "{"+"uploadID"+"}", _neturl.QueryEscape(parameterToString(uploadID, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"uploadID"+"}", _neturl.QueryEscape(parameterToString(uploadID, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -742,7 +743,7 @@ func (a *ArchiveApiService) VaultsVaultNameMultipartUploadsUploadIDPost(ctx _con
 
 // VaultsVaultNameMultipartUploadsUploadIDPutOpts Optional parameters for the method 'VaultsVaultNameMultipartUploadsUploadIDPut'
 type VaultsVaultNameMultipartUploadsUploadIDPutOpts struct {
-    ContentLength optional.String
+	ContentLength optional.String
 }
 
 /*
@@ -756,9 +757,9 @@ Upload Part请求实现上传档案的一段数据。支持乱序上传档案段
  * @param xCasSha256TreeHash
  * @param body
  * @param optional nil or *VaultsVaultNameMultipartUploadsUploadIDPutOpts - Optional Parameters:
- * @param "ContentLength" (optional.String) - 
+ * @param "ContentLength" (optional.String) -
 */
-func (a *ArchiveApiService) VaultsVaultNameMultipartUploadsUploadIDPut(ctx _context.Context, vaultName string, uploadID string, contentRange string, xCasContentSha256 string, xCasSha256TreeHash string, body *os.File, localVarOptionals *VaultsVaultNameMultipartUploadsUploadIDPutOpts) (*_nethttp.Response, error) {
+func (a *ArchiveApiService) VaultsVaultNameMultipartUploadsUploadIDPut(ctx _context.Context, vaultName string, uploadID string, contentRange string, xCasContentSha256 string, xCasSha256TreeHash string, body io.Reader, localVarOptionals *VaultsVaultNameMultipartUploadsUploadIDPutOpts) (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPut
 		localVarPostBody     interface{}
@@ -769,9 +770,9 @@ func (a *ArchiveApiService) VaultsVaultNameMultipartUploadsUploadIDPut(ctx _cont
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/vaults/{VaultName}/multipart-uploads/{uploadID}"
-	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", _neturl.QueryEscape(parameterToString(vaultName, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", _neturl.QueryEscape(parameterToString(vaultName, "")), -1)
 
-	localVarPath = strings.Replace(localVarPath, "{"+"uploadID"+"}", _neturl.QueryEscape(parameterToString(uploadID, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"uploadID"+"}", _neturl.QueryEscape(parameterToString(uploadID, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -801,7 +802,7 @@ func (a *ArchiveApiService) VaultsVaultNameMultipartUploadsUploadIDPut(ctx _cont
 		localVarHeaderParams["Content-Length"] = parameterToString(localVarOptionals.ContentLength.Value(), "")
 	}
 	// body params
-	localVarPostBody = &body
+	localVarPostBody = body
 	if ctx != nil {
 		// API Key Authentication
 		if auth, ok := ctx.Value(ContextAPIKey).(APIKey); ok {

@@ -22,7 +22,7 @@ import (
 
 	"github.com/google/subcommands"
 
-	openapi "github.com/chennqqi/cas_go_sdk/go"
+	openapi "github.com/chennqqi/cas_go_sdk/cas"
 )
 
 func init() {
@@ -62,7 +62,7 @@ func (p *deleteVaultCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...inte
 		return subcommands.ExitFailure
 	}
 	var vaultName = u.Path
-	_, err = vault.UIDVaultsVaultNameDelete(ctx, conf.AppId, vaultName)
+	_, err = vault.VaultsVaultNameDelete(ctx, vaultName)
 
 	if err != nil {
 		if goe, ok := err.(openapi.GenericOpenAPIError); ok {

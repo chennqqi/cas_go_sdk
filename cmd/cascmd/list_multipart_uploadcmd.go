@@ -20,7 +20,7 @@ import (
 	"fmt"
 
 	"github.com/antihax/optional"
-	openapi "github.com/chennqqi/cas_go_sdk/go"
+	openapi "github.com/chennqqi/cas_go_sdk/cas"
 	"github.com/google/subcommands"
 )
 
@@ -58,12 +58,12 @@ func (p *listMultriPartCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...i
 	p.vaultName = parseVaultName(p.vaultName)
 	client := openapi.NewAPIClient(conf)
 	archive := client.ArchiveApi
-	var opt openapi.UIDVaultsVaultNameMultipartUploadsGetOpts
+	var opt openapi.VaultsVaultNameMultipartUploadsGetOpts
 	if p.marker != "" {
 		opt.Marker = optional.NewString(p.vaultName)
 		opt.Limit = optional.NewInt64(p.limit)
 	}
-	archive.UIDVaultsVaultNameMultipartUploadsGet(ctx, conf.AppId, p.vaultName, &opt)
+	archive.VaultsVaultNameMultipartUploadsGet(ctx, p.vaultName, &opt)
 	//TODO: fmt.Println result
 
 	fmt.Println()

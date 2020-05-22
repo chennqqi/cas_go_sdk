@@ -20,7 +20,7 @@ import (
 	"runtime"
 	"strings"
 
-	openapi "github.com/chennqqi/cas_go_sdk/go"
+	openapi "github.com/chennqqi/cas_go_sdk/cas"
 	"github.com/chennqqi/goutils/jsonconfig"
 )
 

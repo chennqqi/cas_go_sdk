@@ -19,7 +19,7 @@ import (
 	"flag"
 	"fmt"
 
-	openapi "github.com/chennqqi/cas_go_sdk/go"
+	openapi "github.com/chennqqi/cas_go_sdk/cas"
 	"github.com/google/subcommands"
 )
 
@@ -58,11 +58,11 @@ func (p *rmCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...interface{}) 
 	archive := client.ArchiveApi
 
 	if p.uploadId == "" {
-		_, err = vault.UIDVaultsVaultNameDelete(ctx,
-			conf.AppId, p.vaultName)
+		_, err = vault.VaultsVaultNameDelete(ctx,
+			p.vaultName)
 	} else {
-		_, err = archive.UIDVaultsVaultNameArchivesArchiveIDDelete(ctx,
-			conf.AppId, p.vaultName, p.uploadId)
+		_, err = archive.VaultsVaultNameArchivesArchiveIDDelete(ctx,
+			p.vaultName, p.uploadId)
 	}
 	if err != nil {
 		fmt.Println("ERROR:", err)

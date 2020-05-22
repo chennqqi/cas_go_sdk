@@ -23,7 +23,7 @@ import (
 	"strings"
 
 	"github.com/antihax/optional"
-	openapi "github.com/chennqqi/cas_go_sdk/go"
+	openapi "github.com/chennqqi/cas_go_sdk/cas"
 	"github.com/chennqqi/cas_go_sdk/treehash"
 	"github.com/dustin/go-humanize"
 	"github.com/google/subcommands"
@@ -124,14 +124,14 @@ func (p *uploadArchiveCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...in
 			fmt.Printf("Use %s parts with partsize %s to upload\n",
 				nparts, humanize.Bytes((uint64)(p.partSize)))
 
-			var opt openapi.UIDVaultsVaultNameMultipartUploadsPostOpts
+			var opt openapi.VaultsVaultNameMultipartUploadsPostOpts
 			if p.desc != "" {
 				opt.XCasArchiveDescription = optional.NewString(p.desc)
 			}
 
 			//Initiate Multipart Upload
-			resp, err := archive.UIDVaultsVaultNameMultipartUploadsPost(ctx,
-				conf.AppId, p.vaultName, fmt.Sprintf("%d", p.partSize), &opt)
+			resp, err := archive.VaultsVaultNameMultipartUploadsPost(ctx,
+				p.vaultName, fmt.Sprintf("%d", p.partSize), &opt)
 			if err != nil {
 				fmt.Println("ERROR:", err)
 				return subcommands.ExitFailure
@@ -139,10 +139,10 @@ func (p *uploadArchiveCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...in
 			uploadId = resp.Header.Get("x-cas-multipart-upload-id")
 			//location = resp.Header.Get("Location")
 		} else {
-			var opt openapi.UIDVaultsVaultNameMultipartUploadsUploadIDGetOpts
+			var opt openapi.VaultsVaultNameMultipartUploadsUploadIDGetOpts
 			//TODO: args
-			parts, _, err := archive.UIDVaultsVaultNameMultipartUploadsUploadIDGet(ctx,
-				conf.AppId, p.vaultName, uploadId, &opt)
+			parts, _, err := archive.VaultsVaultNameMultipartUploadsUploadIDGet(ctx,
+				p.vaultName, uploadId, &opt)
 			if err != nil {
 				fmt.Println("ERROR:", err)
 				return subcommands.ExitFailure

@@ -25,7 +25,7 @@ import (
 	"github.com/antihax/optional"
 	"github.com/google/subcommands"
 
-	openapi "github.com/chennqqi/cas_go_sdk/go"
+	openapi "github.com/chennqqi/cas_go_sdk/cas"
 )
 
 func init() {
@@ -71,7 +71,7 @@ func (p *uploadPartCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...inter
 	client := openapi.NewAPIClient(conf)
 	archive := client.ArchiveApi
 
-	var opt openapi.UIDVaultsVaultNameMultipartUploadsUploadIDPutOpts
+	var opt openapi.VaultsVaultNameMultipartUploadsUploadIDPutOpts
 	var size = p.end - p.start
 
 	fp, err := os.Open(p.localFile)
@@ -100,8 +100,8 @@ func (p *uploadPartCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...inter
 	opt.ContentLength = optional.NewString(fmt.Sprintf("%d", size))
 	contentRange := fmt.Sprintf("bytes %d-%d", p.start, p.end)
 
-	resp, err1 := archive.UIDVaultsVaultNameMultipartUploadsUploadIDPut(ctx,
-		conf.AppId, p.vaultName, p.uploadId, contentRange, p.eTag, p.treeTag, &opt, r,
+	resp, err1 := archive.VaultsVaultNameMultipartUploadsUploadIDPut(ctx,
+		p.vaultName, p.uploadId, contentRange, p.eTag, p.treeTag, r, &opt,
 	)
 	err2 := <-errChan
 	if err1 != nil {

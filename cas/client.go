@@ -117,6 +117,11 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 			SignKeyEnd:   cfg.SignKeyEnd,
 		}
 	}
+	//use serverURL replace basePath
+	cfg.BasePath, _ = cfg.ServerUrl(0, map[string]string{
+		"region":   cfg.Region,
+		"basePath": cfg.AppId,
+	})
 
 	return c
 }
@@ -541,16 +546,6 @@ func (c *APIClient) prepareRequest(
 		return nil, err
 	}
 
-	// Override request host, if applicable
-	if c.cfg.Host != "" {
-		url.Host = c.cfg.Host
-	}
-
-	// Override request scheme, if applicable
-	if c.cfg.Scheme != "" {
-		url.Scheme = c.cfg.Scheme
-	}
-
 	// Adding Query Param
 	query := url.Query()
 	for k, v := range queryParams {
@@ -576,7 +571,8 @@ func (c *APIClient) prepareRequest(
 	if len(headerParams) > 0 {
 		headers := http.Header{}
 		for h, v := range headerParams {
-			headers.Set(h, v)
+			//headers.Set(h, v)
+			headers[h] = []string{v}
 		}
 		localVarRequest.Header = headers
 	}
@@ -629,9 +625,9 @@ func (c *APIClient) prepareRequest(
 	}
 
 	//post add Authorization
-	authorization := c.Authorization(method, path, localVarRequest.Host,
+	authorization := c.Authorization(method, url.Path, localVarRequest.Host,
 		localVarRequest.Header, query)
-	localVarRequest.Header.Add("Authorization", authorization)
+	localVarRequest.Header.Set("Authorization", authorization)
 
 	return localVarRequest, nil
 }

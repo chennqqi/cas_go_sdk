@@ -16,16 +16,11 @@ package main
 
 import (
 	"context"
-	"crypto/hmac"
-	"crypto/sha1"
-	"encoding/hex"
 	"flag"
 	"fmt"
 	"os"
-	"strings"
 	"time"
 
-	"github.com/araddon/dateparse"
 	"github.com/google/subcommands"
 )
 
@@ -33,12 +28,17 @@ func init() {
 }
 
 type configCmd struct {
-	endPoint   string
-	appId      string
-	secretId   string
-	secretKey  string
+	region string
+	appId  string
+	key    string
+	secret string
+	expire string
+
+	sign  string
+	start int64
+	end   int64
+
 	configFile string
-	expireAt   string
 }
 
 func (*configCmd) Name() string     { return "config" }
@@ -50,11 +50,17 @@ func (*configCmd) Usage() string {
 }
 
 func (p *configCmd) SetFlags(f *flag.FlagSet) {
-	f.StringVar(&p.endPoint, "endpoint", "", "cas endpoint host")
-	f.StringVar(&p.appId, "appid", "", "user appid")
-	f.StringVar(&p.secretId, "secretid", "", "user secretid")
-	f.StringVar(&p.secretKey, "secretkey", "", "user secretkey")
-	f.StringVar(&p.expireAt, "expireat", "", "set signkey expire")
+	f.StringVar(&p.region, "region", "beijing", "cas region [beijing/shanghai/guangzhou/chengdu]")
+	f.StringVar(&p.appId, "appid", "-", "user appid")
+	f.StringVar(&p.key, "key", "", "user api key, required")
+
+	f.StringVar(&p.secret, "secret", "", "user api secret, using secret mode")
+	f.StringVar(&p.expire, "expire", "86400s", "set access secret expire")
+
+	f.StringVar(&p.sign, "sign", "", "set signkey, using signkey mode")
+	f.Int64Var(&p.start, "start", 0, "set signkey start, if 'sign' set, this opition is required")
+	f.Int64Var(&p.end, "end", 0, "set signkey expire,if 'sign' set, this opition is required")
+
 	f.StringVar(&p.configFile, "config-file", "", "file to save configuration")
 }
 
@@ -65,46 +71,22 @@ func (p *configCmd) Execute(_ context.Context, f *flag.FlagSet, _ ...interface{}
 		return subcommands.ExitFailure
 	}
 
-	if p.endPoint != "" {
-		if strings.HasPrefix(p.endPoint, "http://") {
-			conf.BasePath = p.endPoint
-			conf.Host = p.endPoint[7:]
-		} else if strings.HasPrefix(p.endPoint, "https://") {
-			conf.BasePath = p.endPoint
-			conf.Host = p.endPoint[8:]
-		} else {
-			conf.BasePath = "http://" + p.endPoint
-			conf.Host = p.endPoint
-		}
+	if p.key == "" {
+		fmt.Println("ERROR: api key is required")
+		return subcommands.ExitFailure
 	}
-	if p.appId != "" {
-		conf.AppId = p.appId
-	}
-	if p.secretId != "" {
-		conf.AccessKey = p.secretId
-	}
-	if p.secretKey != "" {
-		conf.AccessSecret = p.secretKey
-	}
-	if p.expireAt != "" {
-		now := time.Now()
-		at, err := dateparse.ParseLocal(p.expireAt)
-		if err != nil {
-			fmt.Println("config parse expire time ERROR:", err)
-			return subcommands.ExitFailure
-		} else if at.Before(now) {
-			fmt.Println("expire time should after now")
-			return subcommands.ExitFailure
-		}
-		start := now.Unix()
-		end := at.Unix()
-		conf.SignKeyStart = start
-		conf.SignKeyExpire = time.Duration(end-start) * time.Second
-		h := hmac.New(sha1.New, []byte(conf.AccessSecret))
-		h.Write([]byte(fmt.Sprintf("%d;%d", start, end)))
-		conf.SignKey = hex.EncodeToString(h.Sum(nil))
-		//clear secret, only use signKey
-		conf.AccessSecret = ""
+	conf.AppId = p.appId
+	conf.AccessKey = p.key
+	conf.Region = p.region
+	du, _ := time.ParseDuration(p.expire)
+
+	if p.secret != "" {
+		conf.AccessSecret = p.secret
+		conf.SecretExpire = du
+	} else {
+		conf.SignKey = p.sign
+		conf.SignKeyStart = p.start
+		conf.SignKeyEnd = p.end
 	}
 
 	if err := saveConf(p.configFile, conf); err != nil {

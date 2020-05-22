@@ -19,7 +19,7 @@ import (
 	"flag"
 	"fmt"
 
-	openapi "github.com/chennqqi/cas_go_sdk/go"
+	openapi "github.com/chennqqi/cas_go_sdk/cas"
 	"github.com/google/subcommands"
 )
 
@@ -56,8 +56,8 @@ func (p *abortMultipartUploadCmd) Execute(ctx context.Context, f *flag.FlagSet, 
 	client := openapi.NewAPIClient(conf)
 	archive := client.ArchiveApi
 
-	_, err = archive.UIDVaultsVaultNameMultipartUploadsUploadIDDelete(ctx,
-		conf.AppId, p.vaultName, p.uploadId)
+	_, err = archive.VaultsVaultNameMultipartUploadsUploadIDDelete(ctx,
+		p.vaultName, p.uploadId)
 	if err != nil {
 		fmt.Println("abort_multipart_upload ERROR:", err)
 		return subcommands.ExitFailure
