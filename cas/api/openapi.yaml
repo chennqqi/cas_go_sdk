@@ -15,11 +15,11 @@ externalDocs:
   url: https://cloud.tencent.com/document/product/572/8742
 servers:
 - description: The production API server
-  url: http://cas.ap-{region}.myqcloud.com
+  url: http://cas.ap-{region}.myqcloud.com/{basePath}
   variables:
-    scheme:
-      default: http
-      description: http
+    basePath:
+      default: '-'
+      description: appId or as named UID
     region:
       default: beijing
       description: cas region, options [chengdu/beijing/guangzhou/shanghai]
@@ -58,18 +58,11 @@ tags:
 - description: 任务操作
   name: job
 paths:
-  /{UID}/vaults/{VaultName}:
+  /vaults/{VaultName}:
     delete:
       description: Delete Vault 请求实现删除一个 Vault，删除前要求 Vault 下无 Archive 同时无 Archive
         写入。删除 Vault 时同时删除其权限信息。请求成功后返回 204 NoContent。支持跨账户删除。当删除本账户下 Valut 时，UID值为"-"
       parameters:
-      - explode: false
-        in: path
-        name: UID
-        required: true
-        schema:
-          type: string
-        style: simple
       - explode: false
         in: path
         name: VaultName
@@ -96,13 +89,6 @@ paths:
         200 OK。支持跨账户操作。当操作本账户下 valut 时，UID值为"-"。
       operationId: GetVault
       parameters:
-      - explode: false
-        in: path
-        name: UID
-        required: true
-        schema:
-          type: string
-        style: simple
       - explode: false
         in: path
         name: VaultName
@@ -135,13 +121,6 @@ paths:
       parameters:
       - explode: false
         in: path
-        name: UID
-        required: true
-        schema:
-          type: string
-        style: simple
-      - explode: false
-        in: path
         name: VaultName
         required: true
         schema:
@@ -161,18 +140,11 @@ paths:
       summary: 创建vault
       tags:
       - vault
-  /{UID}/vaults/{VaultName}/access-policy:
+  /vaults/{VaultName}/access-policy:
     delete:
       description: Delete Vault Access Policy 请求删除 Vault 的权限。只支持所有者操作，对应 UID 值为"-"。成功后返回
         204 No Content。
       parameters:
-      - explode: false
-        in: path
-        name: UID
-        required: true
-        schema:
-          type: string
-        style: simple
       - explode: false
         in: path
         name: VaultName
@@ -198,13 +170,6 @@ paths:
       description: Get Vault Access Policy 请求读取一个 Vault 的权限。只支持所有者操作，对应 UID 值为"-"。成功后返回
         200 OK。
       parameters:
-      - explode: false
-        in: path
-        name: UID
-        required: true
-        schema:
-          type: string
-        style: simple
       - explode: false
         in: path
         name: VaultName
@@ -236,13 +201,6 @@ paths:
       parameters:
       - explode: false
         in: path
-        name: UID
-        required: true
-        schema:
-          type: string
-        style: simple
-      - explode: false
-        in: path
         name: VaultName
         required: true
         schema:
@@ -267,17 +225,10 @@ paths:
       summary: Set Vault Access Policy
       tags:
       - vault
-  /{UID}/vaults/{VaultName}/notification-configuration:
+  /vaults/{VaultName}/notification-configuration:
     delete:
       description: Delete Vault Notifications请求实现删除指定文件库通知回调策略 请求成功，返回 204 No Content
       parameters:
-      - explode: false
-        in: path
-        name: UID
-        required: true
-        schema:
-          type: string
-        style: simple
       - explode: false
         in: path
         name: VaultName
@@ -302,13 +253,6 @@ paths:
     get:
       description: Get Vault Notifications请求实现读取指定文件库通知回调策略
       parameters:
-      - explode: false
-        in: path
-        name: UID
-        required: true
-        schema:
-          type: string
-        style: simple
       - explode: false
         in: path
         name: VaultName
@@ -340,13 +284,6 @@ paths:
       parameters:
       - explode: false
         in: path
-        name: UID
-        required: true
-        schema:
-          type: string
-        style: simple
-      - explode: false
-        in: path
         name: VaultName
         required: true
         schema:
@@ -371,17 +308,10 @@ paths:
       summary: Set Vault Access Policy
       tags:
       - vault
-  /{UID}/vaults:
+  /vaults:
     get:
       description: List Vaults 接口实现列出该账户下所有的文件库。档案数与档案总大小，每日盘点更新，非实时数据。支持跨账户操作。当操作本账户时，UID为"-"。
       parameters:
-      - explode: false
-        in: path
-        name: UID
-        required: true
-        schema:
-          type: string
-        style: simple
       - description: 指定要返回的文件库最大数目。该值为正整数，取值1-1000，默认为 1000
         explode: true
         in: query
@@ -417,17 +347,10 @@ paths:
       summary: List Vaults
       tags:
       - vault
-  /{UID}/vaults/{VaultName}/multipart-uploads/{uploadID}:
+  /vaults/{VaultName}/multipart-uploads/{uploadID}:
     delete:
       description: Abort Multipart Upload请求实现终止分段上传。
       parameters:
-      - explode: false
-        in: path
-        name: UID
-        required: true
-        schema:
-          type: string
-        style: simple
       - explode: false
         in: path
         name: VaultName
@@ -459,13 +382,6 @@ paths:
     get:
       description: List Parts请求实现列出已上传的数据段。
       parameters:
-      - explode: false
-        in: path
-        name: UID
-        required: true
-        schema:
-          type: string
-        style: simple
       - explode: false
         in: path
         name: VaultName
@@ -516,13 +432,6 @@ paths:
     post:
       description: Complete Multipart Upload请求实现结束分段上传，形成文件。发起该请求时必须携带全文件的树形哈希值，服务端将比较用户上传的全文树形哈希和利用已上传分块得到的树形哈希，一致则请求成功，不一致则返回失败
       parameters:
-      - explode: false
-        in: path
-        name: UID
-        required: true
-        schema:
-          type: string
-        style: simple
       - explode: false
         in: path
         name: VaultName
@@ -583,13 +492,6 @@ paths:
         388 607 (8MB-1) 为有效的段范围。2097152（ 2MB） 到6291456（ 6MB-1）为非法段范围。成功上传段后，将返回 204
         No Content
       parameters:
-      - explode: false
-        in: path
-        name: UID
-        required: true
-        schema:
-          type: string
-        style: simple
       - explode: false
         in: path
         name: VaultName
@@ -659,7 +561,7 @@ paths:
       summary: Upload Part
       tags:
       - archive
-  /{UID}/vaults/{VaultName}/archives/{ArchiveID}:
+  /vaults/{VaultName}/archives/{ArchiveID}:
     delete:
       description: Delete Archive 请求实现删除一个 Archive。请求成功以后会返回 x-cas-archive-id 用来表示唯一的
         Archive 文件。请求成功返回 204 No Content。在删除 Archive 后，您仍可能成功请求启动对已删除 Archive 的检索任务，但
@@ -667,13 +569,6 @@ paths:
         Archive 请求时，Archive 检索任务正在下载 Archive 到缓存池，则 Archive 检索操作可能会失败。 收到删除 Archive
         请求时，Archive 检索任务已经下载 Archive 到缓存池，则您将能够下载输出。支持跨账户操作。当操作本账户时，UID 为"-"。
       parameters:
-      - explode: false
-        in: path
-        name: UID
-        required: true
-        schema:
-          type: string
-        style: simple
       - explode: false
         in: path
         name: VaultName
@@ -702,17 +597,10 @@ paths:
       summary: Delete Archive
       tags:
       - archive
-  /{UID}/vaults/{VaultName}/multipart-uploads:
+  /vaults/{VaultName}/multipart-uploads:
     get:
       description: List Multipart Uploads请求实现列出正在进行中的分段上传
       parameters:
-      - explode: false
-        in: path
-        name: UID
-        required: true
-        schema:
-          type: string
-        style: simple
       - explode: false
         in: path
         name: VaultName
@@ -752,13 +640,6 @@ paths:
       description: Initiate Multipart Upload请求实现初始化分段上传，此请求将返回一个Upload Id用以后续分段上传，此Upload
         Id有效期24小时。每次分段上传的段大小要求一致（除了最后一个段），且必须为1 MB乘以2的幂次
       parameters:
-      - explode: false
-        in: path
-        name: UID
-        required: true
-        schema:
-          type: string
-        style: simple
       - explode: false
         in: path
         name: VaultName
@@ -805,19 +686,12 @@ paths:
       summary: Initiate Multipart Upload
       tags:
       - archive
-  /{UID}/vaults/{VaultName}/archives:
+  /vaults/{VaultName}/archives:
     post:
       description: Upload Archive 请求实现上传一个 Archive 到指定 Vault。请求成功以后会返回 x-cas-archive-id
         用来表示唯一的Archive 文件。请求成功返回 201 Created。上传文件时，可以指定 x-cas-archive-description
         用来做文件内容备注。支持跨账户操作。当操作本账户时，UID为"-"。
       parameters:
-      - explode: false
-        in: path
-        name: UID
-        required: true
-        schema:
-          type: string
-        style: simple
       - explode: false
         in: path
         name: VaultName
@@ -895,17 +769,10 @@ paths:
       summary: Upload Archive
       tags:
       - archive
-  /{UID}/vaults/{VaultName}/jobs/<JobID>:
+  /vaults/{VaultName}/jobs/<JobID>:
     get:
       description: Describe Job 请求实现获取Vault的具体任务信息。支持跨账户操作。当操作本账户时，UID为"-"
       parameters:
-      - explode: false
-        in: path
-        name: UID
-        required: true
-        schema:
-          type: string
-        style: simple
       - explode: false
         in: path
         name: VaultName
@@ -942,18 +809,11 @@ paths:
       summary: Describe Job
       tags:
       - job
-  /{UID}/vaults/{VaultName}/jobs/<JobID>/output:
+  /vaults/{VaultName}/jobs/<JobID>/output:
     get:
       description: 请求用来输出缓存池中检索出来的 Archive 或Archive列表，缓存池中的内容24小时有效。请求所有数据成功后，返回 200
         OK。请求部分数据成功时，返回 206 Partial Content。支持跨账户操作。当操作本账户时，UID 为"-"。
       parameters:
-      - explode: false
-        in: path
-        name: UID
-        required: true
-        schema:
-          type: string
-        style: simple
       - explode: false
         in: path
         name: VaultName
@@ -1049,17 +909,10 @@ paths:
       summary: Get Job Output
       tags:
       - job
-  /{UID}/vaults/{VaultName}/jobs:
+  /vaults/{VaultName}/jobs:
     get:
       description: List Jobs 请求实现列出 Vault 的任务，包括正在进行的任务以及最近完成的任务。支持跨账户操作。当操作本账户时，UID为"-"。。
       parameters:
-      - explode: false
-        in: path
-        name: UID
-        required: true
-        schema:
-          type: string
-        style: simple
       - explode: false
         in: path
         name: VaultName
@@ -1122,13 +975,6 @@ paths:
       description: Describe Job Initiate Job 请求实现将档案或者档案列表取出到缓存池。操作完成后，用户可以通过 Get
         Job Output 请求读取对应档案或者档案列表。
       parameters:
-      - explode: false
-        in: path
-        name: UID
-        required: true
-        schema:
-          type: string
-        style: simple
       - explode: false
         in: path
         name: VaultName

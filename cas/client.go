@@ -13,6 +13,9 @@ package cas
 import (
 	"bytes"
 	"context"
+	"crypto/hmac"
+	"crypto/sha1"
+	"encoding/hex"
 	"encoding/json"
 	"encoding/xml"
 	"errors"
@@ -28,6 +31,7 @@ import (
 	"path/filepath"
 	"reflect"
 	"regexp"
+	"sort"
 	"strconv"
 	"strings"
 	"time"
@@ -40,6 +44,23 @@ var (
 	jsonCheck = regexp.MustCompile(`(?i:(?:application|text)/(?:vnd\.[^;]+\+)?json)`)
 	xmlCheck  = regexp.MustCompile(`(?i:(?:application|text)/xml)`)
 )
+
+const (
+	DefaultSendBufferSize = 8192
+	DefaultGetBufferSize  = 1024 * 1024 * 10
+	DefaultAuthTimeout    = time.Second * 1200
+	provider              = "CAS"
+
+	DEFAULT_NORMAL_UPLOAD_THRESHOLD = 100 * 1024 * 1024              // 单文件的默认最大上传阈值
+	RECOMMEND_MIN_PART_SIZE         = 16 * 1024 * 1024               // 推荐的最小分片大小
+	MAX_PART_NUM                    = 10000                          // 最大的分片数目
+	MAX_FILE_SIZE                   = 4 * 10000 * 1024 * 1024 * 1024 //最大支持40TB的文件存储
+)
+
+type ConfigurationAuthor interface {
+	Authorization(method, url, host string,
+		headers http.Header, params url.Values) string
+}
 
 // APIClient manages communication with the Tecent Cloud Archive Storage Golang SDK. API v1.5.0
 // In most cases there should be only one, shared, APIClient.
@@ -54,6 +75,8 @@ type APIClient struct {
 	JobApi *JobApiService
 
 	VaultApi *VaultApiService
+
+	ConfigurationAuthor
 }
 
 type service struct {
@@ -75,6 +98,25 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.ArchiveApi = (*ArchiveApiService)(&c.common)
 	c.JobApi = (*JobApiService)(&c.common)
 	c.VaultApi = (*VaultApiService)(&c.common)
+
+	if cfg.AccessSecret != "" {
+		var du = cfg.SecretExpire
+		if du == 0 {
+			du = DefaultAuthTimeout
+		}
+		c.ConfigurationAuthor = &ConfigurationModeSecret{
+			AccessKey:    cfg.AccessKey,
+			AccessSecret: cfg.AccessSecret,
+			SecretExpire: du,
+		}
+	} else {
+		c.ConfigurationAuthor = &ConfigurationModeSignKey{
+			AccessKey:    cfg.AccessKey,
+			SignKey:      cfg.SignKey,
+			SignKeyStart: cfg.SignKeyStart,
+			SignKeyEnd:   cfg.SignKeyEnd,
+		}
+	}
 
 	return c
 }
@@ -164,13 +206,12 @@ func parameterToJson(obj interface{}) (string, error) {
 	return string(jsonBuf), err
 }
 
-
 // callAPI do the request.
 func (c *APIClient) callAPI(request *http.Request) (*http.Response, error) {
 	if c.cfg.Debug {
-	        dump, err := httputil.DumpRequestOut(request, true)
+		dump, err := httputil.DumpRequestOut(request, true)
 		if err != nil {
-		        return nil, err
+			return nil, err
 		}
 		log.Printf("\n%s\n", string(dump))
 	}
@@ -200,6 +241,219 @@ func (c *APIClient) ChangeBasePath(path string) {
 // Caution: modifying the configuration while live can cause data races and potentially unwanted behavior
 func (c *APIClient) GetConfig() *Configuration {
 	return c.cfg
+}
+
+// formatParams
+func formatParams(m map[string]string) ([]string, string) {
+	dup := make(map[string]string)
+	keys := make([]string, len(m))
+	var count int
+	for k, v := range m {
+		nk := strings.ToLower(k)
+		keys[count] = nk
+		count++
+		dup[nk] = v
+	}
+	sort.Strings(keys)
+
+	var buf bytes.Buffer
+	for i := 0; i < len(keys); i++ {
+		//	Key和Value必须转为小写字符，且key值按字典序排序。
+		v := url.QueryEscape(dup[keys[i]])
+		v = strings.Replace(v, "+", "%20", -1)
+		buf.WriteString(fmt.Sprintf("%v=%v", keys[i], v))
+		if i < len(keys)-1 {
+			buf.WriteByte('&')
+		}
+	}
+	return keys, buf.String()
+}
+
+/*
+FormatHeaders：指请求中的 HTTP 头部信息，用 key=value 的方式表达。
+	头部的 key 必须全部小写，value 必须经过 URL Encode。
+	如果有多个参数对可使用 & 连接。key值按字典序排序
+*/
+func formatHeaders(m map[string]string) ([]string, string) {
+	dup := make(map[string]string)
+	keys := make([]string, len(m))
+	var count int
+	for k, v := range m {
+		nk := strings.ToLower(k)
+		keys[count] = nk
+		count++
+		dup[nk] = v //此处不能转小写
+	}
+	sort.Strings(keys)
+
+	var buf bytes.Buffer
+	for i := 0; i < len(keys); i++ {
+		//	Key和Value必须转为小写字符，且key值按字典序排序。
+		v := url.QueryEscape(dup[keys[i]])
+		v = strings.Replace(v, "+", "%20", -1)
+		buf.WriteString(fmt.Sprintf("%v=%v", keys[i], v))
+		if i < len(keys)-1 {
+			buf.WriteByte('&')
+		}
+	}
+	return keys, buf.String()
+}
+
+func statusCode4XX(code int) bool {
+	return code < 500 && code >= 400
+}
+
+type ConfigurationModeSecret struct {
+	AccessKey    string
+	AccessSecret string
+	SecretExpire time.Duration
+}
+
+func (c *ConfigurationModeSecret) Authorization(method, url, host string,
+	headers http.Header, params url.Values) string {
+	var accessKey, accessSecret = c.AccessKey, c.AccessSecret
+	var commonHeaders = []string{
+		"Host", "x-cas-content-sha256", "Content-Length", "x-cas-sha256-tree-hash",
+		"x-cas-archive-description",
+	}
+
+	dupHeaders := make(map[string]string)
+	dupHeaders["Host"] = host
+	for _, hkey := range commonHeaders {
+		//这个地方不能用GET,避免CanonicalHeaderKey
+		hv, exist := headers[hkey]
+		if exist && len(hv) > 0 {
+			dupHeaders[hkey] = hv[0]
+		}
+	}
+
+	var dupParams = make(map[string]string)
+	for k, _ := range params {
+		dupParams[k] = params.Get(k)
+	}
+
+	//cal signKey
+	var signKey, timeRange string
+	var now = time.Now()
+	timeRange = fmt.Sprintf(`%d;%d`, now.Unix(), now.Add(c.SecretExpire).Unix())
+	mac := hmac.New(sha1.New, []byte(accessSecret))
+	mac.Write([]byte(timeRange))
+	signKey = hex.EncodeToString(mac.Sum(nil))
+
+	//formating string
+	var formatString bytes.Buffer
+	formatString.WriteString(strings.ToLower(method))
+	formatString.WriteByte('\n')
+	//uri
+	formatString.WriteString(strings.ToLower(url))
+	formatString.WriteByte('\n')
+
+	//params
+	paramKeys, fParams := formatParams(dupParams)
+	//fmt.Println("formatParams:", fParams)
+	formatString.WriteString(fParams)
+	formatString.WriteByte('\n')
+
+	//header
+	headerKeys, fHeader := formatHeaders(dupHeaders)
+	//fmt.Println("formatHeaders:", fHeader)
+	formatString.WriteString(fHeader)
+	formatString.WriteByte('\n')
+
+	var stringToSign bytes.Buffer
+	stringToSign.WriteString("sha1\n")
+	stringToSign.WriteString(timeRange)
+	stringToSign.WriteByte('\n')
+
+	//fmt.Println("stringToSign:", formatString.String(), stringToSign.String())
+
+	h := sha1.New()
+	h.Write(formatString.Bytes())
+	stringToSign.WriteString(hex.EncodeToString(h.Sum(nil)))
+	stringToSign.WriteByte('\n')
+
+	mac2 := hmac.New(sha1.New, []byte(signKey))
+	mac2.Write(stringToSign.Bytes())
+	var sign = hex.EncodeToString(mac2.Sum(nil))
+
+	return fmt.Sprintf(`q-sign-algorithm=sha1&q-ak=%s&q-sign-time=%s&q-key-time=%s&q-header-list=%s&q-url-param-list=%s&q-signature=%s`,
+		accessKey, timeRange, timeRange,
+		strings.Join(headerKeys, ";"),
+		strings.Join(paramKeys, ";"), sign)
+}
+
+type ConfigurationModeSignKey struct {
+	AppId        string
+	AccessKey    string
+	SignKey      string
+	SignKeyStart int64
+	SignKeyEnd   int64
+}
+
+func (c *ConfigurationModeSignKey) Authorization(method, url, host string,
+	headers http.Header, params url.Values) string {
+	var commonHeaders = []string{
+		"Host", "x-cas-content-sha256", "Content-Length", "x-cas-sha256-tree-hash",
+		"x-cas-archive-description",
+	}
+
+	dupHeaders := make(map[string]string)
+	dupHeaders["Host"] = host
+	for _, hkey := range commonHeaders {
+		//这个地方不能用GET,避免CanonicalHeaderKey
+		hv, exist := headers[hkey]
+		if exist && len(hv) > 0 {
+			dupHeaders[hkey] = hv[0]
+		}
+	}
+
+	var dupParams = make(map[string]string)
+	for k, _ := range params {
+		dupParams[k] = params.Get(k)
+	}
+
+	var timeRange = fmt.Sprintf(`%d;%d`, c.SignKeyStart, c.SignKeyEnd)
+
+	//formating string
+	var formatString bytes.Buffer
+	formatString.WriteString(strings.ToLower(method))
+	formatString.WriteByte('\n')
+	//uri
+	formatString.WriteString(strings.ToLower(url))
+	formatString.WriteByte('\n')
+
+	//params
+	paramKeys, fParams := formatParams(dupParams)
+	//fmt.Println("formatParams:", fParams)
+	formatString.WriteString(fParams)
+	formatString.WriteByte('\n')
+
+	//header
+	headerKeys, fHeader := formatHeaders(dupHeaders)
+	//fmt.Println("formatHeaders:", fHeader)
+	formatString.WriteString(fHeader)
+	formatString.WriteByte('\n')
+
+	var stringToSign bytes.Buffer
+	stringToSign.WriteString("sha1\n")
+	stringToSign.WriteString(timeRange)
+	stringToSign.WriteByte('\n')
+
+	//fmt.Println("stringToSign:", formatString.String(), stringToSign.String())
+
+	h := sha1.New()
+	h.Write(formatString.Bytes())
+	stringToSign.WriteString(hex.EncodeToString(h.Sum(nil)))
+	stringToSign.WriteByte('\n')
+
+	mac2 := hmac.New(sha1.New, []byte(c.SignKey))
+	mac2.Write(stringToSign.Bytes())
+	var sign = hex.EncodeToString(mac2.Sum(nil))
+
+	return fmt.Sprintf(`q-sign-algorithm=sha1&q-ak=%s&q-sign-time=%s&q-key-time=%s&q-header-list=%s&q-url-param-list=%s&q-signature=%s`,
+		c.AccessKey, timeRange, timeRange,
+		strings.Join(headerKeys, ";"),
+		strings.Join(paramKeys, ";"), sign)
 }
 
 // prepareRequest build the request
@@ -327,6 +581,17 @@ func (c *APIClient) prepareRequest(
 		localVarRequest.Header = headers
 	}
 
+	// Override request host, if applicable
+	if c.cfg.Host != "" {
+		localVarRequest.Host = c.cfg.Host
+		localVarRequest.URL.Host = c.cfg.Host
+	}
+	if c.cfg.Scheme != "" {
+		localVarRequest.URL.Scheme = c.cfg.Scheme
+	} else if localVarRequest.URL.Scheme == "" {
+		localVarRequest.URL.Scheme = "http"
+	}
+
 	// Add the user agent to the request.
 	localVarRequest.Header.Add("User-Agent", c.cfg.UserAgent)
 
@@ -362,6 +627,11 @@ func (c *APIClient) prepareRequest(
 	for header, value := range c.cfg.DefaultHeader {
 		localVarRequest.Header.Add(header, value)
 	}
+
+	//post add Authorization
+	authorization := c.Authorization(method, path, localVarRequest.Host,
+		localVarRequest.Header, query)
+	localVarRequest.Header.Add("Authorization", authorization)
 
 	return localVarRequest, nil
 }

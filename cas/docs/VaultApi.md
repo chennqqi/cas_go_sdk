@@ -1,25 +1,25 @@
 # \VaultApi
 
-All URIs are relative to *http://cas.ap-beijing.myqcloud.com*
+All URIs are relative to *http://cas.ap-beijing.myqcloud.com/-*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**CreateVault**](VaultApi.md#CreateVault) | **Put** /{UID}/vaults/{VaultName} | 创建vault
-[**GetVault**](VaultApi.md#GetVault) | **Get** /{UID}/vaults/{VaultName} | Describe Vault
-[**UIDVaultsGet**](VaultApi.md#UIDVaultsGet) | **Get** /{UID}/vaults | List Vaults
-[**UIDVaultsVaultNameAccessPolicyDelete**](VaultApi.md#UIDVaultsVaultNameAccessPolicyDelete) | **Delete** /{UID}/vaults/{VaultName}/access-policy | Delete Vault Access Policy
-[**UIDVaultsVaultNameAccessPolicyGet**](VaultApi.md#UIDVaultsVaultNameAccessPolicyGet) | **Get** /{UID}/vaults/{VaultName}/access-policy | Get Vault Access Policy 请求读取一个 Vault 的权限
-[**UIDVaultsVaultNameAccessPolicyPut**](VaultApi.md#UIDVaultsVaultNameAccessPolicyPut) | **Put** /{UID}/vaults/{VaultName}/access-policy | Set Vault Access Policy
-[**UIDVaultsVaultNameDelete**](VaultApi.md#UIDVaultsVaultNameDelete) | **Delete** /{UID}/vaults/{VaultName} | 删除vault
-[**UIDVaultsVaultNameNotificationConfigurationDelete**](VaultApi.md#UIDVaultsVaultNameNotificationConfigurationDelete) | **Delete** /{UID}/vaults/{VaultName}/notification-configuration | Delete Vault Notifications
-[**UIDVaultsVaultNameNotificationConfigurationGet**](VaultApi.md#UIDVaultsVaultNameNotificationConfigurationGet) | **Get** /{UID}/vaults/{VaultName}/notification-configuration | Get Vault Notifications
-[**UIDVaultsVaultNameNotificationConfigurationPut**](VaultApi.md#UIDVaultsVaultNameNotificationConfigurationPut) | **Put** /{UID}/vaults/{VaultName}/notification-configuration | Set Vault Access Policy
+[**CreateVault**](VaultApi.md#CreateVault) | **Put** /vaults/{VaultName} | 创建vault
+[**GetVault**](VaultApi.md#GetVault) | **Get** /vaults/{VaultName} | Describe Vault
+[**VaultsGet**](VaultApi.md#VaultsGet) | **Get** /vaults | List Vaults
+[**VaultsVaultNameAccessPolicyDelete**](VaultApi.md#VaultsVaultNameAccessPolicyDelete) | **Delete** /vaults/{VaultName}/access-policy | Delete Vault Access Policy
+[**VaultsVaultNameAccessPolicyGet**](VaultApi.md#VaultsVaultNameAccessPolicyGet) | **Get** /vaults/{VaultName}/access-policy | Get Vault Access Policy 请求读取一个 Vault 的权限
+[**VaultsVaultNameAccessPolicyPut**](VaultApi.md#VaultsVaultNameAccessPolicyPut) | **Put** /vaults/{VaultName}/access-policy | Set Vault Access Policy
+[**VaultsVaultNameDelete**](VaultApi.md#VaultsVaultNameDelete) | **Delete** /vaults/{VaultName} | 删除vault
+[**VaultsVaultNameNotificationConfigurationDelete**](VaultApi.md#VaultsVaultNameNotificationConfigurationDelete) | **Delete** /vaults/{VaultName}/notification-configuration | Delete Vault Notifications
+[**VaultsVaultNameNotificationConfigurationGet**](VaultApi.md#VaultsVaultNameNotificationConfigurationGet) | **Get** /vaults/{VaultName}/notification-configuration | Get Vault Notifications
+[**VaultsVaultNameNotificationConfigurationPut**](VaultApi.md#VaultsVaultNameNotificationConfigurationPut) | **Put** /vaults/{VaultName}/notification-configuration | Set Vault Access Policy
 
 
 
 ## CreateVault
 
-> CreateVault(ctx, uID, vaultName)
+> CreateVault(ctx, vaultName)
 
 创建vault
 
@@ -31,7 +31,6 @@ Create Vault 请求实现创建一个 Vault，每个用户支持创建 1000 个 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**uID** | **string**|  | 
 **vaultName** | **string**|  | 
 
 ### Return type
@@ -54,7 +53,7 @@ Name | Type | Description  | Notes
 
 ## GetVault
 
-> VaultInfo GetVault(ctx, uID, vaultName)
+> VaultInfo GetVault(ctx, vaultName)
 
 Describe Vault
 
@@ -66,7 +65,6 @@ Describe Vault 请求实现读取一个 Vault 的属性。档案数与档案总�
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**uID** | **string**|  | 
 **vaultName** | **string**|  | 
 
 ### Return type
@@ -87,9 +85,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## UIDVaultsGet
+## VaultsGet
 
-> VaultsSummary UIDVaultsGet(ctx, uID, optional)
+> VaultsSummary VaultsGet(ctx, optional)
 
 List Vaults
 
@@ -101,17 +99,15 @@ List Vaults 接口实现列出该账户下所有的文件库。档案数与档�
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**uID** | **string**|  | 
- **optional** | ***UIDVaultsGetOpts** | optional parameters | nil if no parameters
+ **optional** | ***VaultsGetOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
 
-Optional parameters are passed through a pointer to a UIDVaultsGetOpts struct
+Optional parameters are passed through a pointer to a VaultsGetOpts struct
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-
  **limit** | **optional.Int64**| 指定要返回的文件库最大数目。该值为正整数，取值1-1000，默认为 1000 | 
  **marker** | **optional.String**| 按字典序，从该 Marker 开始列出 Vault 的 QCS，如果为空则从头列出 。 | 
 
@@ -133,9 +129,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## UIDVaultsVaultNameAccessPolicyDelete
+## VaultsVaultNameAccessPolicyDelete
 
-> UIDVaultsVaultNameAccessPolicyDelete(ctx, uID, vaultName)
+> VaultsVaultNameAccessPolicyDelete(ctx, vaultName)
 
 Delete Vault Access Policy
 
@@ -147,7 +143,6 @@ Delete Vault Access Policy 请求删除 Vault 的权限。只支持所有者操�
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**uID** | **string**|  | 
 **vaultName** | **string**|  | 
 
 ### Return type
@@ -168,9 +163,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## UIDVaultsVaultNameAccessPolicyGet
+## VaultsVaultNameAccessPolicyGet
 
-> Policy UIDVaultsVaultNameAccessPolicyGet(ctx, uID, vaultName)
+> Policy VaultsVaultNameAccessPolicyGet(ctx, vaultName)
 
 Get Vault Access Policy 请求读取一个 Vault 的权限
 
@@ -182,7 +177,6 @@ Get Vault Access Policy 请求读取一个 Vault 的权限。只支持所有者�
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**uID** | **string**|  | 
 **vaultName** | **string**|  | 
 
 ### Return type
@@ -203,9 +197,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## UIDVaultsVaultNameAccessPolicyPut
+## VaultsVaultNameAccessPolicyPut
 
-> UIDVaultsVaultNameAccessPolicyPut(ctx, uID, vaultName, optional)
+> VaultsVaultNameAccessPolicyPut(ctx, vaultName, optional)
 
 Set Vault Access Policy
 
@@ -217,18 +211,16 @@ Set Vault Access Policy 请求实现为一个 Vault 设置权限。具体策略�
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**uID** | **string**|  | 
 **vaultName** | **string**|  | 
- **optional** | ***UIDVaultsVaultNameAccessPolicyPutOpts** | optional parameters | nil if no parameters
+ **optional** | ***VaultsVaultNameAccessPolicyPutOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
 
-Optional parameters are passed through a pointer to a UIDVaultsVaultNameAccessPolicyPutOpts struct
+Optional parameters are passed through a pointer to a VaultsVaultNameAccessPolicyPutOpts struct
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-
 
  **policy** | [**optional.Interface of Policy**](Policy.md)|  | 
 
@@ -250,9 +242,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## UIDVaultsVaultNameDelete
+## VaultsVaultNameDelete
 
-> UIDVaultsVaultNameDelete(ctx, uID, vaultName)
+> VaultsVaultNameDelete(ctx, vaultName)
 
 删除vault
 
@@ -264,7 +256,6 @@ Delete Vault 请求实现删除一个 Vault，删除前要求 Vault 下无 Archi
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**uID** | **string**|  | 
 **vaultName** | **string**|  | 
 
 ### Return type
@@ -285,9 +276,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## UIDVaultsVaultNameNotificationConfigurationDelete
+## VaultsVaultNameNotificationConfigurationDelete
 
-> UIDVaultsVaultNameNotificationConfigurationDelete(ctx, uID, vaultName)
+> VaultsVaultNameNotificationConfigurationDelete(ctx, vaultName)
 
 Delete Vault Notifications
 
@@ -299,7 +290,6 @@ Delete Vault Notifications请求实现删除指定文件库通知回调策略 �
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**uID** | **string**|  | 
 **vaultName** | **string**|  | 
 
 ### Return type
@@ -320,9 +310,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## UIDVaultsVaultNameNotificationConfigurationGet
+## VaultsVaultNameNotificationConfigurationGet
 
-> NotificationConfiguration UIDVaultsVaultNameNotificationConfigurationGet(ctx, uID, vaultName)
+> NotificationConfiguration VaultsVaultNameNotificationConfigurationGet(ctx, vaultName)
 
 Get Vault Notifications
 
@@ -334,7 +324,6 @@ Get Vault Notifications请求实现读取指定文件库通知回调策略
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**uID** | **string**|  | 
 **vaultName** | **string**|  | 
 
 ### Return type
@@ -355,9 +344,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## UIDVaultsVaultNameNotificationConfigurationPut
+## VaultsVaultNameNotificationConfigurationPut
 
-> UIDVaultsVaultNameNotificationConfigurationPut(ctx, uID, vaultName, optional)
+> VaultsVaultNameNotificationConfigurationPut(ctx, vaultName, optional)
 
 Set Vault Access Policy
 
@@ -369,18 +358,16 @@ Set Vault Access Policy 请求实现为一个 Vault 设置权限。具体策略�
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**uID** | **string**|  | 
 **vaultName** | **string**|  | 
- **optional** | ***UIDVaultsVaultNameNotificationConfigurationPutOpts** | optional parameters | nil if no parameters
+ **optional** | ***VaultsVaultNameNotificationConfigurationPutOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
 
-Optional parameters are passed through a pointer to a UIDVaultsVaultNameNotificationConfigurationPutOpts struct
+Optional parameters are passed through a pointer to a VaultsVaultNameNotificationConfigurationPutOpts struct
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-
 
  **notificationConfiguration** | [**optional.Interface of NotificationConfiguration**](NotificationConfiguration.md)|  | 
 

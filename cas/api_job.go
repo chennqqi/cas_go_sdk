@@ -16,6 +16,7 @@ import (
 	_nethttp "net/http"
 	_neturl "net/url"
 	"strings"
+
 	"github.com/antihax/optional"
 )
 
@@ -27,28 +28,27 @@ var (
 // JobApiService JobApi service
 type JobApiService service
 
-// UIDVaultsVaultNameJobsGetOpts Optional parameters for the method 'UIDVaultsVaultNameJobsGet'
-type UIDVaultsVaultNameJobsGetOpts struct {
-    Completed optional.Bool
-    Limit optional.Int64
-    Marker optional.String
-    Statuscode optional.String
+// VaultsVaultNameJobsGetOpts Optional parameters for the method 'VaultsVaultNameJobsGet'
+type VaultsVaultNameJobsGetOpts struct {
+	Completed  optional.Bool
+	Limit      optional.Int64
+	Marker     optional.String
+	Statuscode optional.String
 }
 
 /*
-UIDVaultsVaultNameJobsGet List Job
+VaultsVaultNameJobsGet List Job
 List Jobs 请求实现列出 Vault 的任务，包括正在进行的任务以及最近完成的任务。支持跨账户操作。当操作本账户时，UID为\&quot;-\&quot;。。
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param uID
  * @param vaultName
- * @param optional nil or *UIDVaultsVaultNameJobsGetOpts - Optional Parameters:
- * @param "Completed" (optional.Bool) - 
- * @param "Limit" (optional.Int64) - 
- * @param "Marker" (optional.String) - 
- * @param "Statuscode" (optional.String) - 
+ * @param optional nil or *VaultsVaultNameJobsGetOpts - Optional Parameters:
+ * @param "Completed" (optional.Bool) -
+ * @param "Limit" (optional.Int64) -
+ * @param "Marker" (optional.String) -
+ * @param "Statuscode" (optional.String) -
 @return JobsList
 */
-func (a *JobApiService) UIDVaultsVaultNameJobsGet(ctx _context.Context, uID string, vaultName string, localVarOptionals *UIDVaultsVaultNameJobsGetOpts) (JobsList, *_nethttp.Response, error) {
+func (a *JobApiService) VaultsVaultNameJobsGet(ctx _context.Context, vaultName string, localVarOptionals *VaultsVaultNameJobsGetOpts) (JobsList, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -59,10 +59,8 @@ func (a *JobApiService) UIDVaultsVaultNameJobsGet(ctx _context.Context, uID stri
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/{UID}/vaults/{VaultName}/jobs"
-	localVarPath = strings.Replace(localVarPath, "{"+"UID"+"}", _neturl.QueryEscape(parameterToString(uID, "")) , -1)
-
-	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", _neturl.QueryEscape(parameterToString(vaultName, "")) , -1)
+	localVarPath := a.client.cfg.BasePath + "/vaults/{VaultName}/jobs"
+	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", _neturl.QueryEscape(parameterToString(vaultName, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -130,7 +128,7 @@ func (a *JobApiService) UIDVaultsVaultNameJobsGet(ctx _context.Context, uID stri
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
-		if localVarHTTPResponse.StatusCode == 4XX {
+		if statusCode4XX(localVarHTTPResponse.StatusCode) {
 			var v ErrorMessage
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -156,15 +154,14 @@ func (a *JobApiService) UIDVaultsVaultNameJobsGet(ctx _context.Context, uID stri
 }
 
 /*
-UIDVaultsVaultNameJobsJobIDGet Describe Job
+VaultsVaultNameJobsJobIDGet Describe Job
 Describe Job 请求实现获取Vault的具体任务信息。支持跨账户操作。当操作本账户时，UID为\&quot;-\&quot;
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param uID
  * @param vaultName
  * @param jobID
 @return OneOfJobArchiveSearchInfoJobArchiveListSearchInfoJobArchiveImportInfoJobArchiveExportInfo
 */
-func (a *JobApiService) UIDVaultsVaultNameJobsJobIDGet(ctx _context.Context, uID string, vaultName string, jobID string) (OneOfJobArchiveSearchInfoJobArchiveListSearchInfoJobArchiveImportInfoJobArchiveExportInfo, *_nethttp.Response, error) {
+func (a *JobApiService) VaultsVaultNameJobsJobIDGet(ctx _context.Context, vaultName string, jobID string) (OneOfJobArchiveSearchInfoJobArchiveListSearchInfoJobArchiveImportInfoJobArchiveExportInfo, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -175,12 +172,10 @@ func (a *JobApiService) UIDVaultsVaultNameJobsJobIDGet(ctx _context.Context, uID
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/{UID}/vaults/{VaultName}/jobs/<JobID>"
-	localVarPath = strings.Replace(localVarPath, "{"+"UID"+"}", _neturl.QueryEscape(parameterToString(uID, "")) , -1)
+	localVarPath := a.client.cfg.BasePath + "/vaults/{VaultName}/jobs/<JobID>"
+	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", _neturl.QueryEscape(parameterToString(vaultName, "")), -1)
 
-	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", _neturl.QueryEscape(parameterToString(vaultName, "")) , -1)
-
-	localVarPath = strings.Replace(localVarPath, "{"+"JobID"+"}", _neturl.QueryEscape(parameterToString(jobID, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"JobID"+"}", _neturl.QueryEscape(parameterToString(jobID, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -236,7 +231,7 @@ func (a *JobApiService) UIDVaultsVaultNameJobsJobIDGet(ctx _context.Context, uID
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
-		if localVarHTTPResponse.StatusCode == 4XX {
+		if statusCode4XX(localVarHTTPResponse.StatusCode) {
 			var v ErrorMessage
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -261,23 +256,22 @@ func (a *JobApiService) UIDVaultsVaultNameJobsJobIDGet(ctx _context.Context, uID
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-// UIDVaultsVaultNameJobsJobIDOutputGetOpts Optional parameters for the method 'UIDVaultsVaultNameJobsJobIDOutputGet'
-type UIDVaultsVaultNameJobsJobIDOutputGetOpts struct {
-    Range_ optional.String
+// VaultsVaultNameJobsJobIDOutputGetOpts Optional parameters for the method 'VaultsVaultNameJobsJobIDOutputGet'
+type VaultsVaultNameJobsJobIDOutputGetOpts struct {
+	Range_ optional.String
 }
 
 /*
-UIDVaultsVaultNameJobsJobIDOutputGet Get Job Output
+VaultsVaultNameJobsJobIDOutputGet Get Job Output
 请求用来输出缓存池中检索出来的 Archive 或Archive列表，缓存池中的内容24小时有效。请求所有数据成功后，返回 200 OK。请求部分数据成功时，返回 206 Partial Content。支持跨账户操作。当操作本账户时，UID 为\&quot;-\&quot;。
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param uID
  * @param vaultName
  * @param jobID
- * @param optional nil or *UIDVaultsVaultNameJobsJobIDOutputGetOpts - Optional Parameters:
- * @param "Range_" (optional.String) - 
+ * @param optional nil or *VaultsVaultNameJobsJobIDOutputGetOpts - Optional Parameters:
+ * @param "Range_" (optional.String) -
 @return JobOutput
 */
-func (a *JobApiService) UIDVaultsVaultNameJobsJobIDOutputGet(ctx _context.Context, uID string, vaultName string, jobID string, localVarOptionals *UIDVaultsVaultNameJobsJobIDOutputGetOpts) (JobOutput, *_nethttp.Response, error) {
+func (a *JobApiService) VaultsVaultNameJobsJobIDOutputGet(ctx _context.Context, vaultName string, jobID string, localVarOptionals *VaultsVaultNameJobsJobIDOutputGetOpts) (JobOutput, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -288,12 +282,10 @@ func (a *JobApiService) UIDVaultsVaultNameJobsJobIDOutputGet(ctx _context.Contex
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/{UID}/vaults/{VaultName}/jobs/<JobID>/output"
-	localVarPath = strings.Replace(localVarPath, "{"+"UID"+"}", _neturl.QueryEscape(parameterToString(uID, "")) , -1)
+	localVarPath := a.client.cfg.BasePath + "/vaults/{VaultName}/jobs/<JobID>/output"
+	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", _neturl.QueryEscape(parameterToString(vaultName, "")), -1)
 
-	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", _neturl.QueryEscape(parameterToString(vaultName, "")) , -1)
-
-	localVarPath = strings.Replace(localVarPath, "{"+"JobID"+"}", _neturl.QueryEscape(parameterToString(jobID, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"JobID"+"}", _neturl.QueryEscape(parameterToString(jobID, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -340,6 +332,10 @@ func (a *JobApiService) UIDVaultsVaultNameJobsJobIDOutputGet(ctx _context.Contex
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
+	//	contentType := localVarHttpResponse.Header.Get("Content-Type")
+	//	if contentType == "application/octet-stream" {
+	//		return localVarReturnValue, localVarHttpResponse, nil
+	//	}
 
 	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
@@ -352,7 +348,7 @@ func (a *JobApiService) UIDVaultsVaultNameJobsJobIDOutputGet(ctx _context.Contex
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
-		if localVarHTTPResponse.StatusCode == 4XX {
+		if statusCode4XX(localVarHTTPResponse.StatusCode) {
 			var v ErrorMessage
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -377,21 +373,25 @@ func (a *JobApiService) UIDVaultsVaultNameJobsJobIDOutputGet(ctx _context.Contex
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-// UIDVaultsVaultNameJobsPostOpts Optional parameters for the method 'UIDVaultsVaultNameJobsPost'
-type UIDVaultsVaultNameJobsPostOpts struct {
-    UNKNOWNBASETYPE optional.Interface
+// VaultsVaultNameJobsPostOpts Optional parameters for the method 'VaultsVaultNameJobsPost'
+type VaultsVaultNameJobsPostOpts struct {
+	UNKNOWNBASETYPE optional.Interface
+}
+
+type UNKNOWN_BASE_TYPE interface {
+	//	MarshalJSON() ([]byte, error)
+	//	UnMarshalJSON(interface{}) error
 }
 
 /*
-UIDVaultsVaultNameJobsPost Initiate Job
+VaultsVaultNameJobsPost Initiate Job
 Describe Job Initiate Job 请求实现将档案或者档案列表取出到缓存池。操作完成后，用户可以通过 Get Job Output 请求读取对应档案或者档案列表。
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param uID
  * @param vaultName
- * @param optional nil or *UIDVaultsVaultNameJobsPostOpts - Optional Parameters:
- * @param "UNKNOWNBASETYPE" (optional.Interface of UNKNOWN_BASE_TYPE) - 
+ * @param optional nil or *VaultsVaultNameJobsPostOpts - Optional Parameters:
+ * @param "UNKNOWNBASETYPE" (optional.Interface of UNKNOWN_BASE_TYPE) -
 */
-func (a *JobApiService) UIDVaultsVaultNameJobsPost(ctx _context.Context, uID string, vaultName string, localVarOptionals *UIDVaultsVaultNameJobsPostOpts) (*_nethttp.Response, error) {
+func (a *JobApiService) VaultsVaultNameJobsPost(ctx _context.Context, vaultName string, localVarOptionals *VaultsVaultNameJobsPostOpts) (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
@@ -401,10 +401,8 @@ func (a *JobApiService) UIDVaultsVaultNameJobsPost(ctx _context.Context, uID str
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/{UID}/vaults/{VaultName}/jobs"
-	localVarPath = strings.Replace(localVarPath, "{"+"UID"+"}", _neturl.QueryEscape(parameterToString(uID, "")) , -1)
-
-	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", _neturl.QueryEscape(parameterToString(vaultName, "")) , -1)
+	localVarPath := a.client.cfg.BasePath + "/vaults/{VaultName}/jobs"
+	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", _neturl.QueryEscape(parameterToString(vaultName, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -469,7 +467,7 @@ func (a *JobApiService) UIDVaultsVaultNameJobsPost(ctx _context.Context, uID str
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
-		if localVarHTTPResponse.StatusCode == 4XX {
+		if statusCode4XX(localVarHTTPResponse.StatusCode) {
 			var v ErrorMessage
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {

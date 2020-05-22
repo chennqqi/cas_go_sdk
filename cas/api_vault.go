@@ -31,10 +31,9 @@ type VaultApiService service
 CreateVault 创建vault
 Create Vault 请求实现创建一个 Vault，每个用户支持创建 1000 个 Vault。成功后返回 201 Created。支持跨账户创建。当创建本账户下 valut 时，UID值为\&quot;-\&quot;。
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param uID
  * @param vaultName
 */
-func (a *VaultApiService) CreateVault(ctx _context.Context, uID string, vaultName string) (*_nethttp.Response, error) {
+func (a *VaultApiService) CreateVault(ctx _context.Context, vaultName string) (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPut
 		localVarPostBody     interface{}
@@ -44,9 +43,7 @@ func (a *VaultApiService) CreateVault(ctx _context.Context, uID string, vaultNam
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/{UID}/vaults/{VaultName}"
-	localVarPath = strings.Replace(localVarPath, "{"+"UID"+"}", _neturl.QueryEscape(parameterToString(uID, "")) , -1)
-
+	localVarPath := a.client.cfg.BasePath + "/vaults/{VaultName}"
 	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", _neturl.QueryEscape(parameterToString(vaultName, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
@@ -103,7 +100,7 @@ func (a *VaultApiService) CreateVault(ctx _context.Context, uID string, vaultNam
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
-		if localVarHTTPResponse.StatusCode == 4XX {
+		if statusCode4XX(localVarHTTPResponse.StatusCode) {
 			var v ErrorMessage
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -123,11 +120,10 @@ func (a *VaultApiService) CreateVault(ctx _context.Context, uID string, vaultNam
 GetVault Describe Vault
 Describe Vault 请求实现读取一个 Vault 的属性。档案数与档案总大小，每日盘点更新，非实时数据。请求成功后返回 200 OK。支持跨账户操作。当操作本账户下 valut 时，UID值为\&quot;-\&quot;。
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param uID
  * @param vaultName
 @return VaultInfo
 */
-func (a *VaultApiService) GetVault(ctx _context.Context, uID string, vaultName string) (VaultInfo, *_nethttp.Response, error) {
+func (a *VaultApiService) GetVault(ctx _context.Context, vaultName string) (VaultInfo, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -138,9 +134,7 @@ func (a *VaultApiService) GetVault(ctx _context.Context, uID string, vaultName s
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/{UID}/vaults/{VaultName}"
-	localVarPath = strings.Replace(localVarPath, "{"+"UID"+"}", _neturl.QueryEscape(parameterToString(uID, "")) , -1)
-
+	localVarPath := a.client.cfg.BasePath + "/vaults/{VaultName}"
 	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", _neturl.QueryEscape(parameterToString(vaultName, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
@@ -197,7 +191,7 @@ func (a *VaultApiService) GetVault(ctx _context.Context, uID string, vaultName s
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
-		if localVarHTTPResponse.StatusCode == 4XX {
+		if statusCode4XX(localVarHTTPResponse.StatusCode) {
 			var v ErrorMessage
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -222,23 +216,22 @@ func (a *VaultApiService) GetVault(ctx _context.Context, uID string, vaultName s
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-// UIDVaultsGetOpts Optional parameters for the method 'UIDVaultsGet'
-type UIDVaultsGetOpts struct {
+// VaultsGetOpts Optional parameters for the method 'VaultsGet'
+type VaultsGetOpts struct {
     Limit optional.Int64
     Marker optional.String
 }
 
 /*
-UIDVaultsGet List Vaults
+VaultsGet List Vaults
 List Vaults 接口实现列出该账户下所有的文件库。档案数与档案总大小，每日盘点更新，非实时数据。支持跨账户操作。当操作本账户时，UID为\&quot;-\&quot;。
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param uID
- * @param optional nil or *UIDVaultsGetOpts - Optional Parameters:
+ * @param optional nil or *VaultsGetOpts - Optional Parameters:
  * @param "Limit" (optional.Int64) -  指定要返回的文件库最大数目。该值为正整数，取值1-1000，默认为 1000
  * @param "Marker" (optional.String) -  按字典序，从该 Marker 开始列出 Vault 的 QCS，如果为空则从头列出 。
 @return VaultsSummary
 */
-func (a *VaultApiService) UIDVaultsGet(ctx _context.Context, uID string, localVarOptionals *UIDVaultsGetOpts) (VaultsSummary, *_nethttp.Response, error) {
+func (a *VaultApiService) VaultsGet(ctx _context.Context, localVarOptionals *VaultsGetOpts) (VaultsSummary, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -249,9 +242,7 @@ func (a *VaultApiService) UIDVaultsGet(ctx _context.Context, uID string, localVa
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/{UID}/vaults"
-	localVarPath = strings.Replace(localVarPath, "{"+"UID"+"}", _neturl.QueryEscape(parameterToString(uID, "")) , -1)
-
+	localVarPath := a.client.cfg.BasePath + "/vaults"
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
@@ -312,7 +303,7 @@ func (a *VaultApiService) UIDVaultsGet(ctx _context.Context, uID string, localVa
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
-		if localVarHTTPResponse.StatusCode == 4XX {
+		if statusCode4XX(localVarHTTPResponse.StatusCode) {
 			var v ErrorMessage
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -338,13 +329,12 @@ func (a *VaultApiService) UIDVaultsGet(ctx _context.Context, uID string, localVa
 }
 
 /*
-UIDVaultsVaultNameAccessPolicyDelete Delete Vault Access Policy
+VaultsVaultNameAccessPolicyDelete Delete Vault Access Policy
 Delete Vault Access Policy 请求删除 Vault 的权限。只支持所有者操作，对应 UID 值为\&quot;-\&quot;。成功后返回 204 No Content。
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param uID
  * @param vaultName
 */
-func (a *VaultApiService) UIDVaultsVaultNameAccessPolicyDelete(ctx _context.Context, uID string, vaultName string) (*_nethttp.Response, error) {
+func (a *VaultApiService) VaultsVaultNameAccessPolicyDelete(ctx _context.Context, vaultName string) (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodDelete
 		localVarPostBody     interface{}
@@ -354,9 +344,7 @@ func (a *VaultApiService) UIDVaultsVaultNameAccessPolicyDelete(ctx _context.Cont
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/{UID}/vaults/{VaultName}/access-policy"
-	localVarPath = strings.Replace(localVarPath, "{"+"UID"+"}", _neturl.QueryEscape(parameterToString(uID, "")) , -1)
-
+	localVarPath := a.client.cfg.BasePath + "/vaults/{VaultName}/access-policy"
 	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", _neturl.QueryEscape(parameterToString(vaultName, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
@@ -413,7 +401,7 @@ func (a *VaultApiService) UIDVaultsVaultNameAccessPolicyDelete(ctx _context.Cont
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
-		if localVarHTTPResponse.StatusCode == 4XX {
+		if statusCode4XX(localVarHTTPResponse.StatusCode) {
 			var v ErrorMessage
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -430,14 +418,13 @@ func (a *VaultApiService) UIDVaultsVaultNameAccessPolicyDelete(ctx _context.Cont
 }
 
 /*
-UIDVaultsVaultNameAccessPolicyGet Get Vault Access Policy 请求读取一个 Vault 的权限
+VaultsVaultNameAccessPolicyGet Get Vault Access Policy 请求读取一个 Vault 的权限
 Get Vault Access Policy 请求读取一个 Vault 的权限。只支持所有者操作，对应 UID 值为\&quot;-\&quot;。成功后返回 200 OK。
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param uID
  * @param vaultName
 @return Policy
 */
-func (a *VaultApiService) UIDVaultsVaultNameAccessPolicyGet(ctx _context.Context, uID string, vaultName string) (Policy, *_nethttp.Response, error) {
+func (a *VaultApiService) VaultsVaultNameAccessPolicyGet(ctx _context.Context, vaultName string) (Policy, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -448,9 +435,7 @@ func (a *VaultApiService) UIDVaultsVaultNameAccessPolicyGet(ctx _context.Context
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/{UID}/vaults/{VaultName}/access-policy"
-	localVarPath = strings.Replace(localVarPath, "{"+"UID"+"}", _neturl.QueryEscape(parameterToString(uID, "")) , -1)
-
+	localVarPath := a.client.cfg.BasePath + "/vaults/{VaultName}/access-policy"
 	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", _neturl.QueryEscape(parameterToString(vaultName, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
@@ -507,7 +492,7 @@ func (a *VaultApiService) UIDVaultsVaultNameAccessPolicyGet(ctx _context.Context
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
-		if localVarHTTPResponse.StatusCode == 4XX {
+		if statusCode4XX(localVarHTTPResponse.StatusCode) {
 			var v ErrorMessage
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -532,21 +517,20 @@ func (a *VaultApiService) UIDVaultsVaultNameAccessPolicyGet(ctx _context.Context
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-// UIDVaultsVaultNameAccessPolicyPutOpts Optional parameters for the method 'UIDVaultsVaultNameAccessPolicyPut'
-type UIDVaultsVaultNameAccessPolicyPutOpts struct {
+// VaultsVaultNameAccessPolicyPutOpts Optional parameters for the method 'VaultsVaultNameAccessPolicyPut'
+type VaultsVaultNameAccessPolicyPutOpts struct {
     Policy optional.Interface
 }
 
 /*
-UIDVaultsVaultNameAccessPolicyPut Set Vault Access Policy
+VaultsVaultNameAccessPolicyPut Set Vault Access Policy
 Set Vault Access Policy 请求实现为一个 Vault 设置权限。具体策略语法参考『认证与鉴权』-『权限管理』只支持所有者设置权限，对应 UID 值为 \&quot;-\&quot;。成功后返回 204 No Content。
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param uID
  * @param vaultName
- * @param optional nil or *UIDVaultsVaultNameAccessPolicyPutOpts - Optional Parameters:
+ * @param optional nil or *VaultsVaultNameAccessPolicyPutOpts - Optional Parameters:
  * @param "Policy" (optional.Interface of Policy) - 
 */
-func (a *VaultApiService) UIDVaultsVaultNameAccessPolicyPut(ctx _context.Context, uID string, vaultName string, localVarOptionals *UIDVaultsVaultNameAccessPolicyPutOpts) (*_nethttp.Response, error) {
+func (a *VaultApiService) VaultsVaultNameAccessPolicyPut(ctx _context.Context, vaultName string, localVarOptionals *VaultsVaultNameAccessPolicyPutOpts) (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPut
 		localVarPostBody     interface{}
@@ -556,9 +540,7 @@ func (a *VaultApiService) UIDVaultsVaultNameAccessPolicyPut(ctx _context.Context
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/{UID}/vaults/{VaultName}/access-policy"
-	localVarPath = strings.Replace(localVarPath, "{"+"UID"+"}", _neturl.QueryEscape(parameterToString(uID, "")) , -1)
-
+	localVarPath := a.client.cfg.BasePath + "/vaults/{VaultName}/access-policy"
 	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", _neturl.QueryEscape(parameterToString(vaultName, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
@@ -624,7 +606,7 @@ func (a *VaultApiService) UIDVaultsVaultNameAccessPolicyPut(ctx _context.Context
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
-		if localVarHTTPResponse.StatusCode == 4XX {
+		if statusCode4XX(localVarHTTPResponse.StatusCode) {
 			var v ErrorMessage
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -641,13 +623,12 @@ func (a *VaultApiService) UIDVaultsVaultNameAccessPolicyPut(ctx _context.Context
 }
 
 /*
-UIDVaultsVaultNameDelete 删除vault
+VaultsVaultNameDelete 删除vault
 Delete Vault 请求实现删除一个 Vault，删除前要求 Vault 下无 Archive 同时无 Archive 写入。删除 Vault 时同时删除其权限信息。请求成功后返回 204 NoContent。支持跨账户删除。当删除本账户下 Valut 时，UID值为\&quot;-\&quot;
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param uID
  * @param vaultName
 */
-func (a *VaultApiService) UIDVaultsVaultNameDelete(ctx _context.Context, uID string, vaultName string) (*_nethttp.Response, error) {
+func (a *VaultApiService) VaultsVaultNameDelete(ctx _context.Context, vaultName string) (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodDelete
 		localVarPostBody     interface{}
@@ -657,9 +638,7 @@ func (a *VaultApiService) UIDVaultsVaultNameDelete(ctx _context.Context, uID str
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/{UID}/vaults/{VaultName}"
-	localVarPath = strings.Replace(localVarPath, "{"+"UID"+"}", _neturl.QueryEscape(parameterToString(uID, "")) , -1)
-
+	localVarPath := a.client.cfg.BasePath + "/vaults/{VaultName}"
 	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", _neturl.QueryEscape(parameterToString(vaultName, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
@@ -716,7 +695,7 @@ func (a *VaultApiService) UIDVaultsVaultNameDelete(ctx _context.Context, uID str
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
-		if localVarHTTPResponse.StatusCode == 4XX {
+		if statusCode4XX(localVarHTTPResponse.StatusCode) {
 			var v ErrorMessage
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -733,13 +712,12 @@ func (a *VaultApiService) UIDVaultsVaultNameDelete(ctx _context.Context, uID str
 }
 
 /*
-UIDVaultsVaultNameNotificationConfigurationDelete Delete Vault Notifications
+VaultsVaultNameNotificationConfigurationDelete Delete Vault Notifications
 Delete Vault Notifications请求实现删除指定文件库通知回调策略 请求成功，返回 204 No Content
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param uID
  * @param vaultName
 */
-func (a *VaultApiService) UIDVaultsVaultNameNotificationConfigurationDelete(ctx _context.Context, uID string, vaultName string) (*_nethttp.Response, error) {
+func (a *VaultApiService) VaultsVaultNameNotificationConfigurationDelete(ctx _context.Context, vaultName string) (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodDelete
 		localVarPostBody     interface{}
@@ -749,9 +727,7 @@ func (a *VaultApiService) UIDVaultsVaultNameNotificationConfigurationDelete(ctx 
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/{UID}/vaults/{VaultName}/notification-configuration"
-	localVarPath = strings.Replace(localVarPath, "{"+"UID"+"}", _neturl.QueryEscape(parameterToString(uID, "")) , -1)
-
+	localVarPath := a.client.cfg.BasePath + "/vaults/{VaultName}/notification-configuration"
 	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", _neturl.QueryEscape(parameterToString(vaultName, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
@@ -808,7 +784,7 @@ func (a *VaultApiService) UIDVaultsVaultNameNotificationConfigurationDelete(ctx 
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
-		if localVarHTTPResponse.StatusCode == 4XX {
+		if statusCode4XX(localVarHTTPResponse.StatusCode) {
 			var v ErrorMessage
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -825,14 +801,13 @@ func (a *VaultApiService) UIDVaultsVaultNameNotificationConfigurationDelete(ctx 
 }
 
 /*
-UIDVaultsVaultNameNotificationConfigurationGet Get Vault Notifications
+VaultsVaultNameNotificationConfigurationGet Get Vault Notifications
 Get Vault Notifications请求实现读取指定文件库通知回调策略
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param uID
  * @param vaultName
 @return NotificationConfiguration
 */
-func (a *VaultApiService) UIDVaultsVaultNameNotificationConfigurationGet(ctx _context.Context, uID string, vaultName string) (NotificationConfiguration, *_nethttp.Response, error) {
+func (a *VaultApiService) VaultsVaultNameNotificationConfigurationGet(ctx _context.Context, vaultName string) (NotificationConfiguration, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -843,9 +818,7 @@ func (a *VaultApiService) UIDVaultsVaultNameNotificationConfigurationGet(ctx _co
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/{UID}/vaults/{VaultName}/notification-configuration"
-	localVarPath = strings.Replace(localVarPath, "{"+"UID"+"}", _neturl.QueryEscape(parameterToString(uID, "")) , -1)
-
+	localVarPath := a.client.cfg.BasePath + "/vaults/{VaultName}/notification-configuration"
 	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", _neturl.QueryEscape(parameterToString(vaultName, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
@@ -902,7 +875,7 @@ func (a *VaultApiService) UIDVaultsVaultNameNotificationConfigurationGet(ctx _co
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
-		if localVarHTTPResponse.StatusCode == 4XX {
+		if statusCode4XX(localVarHTTPResponse.StatusCode) {
 			var v ErrorMessage
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -927,21 +900,20 @@ func (a *VaultApiService) UIDVaultsVaultNameNotificationConfigurationGet(ctx _co
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-// UIDVaultsVaultNameNotificationConfigurationPutOpts Optional parameters for the method 'UIDVaultsVaultNameNotificationConfigurationPut'
-type UIDVaultsVaultNameNotificationConfigurationPutOpts struct {
+// VaultsVaultNameNotificationConfigurationPutOpts Optional parameters for the method 'VaultsVaultNameNotificationConfigurationPut'
+type VaultsVaultNameNotificationConfigurationPutOpts struct {
     NotificationConfiguration optional.Interface
 }
 
 /*
-UIDVaultsVaultNameNotificationConfigurationPut Set Vault Access Policy
+VaultsVaultNameNotificationConfigurationPut Set Vault Access Policy
 Set Vault Access Policy 请求实现为一个 Vault 设置权限。具体策略语法参考『认证与鉴权』-『权限管理』 只支持所有者设置权限，对应 UID 值为 \&quot;-\&quot;。成功后返回 204 No Content。
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param uID
  * @param vaultName
- * @param optional nil or *UIDVaultsVaultNameNotificationConfigurationPutOpts - Optional Parameters:
+ * @param optional nil or *VaultsVaultNameNotificationConfigurationPutOpts - Optional Parameters:
  * @param "NotificationConfiguration" (optional.Interface of NotificationConfiguration) - 
 */
-func (a *VaultApiService) UIDVaultsVaultNameNotificationConfigurationPut(ctx _context.Context, uID string, vaultName string, localVarOptionals *UIDVaultsVaultNameNotificationConfigurationPutOpts) (*_nethttp.Response, error) {
+func (a *VaultApiService) VaultsVaultNameNotificationConfigurationPut(ctx _context.Context, vaultName string, localVarOptionals *VaultsVaultNameNotificationConfigurationPutOpts) (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPut
 		localVarPostBody     interface{}
@@ -951,9 +923,7 @@ func (a *VaultApiService) UIDVaultsVaultNameNotificationConfigurationPut(ctx _co
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/{UID}/vaults/{VaultName}/notification-configuration"
-	localVarPath = strings.Replace(localVarPath, "{"+"UID"+"}", _neturl.QueryEscape(parameterToString(uID, "")) , -1)
-
+	localVarPath := a.client.cfg.BasePath + "/vaults/{VaultName}/notification-configuration"
 	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", _neturl.QueryEscape(parameterToString(vaultName, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
@@ -1019,7 +989,7 @@ func (a *VaultApiService) UIDVaultsVaultNameNotificationConfigurationPut(ctx _co
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
-		if localVarHTTPResponse.StatusCode == 4XX {
+		if statusCode4XX(localVarHTTPResponse.StatusCode) {
 			var v ErrorMessage
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {

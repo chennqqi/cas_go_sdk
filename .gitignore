@@ -3,3 +3,4 @@
 /cmd/cascmd/*.exe
 *.cap
 *.json
+*.sum

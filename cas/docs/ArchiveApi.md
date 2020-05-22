@@ -1,23 +1,23 @@
 # \ArchiveApi
 
-All URIs are relative to *http://cas.ap-beijing.myqcloud.com*
+All URIs are relative to *http://cas.ap-beijing.myqcloud.com/-*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**UIDVaultsVaultNameArchivesArchiveIDDelete**](ArchiveApi.md#UIDVaultsVaultNameArchivesArchiveIDDelete) | **Delete** /{UID}/vaults/{VaultName}/archives/{ArchiveID} | Delete Archive
-[**UIDVaultsVaultNameArchivesPost**](ArchiveApi.md#UIDVaultsVaultNameArchivesPost) | **Post** /{UID}/vaults/{VaultName}/archives | Upload Archive
-[**UIDVaultsVaultNameMultipartUploadsGet**](ArchiveApi.md#UIDVaultsVaultNameMultipartUploadsGet) | **Get** /{UID}/vaults/{VaultName}/multipart-uploads | List Multipart Uploads
-[**UIDVaultsVaultNameMultipartUploadsPost**](ArchiveApi.md#UIDVaultsVaultNameMultipartUploadsPost) | **Post** /{UID}/vaults/{VaultName}/multipart-uploads | Initiate Multipart Upload
-[**UIDVaultsVaultNameMultipartUploadsUploadIDDelete**](ArchiveApi.md#UIDVaultsVaultNameMultipartUploadsUploadIDDelete) | **Delete** /{UID}/vaults/{VaultName}/multipart-uploads/{uploadID} | Abort Multipart Upload
-[**UIDVaultsVaultNameMultipartUploadsUploadIDGet**](ArchiveApi.md#UIDVaultsVaultNameMultipartUploadsUploadIDGet) | **Get** /{UID}/vaults/{VaultName}/multipart-uploads/{uploadID} | List Parts
-[**UIDVaultsVaultNameMultipartUploadsUploadIDPost**](ArchiveApi.md#UIDVaultsVaultNameMultipartUploadsUploadIDPost) | **Post** /{UID}/vaults/{VaultName}/multipart-uploads/{uploadID} | Complete Multipart Upload
-[**UIDVaultsVaultNameMultipartUploadsUploadIDPut**](ArchiveApi.md#UIDVaultsVaultNameMultipartUploadsUploadIDPut) | **Put** /{UID}/vaults/{VaultName}/multipart-uploads/{uploadID} | Upload Part
+[**VaultsVaultNameArchivesArchiveIDDelete**](ArchiveApi.md#VaultsVaultNameArchivesArchiveIDDelete) | **Delete** /vaults/{VaultName}/archives/{ArchiveID} | Delete Archive
+[**VaultsVaultNameArchivesPost**](ArchiveApi.md#VaultsVaultNameArchivesPost) | **Post** /vaults/{VaultName}/archives | Upload Archive
+[**VaultsVaultNameMultipartUploadsGet**](ArchiveApi.md#VaultsVaultNameMultipartUploadsGet) | **Get** /vaults/{VaultName}/multipart-uploads | List Multipart Uploads
+[**VaultsVaultNameMultipartUploadsPost**](ArchiveApi.md#VaultsVaultNameMultipartUploadsPost) | **Post** /vaults/{VaultName}/multipart-uploads | Initiate Multipart Upload
+[**VaultsVaultNameMultipartUploadsUploadIDDelete**](ArchiveApi.md#VaultsVaultNameMultipartUploadsUploadIDDelete) | **Delete** /vaults/{VaultName}/multipart-uploads/{uploadID} | Abort Multipart Upload
+[**VaultsVaultNameMultipartUploadsUploadIDGet**](ArchiveApi.md#VaultsVaultNameMultipartUploadsUploadIDGet) | **Get** /vaults/{VaultName}/multipart-uploads/{uploadID} | List Parts
+[**VaultsVaultNameMultipartUploadsUploadIDPost**](ArchiveApi.md#VaultsVaultNameMultipartUploadsUploadIDPost) | **Post** /vaults/{VaultName}/multipart-uploads/{uploadID} | Complete Multipart Upload
+[**VaultsVaultNameMultipartUploadsUploadIDPut**](ArchiveApi.md#VaultsVaultNameMultipartUploadsUploadIDPut) | **Put** /vaults/{VaultName}/multipart-uploads/{uploadID} | Upload Part
 
 
 
-## UIDVaultsVaultNameArchivesArchiveIDDelete
+## VaultsVaultNameArchivesArchiveIDDelete
 
-> UIDVaultsVaultNameArchivesArchiveIDDelete(ctx, uID, vaultName, archiveID)
+> VaultsVaultNameArchivesArchiveIDDelete(ctx, vaultName, archiveID)
 
 Delete Archive
 
@@ -29,7 +29,6 @@ Delete Archive 请求实现删除一个 Archive。请求成功以后会返回 x-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**uID** | **string**|  | 
 **vaultName** | **string**|  | 
 **archiveID** | **string**|  | 
 
@@ -51,9 +50,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## UIDVaultsVaultNameArchivesPost
+## VaultsVaultNameArchivesPost
 
-> UIDVaultsVaultNameArchivesPost(ctx, uID, vaultName, xCasContentSha256, contentLength, xCasSha256TreeHash, body, optional)
+> VaultsVaultNameArchivesPost(ctx, vaultName, xCasContentSha256, contentLength, xCasSha256TreeHash, body, optional)
 
 Upload Archive
 
@@ -65,22 +64,20 @@ Upload Archive 请求实现上传一个 Archive 到指定 Vault。请求成功�
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**uID** | **string**|  | 
 **vaultName** | **string**|  | 
 **xCasContentSha256** | **string**|  | 
 **contentLength** | **string**|  | 
 **xCasSha256TreeHash** | **string**|  | 
 **body** | ***os.File*****os.File**|  | 
- **optional** | ***UIDVaultsVaultNameArchivesPostOpts** | optional parameters | nil if no parameters
+ **optional** | ***VaultsVaultNameArchivesPostOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
 
-Optional parameters are passed through a pointer to a UIDVaultsVaultNameArchivesPostOpts struct
+Optional parameters are passed through a pointer to a VaultsVaultNameArchivesPostOpts struct
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-
 
 
 
@@ -106,9 +103,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## UIDVaultsVaultNameMultipartUploadsGet
+## VaultsVaultNameMultipartUploadsGet
 
-> VaultsSummary UIDVaultsVaultNameMultipartUploadsGet(ctx, uID, vaultName, optional)
+> VaultsSummary VaultsVaultNameMultipartUploadsGet(ctx, vaultName, optional)
 
 List Multipart Uploads
 
@@ -120,18 +117,16 @@ List Multipart Uploads请求实现列出正在进行中的分段上传
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**uID** | **string**|  | 
 **vaultName** | **string**|  | 
- **optional** | ***UIDVaultsVaultNameMultipartUploadsGetOpts** | optional parameters | nil if no parameters
+ **optional** | ***VaultsVaultNameMultipartUploadsGetOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
 
-Optional parameters are passed through a pointer to a UIDVaultsVaultNameMultipartUploadsGetOpts struct
+Optional parameters are passed through a pointer to a VaultsVaultNameMultipartUploadsGetOpts struct
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-
 
  **limit** | **optional.Int64**|  | 
  **marker** | **optional.String**|  | 
@@ -154,9 +149,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## UIDVaultsVaultNameMultipartUploadsPost
+## VaultsVaultNameMultipartUploadsPost
 
-> UIDVaultsVaultNameMultipartUploadsPost(ctx, uID, vaultName, xCasPartSize, optional)
+> VaultsVaultNameMultipartUploadsPost(ctx, vaultName, xCasPartSize, optional)
 
 Initiate Multipart Upload
 
@@ -168,19 +163,17 @@ Initiate Multipart Upload请求实现初始化分段上传，此请求将返回�
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**uID** | **string**|  | 
 **vaultName** | **string**|  | 
 **xCasPartSize** | **string**|  | 
- **optional** | ***UIDVaultsVaultNameMultipartUploadsPostOpts** | optional parameters | nil if no parameters
+ **optional** | ***VaultsVaultNameMultipartUploadsPostOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
 
-Optional parameters are passed through a pointer to a UIDVaultsVaultNameMultipartUploadsPostOpts struct
+Optional parameters are passed through a pointer to a VaultsVaultNameMultipartUploadsPostOpts struct
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-
 
 
  **xCasArchiveDescription** | **optional.String**|  | 
@@ -203,9 +196,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## UIDVaultsVaultNameMultipartUploadsUploadIDDelete
+## VaultsVaultNameMultipartUploadsUploadIDDelete
 
-> UIDVaultsVaultNameMultipartUploadsUploadIDDelete(ctx, uID, vaultName, uploadID)
+> VaultsVaultNameMultipartUploadsUploadIDDelete(ctx, vaultName, uploadID)
 
 Abort Multipart Upload
 
@@ -217,7 +210,6 @@ Abort Multipart Upload请求实现终止分段上传。
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**uID** | **string**|  | 
 **vaultName** | **string**|  | 
 **uploadID** | **string**|  | 
 
@@ -239,9 +231,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## UIDVaultsVaultNameMultipartUploadsUploadIDGet
+## VaultsVaultNameMultipartUploadsUploadIDGet
 
-> ListParts UIDVaultsVaultNameMultipartUploadsUploadIDGet(ctx, uID, vaultName, uploadID, optional)
+> ListParts VaultsVaultNameMultipartUploadsUploadIDGet(ctx, vaultName, uploadID, optional)
 
 List Parts
 
@@ -253,19 +245,17 @@ List Parts请求实现列出已上传的数据段。
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**uID** | **string**|  | 
 **vaultName** | **string**|  | 
 **uploadID** | **string**|  | 
- **optional** | ***UIDVaultsVaultNameMultipartUploadsUploadIDGetOpts** | optional parameters | nil if no parameters
+ **optional** | ***VaultsVaultNameMultipartUploadsUploadIDGetOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
 
-Optional parameters are passed through a pointer to a UIDVaultsVaultNameMultipartUploadsUploadIDGetOpts struct
+Optional parameters are passed through a pointer to a VaultsVaultNameMultipartUploadsUploadIDGetOpts struct
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-
 
 
  **limit** | **optional.Int64**|  | 
@@ -289,9 +279,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## UIDVaultsVaultNameMultipartUploadsUploadIDPost
+## VaultsVaultNameMultipartUploadsUploadIDPost
 
-> UIDVaultsVaultNameMultipartUploadsUploadIDPost(ctx, uID, vaultName, uploadID, xCasSha256TreeHash, xCasArchiveSize)
+> VaultsVaultNameMultipartUploadsUploadIDPost(ctx, vaultName, uploadID, xCasSha256TreeHash, xCasArchiveSize)
 
 Complete Multipart Upload
 
@@ -303,7 +293,6 @@ Complete Multipart Upload请求实现结束分段上传，形成文件。发起�
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**uID** | **string**|  | 
 **vaultName** | **string**|  | 
 **uploadID** | **string**|  | 
 **xCasSha256TreeHash** | **string**|  | 
@@ -327,9 +316,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## UIDVaultsVaultNameMultipartUploadsUploadIDPut
+## VaultsVaultNameMultipartUploadsUploadIDPut
 
-> UIDVaultsVaultNameMultipartUploadsUploadIDPut(ctx, uID, vaultName, uploadID, contentRange, xCasContentSha256, xCasSha256TreeHash, body, optional)
+> VaultsVaultNameMultipartUploadsUploadIDPut(ctx, vaultName, uploadID, contentRange, xCasContentSha256, xCasSha256TreeHash, body, optional)
 
 Upload Part
 
@@ -341,23 +330,21 @@ Upload Part请求实现上传档案的一段数据。支持乱序上传档案段
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**uID** | **string**|  | 
 **vaultName** | **string**|  | 
 **uploadID** | **string**|  | 
 **contentRange** | **string**|  | 
 **xCasContentSha256** | **string**|  | 
 **xCasSha256TreeHash** | **string**|  | 
 **body** | ***os.File*****os.File**|  | 
- **optional** | ***UIDVaultsVaultNameMultipartUploadsUploadIDPutOpts** | optional parameters | nil if no parameters
+ **optional** | ***VaultsVaultNameMultipartUploadsUploadIDPutOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
 
-Optional parameters are passed through a pointer to a UIDVaultsVaultNameMultipartUploadsUploadIDPutOpts struct
+Optional parameters are passed through a pointer to a VaultsVaultNameMultipartUploadsUploadIDPutOpts struct
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-
 
 
 

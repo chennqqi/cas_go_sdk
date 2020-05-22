@@ -29,32 +29,32 @@ import "./cas"
 
 ## Documentation for API Endpoints
 
-All URIs are relative to *http://cas.ap-beijing.myqcloud.com*
+All URIs are relative to *http://cas.ap-beijing.myqcloud.com/-*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
-*ArchiveApi* | [**UIDVaultsVaultNameArchivesArchiveIDDelete**](docs/ArchiveApi.md#uidvaultsvaultnamearchivesarchiveiddelete) | **Delete** /{UID}/vaults/{VaultName}/archives/{ArchiveID} | Delete Archive
-*ArchiveApi* | [**UIDVaultsVaultNameArchivesPost**](docs/ArchiveApi.md#uidvaultsvaultnamearchivespost) | **Post** /{UID}/vaults/{VaultName}/archives | Upload Archive
-*ArchiveApi* | [**UIDVaultsVaultNameMultipartUploadsGet**](docs/ArchiveApi.md#uidvaultsvaultnamemultipartuploadsget) | **Get** /{UID}/vaults/{VaultName}/multipart-uploads | List Multipart Uploads
-*ArchiveApi* | [**UIDVaultsVaultNameMultipartUploadsPost**](docs/ArchiveApi.md#uidvaultsvaultnamemultipartuploadspost) | **Post** /{UID}/vaults/{VaultName}/multipart-uploads | Initiate Multipart Upload
-*ArchiveApi* | [**UIDVaultsVaultNameMultipartUploadsUploadIDDelete**](docs/ArchiveApi.md#uidvaultsvaultnamemultipartuploadsuploadiddelete) | **Delete** /{UID}/vaults/{VaultName}/multipart-uploads/{uploadID} | Abort Multipart Upload
-*ArchiveApi* | [**UIDVaultsVaultNameMultipartUploadsUploadIDGet**](docs/ArchiveApi.md#uidvaultsvaultnamemultipartuploadsuploadidget) | **Get** /{UID}/vaults/{VaultName}/multipart-uploads/{uploadID} | List Parts
-*ArchiveApi* | [**UIDVaultsVaultNameMultipartUploadsUploadIDPost**](docs/ArchiveApi.md#uidvaultsvaultnamemultipartuploadsuploadidpost) | **Post** /{UID}/vaults/{VaultName}/multipart-uploads/{uploadID} | Complete Multipart Upload
-*ArchiveApi* | [**UIDVaultsVaultNameMultipartUploadsUploadIDPut**](docs/ArchiveApi.md#uidvaultsvaultnamemultipartuploadsuploadidput) | **Put** /{UID}/vaults/{VaultName}/multipart-uploads/{uploadID} | Upload Part
-*JobApi* | [**UIDVaultsVaultNameJobsGet**](docs/JobApi.md#uidvaultsvaultnamejobsget) | **Get** /{UID}/vaults/{VaultName}/jobs | List Job
-*JobApi* | [**UIDVaultsVaultNameJobsJobIDGet**](docs/JobApi.md#uidvaultsvaultnamejobsjobidget) | **Get** /{UID}/vaults/{VaultName}/jobs/&lt;JobID&gt; | Describe Job
-*JobApi* | [**UIDVaultsVaultNameJobsJobIDOutputGet**](docs/JobApi.md#uidvaultsvaultnamejobsjobidoutputget) | **Get** /{UID}/vaults/{VaultName}/jobs/&lt;JobID&gt;/output | Get Job Output
-*JobApi* | [**UIDVaultsVaultNameJobsPost**](docs/JobApi.md#uidvaultsvaultnamejobspost) | **Post** /{UID}/vaults/{VaultName}/jobs | Initiate Job
-*VaultApi* | [**CreateVault**](docs/VaultApi.md#createvault) | **Put** /{UID}/vaults/{VaultName} | 创建vault
-*VaultApi* | [**GetVault**](docs/VaultApi.md#getvault) | **Get** /{UID}/vaults/{VaultName} | Describe Vault
-*VaultApi* | [**UIDVaultsGet**](docs/VaultApi.md#uidvaultsget) | **Get** /{UID}/vaults | List Vaults
-*VaultApi* | [**UIDVaultsVaultNameAccessPolicyDelete**](docs/VaultApi.md#uidvaultsvaultnameaccesspolicydelete) | **Delete** /{UID}/vaults/{VaultName}/access-policy | Delete Vault Access Policy
-*VaultApi* | [**UIDVaultsVaultNameAccessPolicyGet**](docs/VaultApi.md#uidvaultsvaultnameaccesspolicyget) | **Get** /{UID}/vaults/{VaultName}/access-policy | Get Vault Access Policy 请求读取一个 Vault 的权限
-*VaultApi* | [**UIDVaultsVaultNameAccessPolicyPut**](docs/VaultApi.md#uidvaultsvaultnameaccesspolicyput) | **Put** /{UID}/vaults/{VaultName}/access-policy | Set Vault Access Policy
-*VaultApi* | [**UIDVaultsVaultNameDelete**](docs/VaultApi.md#uidvaultsvaultnamedelete) | **Delete** /{UID}/vaults/{VaultName} | 删除vault
-*VaultApi* | [**UIDVaultsVaultNameNotificationConfigurationDelete**](docs/VaultApi.md#uidvaultsvaultnamenotificationconfigurationdelete) | **Delete** /{UID}/vaults/{VaultName}/notification-configuration | Delete Vault Notifications
-*VaultApi* | [**UIDVaultsVaultNameNotificationConfigurationGet**](docs/VaultApi.md#uidvaultsvaultnamenotificationconfigurationget) | **Get** /{UID}/vaults/{VaultName}/notification-configuration | Get Vault Notifications
-*VaultApi* | [**UIDVaultsVaultNameNotificationConfigurationPut**](docs/VaultApi.md#uidvaultsvaultnamenotificationconfigurationput) | **Put** /{UID}/vaults/{VaultName}/notification-configuration | Set Vault Access Policy
+*ArchiveApi* | [**VaultsVaultNameArchivesArchiveIDDelete**](docs/ArchiveApi.md#vaultsvaultnamearchivesarchiveiddelete) | **Delete** /vaults/{VaultName}/archives/{ArchiveID} | Delete Archive
+*ArchiveApi* | [**VaultsVaultNameArchivesPost**](docs/ArchiveApi.md#vaultsvaultnamearchivespost) | **Post** /vaults/{VaultName}/archives | Upload Archive
+*ArchiveApi* | [**VaultsVaultNameMultipartUploadsGet**](docs/ArchiveApi.md#vaultsvaultnamemultipartuploadsget) | **Get** /vaults/{VaultName}/multipart-uploads | List Multipart Uploads
+*ArchiveApi* | [**VaultsVaultNameMultipartUploadsPost**](docs/ArchiveApi.md#vaultsvaultnamemultipartuploadspost) | **Post** /vaults/{VaultName}/multipart-uploads | Initiate Multipart Upload
+*ArchiveApi* | [**VaultsVaultNameMultipartUploadsUploadIDDelete**](docs/ArchiveApi.md#vaultsvaultnamemultipartuploadsuploadiddelete) | **Delete** /vaults/{VaultName}/multipart-uploads/{uploadID} | Abort Multipart Upload
+*ArchiveApi* | [**VaultsVaultNameMultipartUploadsUploadIDGet**](docs/ArchiveApi.md#vaultsvaultnamemultipartuploadsuploadidget) | **Get** /vaults/{VaultName}/multipart-uploads/{uploadID} | List Parts
+*ArchiveApi* | [**VaultsVaultNameMultipartUploadsUploadIDPost**](docs/ArchiveApi.md#vaultsvaultnamemultipartuploadsuploadidpost) | **Post** /vaults/{VaultName}/multipart-uploads/{uploadID} | Complete Multipart Upload
+*ArchiveApi* | [**VaultsVaultNameMultipartUploadsUploadIDPut**](docs/ArchiveApi.md#vaultsvaultnamemultipartuploadsuploadidput) | **Put** /vaults/{VaultName}/multipart-uploads/{uploadID} | Upload Part
+*JobApi* | [**VaultsVaultNameJobsGet**](docs/JobApi.md#vaultsvaultnamejobsget) | **Get** /vaults/{VaultName}/jobs | List Job
+*JobApi* | [**VaultsVaultNameJobsJobIDGet**](docs/JobApi.md#vaultsvaultnamejobsjobidget) | **Get** /vaults/{VaultName}/jobs/&lt;JobID&gt; | Describe Job
+*JobApi* | [**VaultsVaultNameJobsJobIDOutputGet**](docs/JobApi.md#vaultsvaultnamejobsjobidoutputget) | **Get** /vaults/{VaultName}/jobs/&lt;JobID&gt;/output | Get Job Output
+*JobApi* | [**VaultsVaultNameJobsPost**](docs/JobApi.md#vaultsvaultnamejobspost) | **Post** /vaults/{VaultName}/jobs | Initiate Job
+*VaultApi* | [**CreateVault**](docs/VaultApi.md#createvault) | **Put** /vaults/{VaultName} | 创建vault
+*VaultApi* | [**GetVault**](docs/VaultApi.md#getvault) | **Get** /vaults/{VaultName} | Describe Vault
+*VaultApi* | [**VaultsGet**](docs/VaultApi.md#vaultsget) | **Get** /vaults | List Vaults
+*VaultApi* | [**VaultsVaultNameAccessPolicyDelete**](docs/VaultApi.md#vaultsvaultnameaccesspolicydelete) | **Delete** /vaults/{VaultName}/access-policy | Delete Vault Access Policy
+*VaultApi* | [**VaultsVaultNameAccessPolicyGet**](docs/VaultApi.md#vaultsvaultnameaccesspolicyget) | **Get** /vaults/{VaultName}/access-policy | Get Vault Access Policy 请求读取一个 Vault 的权限
+*VaultApi* | [**VaultsVaultNameAccessPolicyPut**](docs/VaultApi.md#vaultsvaultnameaccesspolicyput) | **Put** /vaults/{VaultName}/access-policy | Set Vault Access Policy
+*VaultApi* | [**VaultsVaultNameDelete**](docs/VaultApi.md#vaultsvaultnamedelete) | **Delete** /vaults/{VaultName} | 删除vault
+*VaultApi* | [**VaultsVaultNameNotificationConfigurationDelete**](docs/VaultApi.md#vaultsvaultnamenotificationconfigurationdelete) | **Delete** /vaults/{VaultName}/notification-configuration | Delete Vault Notifications
+*VaultApi* | [**VaultsVaultNameNotificationConfigurationGet**](docs/VaultApi.md#vaultsvaultnamenotificationconfigurationget) | **Get** /vaults/{VaultName}/notification-configuration | Get Vault Notifications
+*VaultApi* | [**VaultsVaultNameNotificationConfigurationPut**](docs/VaultApi.md#vaultsvaultnamenotificationconfigurationput) | **Put** /vaults/{VaultName}/notification-configuration | Set Vault Access Policy
 
 
 ## Documentation For Models

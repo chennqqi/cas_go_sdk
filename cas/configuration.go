@@ -14,6 +14,7 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
+	"time"
 )
 
 // contextKeys are used to identify the type of value in the context.
@@ -38,7 +39,6 @@ var (
 
 	// ContextAPIKey takes an APIKey as authentication for the request
 	ContextAPIKey = contextKey("apikey")
-
 )
 
 // BasicAuth provides basic http authentication to a request passed via context using ContextBasicAuth
@@ -53,7 +53,6 @@ type APIKey struct {
 	Prefix string
 }
 
-
 // ServerVariable stores the information about a server variable
 type ServerVariable struct {
 	Description  string
@@ -63,13 +62,22 @@ type ServerVariable struct {
 
 // ServerConfiguration stores the information about a server
 type ServerConfiguration struct {
-	Url string
+	Url         string
 	Description string
-	Variables map[string]ServerVariable
+	Variables   map[string]ServerVariable
 }
 
 // Configuration stores the configuration of the API client
 type Configuration struct {
+	AppId        string        `json:"appid"`
+	AccessKey    string        `json:"access_key"`
+	AccessSecret string        `json:"access_secret"`
+	SecretExpire time.Duration `json:"secret_expire"`
+
+	SignKey      string `json:"sign_key"`
+	SignKeyStart int64  `json:"sign_key_start"`
+	SignKeyEnd   int64  `json:"sing_key_end"`
+
 	BasePath      string            `json:"basePath,omitempty"`
 	Host          string            `json:"host,omitempty"`
 	Scheme        string            `json:"scheme,omitempty"`
@@ -83,21 +91,21 @@ type Configuration struct {
 // NewConfiguration returns a new Configuration object
 func NewConfiguration() *Configuration {
 	cfg := &Configuration{
-		BasePath:      "http://cas.ap-beijing.myqcloud.com",
+		BasePath:      "http://cas.ap-beijing.myqcloud.com/-",
 		DefaultHeader: make(map[string]string),
 		UserAgent:     "OpenAPI-Generator/1.0.0/go",
 		Debug:         false,
-		Servers:       []ServerConfiguration{
+		Servers: []ServerConfiguration{
 			{
-				Url: "http://cas.ap-{region}.myqcloud.com",
+				Url: "http://cas.ap-{region}.myqcloud.com/{basePath}",
 				Description: "The production API server",
 				Variables: map[string]ServerVariable{
-					"scheme": ServerVariable{
-						Description: "http",
-						DefaultValue: "http",
+					"basePath": ServerVariable{
+						Description: "appId or as named UID",
+						DefaultValue: "-",
 					},
 					"region": ServerVariable{
-						Description: "cas region, options [chengdu/beijing/guangzhou/shanghai]",
+						Description:  "cas region, options [chengdu/beijing/guangzhou/shanghai]",
 						DefaultValue: "beijing",
 						EnumValues: []string{
 							"beijing",
@@ -106,34 +114,34 @@ func NewConfiguration() *Configuration {
 							"shanghai",
 						},
 					},
-					"appid": ServerVariable{
-						Description: "appid of cas resource owner, if api secret is main user,this is opiton param",
-						DefaultValue: "-",
-					},
-					"access_key": ServerVariable{
-						Description: "tecent cloud api key, required",
-						DefaultValue: "",
-					},
-					"access_secret": ServerVariable{
-						Description: "api secret, secret mode, secret_expire is required.",
-						DefaultValue: "",
-					},
-					"secret_expire": ServerVariable{
-						Description: "tecent cloud api secret",
-						DefaultValue: "86400s",
-					},
-					"sign_key": ServerVariable{
-						Description: "sign_key, if use sign_key mode, sign_key_start,sign_key_end are required",
-						DefaultValue: "",
-					},
-					"sign_key_start": ServerVariable{
-						Description: "unix timestamp of sign_key start time",
-						DefaultValue: "0",
-					},
-					"sign_key_end": ServerVariable{
-						Description: "unix timestamp of sign_key end time",
-						DefaultValue: "0",
-					},
+					// "appid": ServerVariable{
+					// 	Description:  "appid of cas resource owner, if api secret is main user,this is opiton param",
+					// 	DefaultValue: "-",
+					// },
+					// "access_key": ServerVariable{
+					// 	Description:  "tecent cloud api key, required",
+					// 	DefaultValue: "",
+					// },
+					// "access_secret": ServerVariable{
+					// 	Description:  "api secret, secret mode, secret_expire is required.",
+					// 	DefaultValue: "",
+					// },
+					// "secret_expire": ServerVariable{
+					// 	Description:  "tecent cloud api secret",
+					// 	DefaultValue: "86400s",
+					// },
+					// "sign_key": ServerVariable{
+					// 	Description:  "sign_key, if use sign_key mode, sign_key_start,sign_key_end are required",
+					// 	DefaultValue: "",
+					// },
+					// "sign_key_start": ServerVariable{
+					// 	Description:  "unix timestamp of sign_key start time",
+					// 	DefaultValue: "0",
+					// },
+					// "sign_key_end": ServerVariable{
+					// 	Description:  "unix timestamp of sign_key end time",
+					// 	DefaultValue: "0",
+					// },
 				},
 			},
 		},
@@ -149,7 +157,7 @@ func (c *Configuration) AddDefaultHeader(key string, value string) {
 // ServerUrl returns URL based on server settings
 func (c *Configuration) ServerUrl(index int, variables map[string]string) (string, error) {
 	if index < 0 || len(c.Servers) <= index {
-		return "", fmt.Errorf("Index %v out of range %v", index, len(c.Servers) - 1)
+		return "", fmt.Errorf("Index %v out of range %v", index, len(c.Servers)-1)
 	}
 	server := c.Servers[index]
 	url := server.Url

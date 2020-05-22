@@ -1,19 +1,19 @@
 # \JobApi
 
-All URIs are relative to *http://cas.ap-beijing.myqcloud.com*
+All URIs are relative to *http://cas.ap-beijing.myqcloud.com/-*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**UIDVaultsVaultNameJobsGet**](JobApi.md#UIDVaultsVaultNameJobsGet) | **Get** /{UID}/vaults/{VaultName}/jobs | List Job
-[**UIDVaultsVaultNameJobsJobIDGet**](JobApi.md#UIDVaultsVaultNameJobsJobIDGet) | **Get** /{UID}/vaults/{VaultName}/jobs/&lt;JobID&gt; | Describe Job
-[**UIDVaultsVaultNameJobsJobIDOutputGet**](JobApi.md#UIDVaultsVaultNameJobsJobIDOutputGet) | **Get** /{UID}/vaults/{VaultName}/jobs/&lt;JobID&gt;/output | Get Job Output
-[**UIDVaultsVaultNameJobsPost**](JobApi.md#UIDVaultsVaultNameJobsPost) | **Post** /{UID}/vaults/{VaultName}/jobs | Initiate Job
+[**VaultsVaultNameJobsGet**](JobApi.md#VaultsVaultNameJobsGet) | **Get** /vaults/{VaultName}/jobs | List Job
+[**VaultsVaultNameJobsJobIDGet**](JobApi.md#VaultsVaultNameJobsJobIDGet) | **Get** /vaults/{VaultName}/jobs/&lt;JobID&gt; | Describe Job
+[**VaultsVaultNameJobsJobIDOutputGet**](JobApi.md#VaultsVaultNameJobsJobIDOutputGet) | **Get** /vaults/{VaultName}/jobs/&lt;JobID&gt;/output | Get Job Output
+[**VaultsVaultNameJobsPost**](JobApi.md#VaultsVaultNameJobsPost) | **Post** /vaults/{VaultName}/jobs | Initiate Job
 
 
 
-## UIDVaultsVaultNameJobsGet
+## VaultsVaultNameJobsGet
 
-> JobsList UIDVaultsVaultNameJobsGet(ctx, uID, vaultName, optional)
+> JobsList VaultsVaultNameJobsGet(ctx, vaultName, optional)
 
 List Job
 
@@ -25,18 +25,16 @@ List Jobs 请求实现列出 Vault 的任务，包括正在进行的任务以及
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**uID** | **string**|  | 
 **vaultName** | **string**|  | 
- **optional** | ***UIDVaultsVaultNameJobsGetOpts** | optional parameters | nil if no parameters
+ **optional** | ***VaultsVaultNameJobsGetOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
 
-Optional parameters are passed through a pointer to a UIDVaultsVaultNameJobsGetOpts struct
+Optional parameters are passed through a pointer to a VaultsVaultNameJobsGetOpts struct
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-
 
  **completed** | **optional.Bool**|  | 
  **limit** | **optional.Int64**|  | 
@@ -61,9 +59,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## UIDVaultsVaultNameJobsJobIDGet
+## VaultsVaultNameJobsJobIDGet
 
-> OneOfJobArchiveSearchInfoJobArchiveListSearchInfoJobArchiveImportInfoJobArchiveExportInfo UIDVaultsVaultNameJobsJobIDGet(ctx, uID, vaultName, jobID)
+> OneOfJobArchiveSearchInfoJobArchiveListSearchInfoJobArchiveImportInfoJobArchiveExportInfo VaultsVaultNameJobsJobIDGet(ctx, vaultName, jobID)
 
 Describe Job
 
@@ -75,7 +73,6 @@ Describe Job 请求实现获取Vault的具体任务信息。支持跨账户操�
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**uID** | **string**|  | 
 **vaultName** | **string**|  | 
 **jobID** | **string**|  | 
 
@@ -97,9 +94,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## UIDVaultsVaultNameJobsJobIDOutputGet
+## VaultsVaultNameJobsJobIDOutputGet
 
-> JobOutput UIDVaultsVaultNameJobsJobIDOutputGet(ctx, uID, vaultName, jobID, optional)
+> JobOutput VaultsVaultNameJobsJobIDOutputGet(ctx, vaultName, jobID, optional)
 
 Get Job Output
 
@@ -111,19 +108,17 @@ Get Job Output
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**uID** | **string**|  | 
 **vaultName** | **string**|  | 
 **jobID** | **string**|  | 
- **optional** | ***UIDVaultsVaultNameJobsJobIDOutputGetOpts** | optional parameters | nil if no parameters
+ **optional** | ***VaultsVaultNameJobsJobIDOutputGetOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
 
-Optional parameters are passed through a pointer to a UIDVaultsVaultNameJobsJobIDOutputGetOpts struct
+Optional parameters are passed through a pointer to a VaultsVaultNameJobsJobIDOutputGetOpts struct
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-
 
 
  **range_** | **optional.String**|  | 
@@ -146,9 +141,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## UIDVaultsVaultNameJobsPost
+## VaultsVaultNameJobsPost
 
-> UIDVaultsVaultNameJobsPost(ctx, uID, vaultName, optional)
+> VaultsVaultNameJobsPost(ctx, vaultName, optional)
 
 Initiate Job
 
@@ -160,18 +155,16 @@ Describe Job Initiate Job 请求实现将档案或者档案列表取出到缓存
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**uID** | **string**|  | 
 **vaultName** | **string**|  | 
- **optional** | ***UIDVaultsVaultNameJobsPostOpts** | optional parameters | nil if no parameters
+ **optional** | ***VaultsVaultNameJobsPostOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
 
-Optional parameters are passed through a pointer to a UIDVaultsVaultNameJobsPostOpts struct
+Optional parameters are passed through a pointer to a VaultsVaultNameJobsPostOpts struct
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-
 
  **uNKNOWNBASETYPE** | [**optional.Interface of UNKNOWN_BASE_TYPE**](UNKNOWN_BASE_TYPE.md)|  | 
 

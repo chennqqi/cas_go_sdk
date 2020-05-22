@@ -12,13 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package openapi
+package cas
 
-type VaultInfo struct {
-	CreationDate      string `json:"CreationDate,omitempty"`
-	LastInventoryDate string `json:"LastInventoryDate,omitempty"`
-	NumberOfArchives  int64  `json:"NumberOfArchives,omitempty"`
-	SizeInBytes       int64  `json:"SizeInBytes,omitempty"`
-	VaultQCS          string `json:"VaultQCS,omitempty"`
-	VaultName         string `json:"VaultName,omitempty"`
+import (
+	"crypto/hmac"
+	"crypto/sha1"
+	"encoding/hex"
+	"fmt"
+	"time"
+)
+
+func (s *Signature) Sign() string {
+	return ""
+}
+
+func CalSignKey(start int64, expire time.Duration, accessSecret string) string {
+	ts := time.Unix(start, 0)
+	timeRange := fmt.Sprintf(`%d;%d`, start, ts.Add(expire).Unix())
+	mac := hmac.New(sha1.New, []byte(accessSecret))
+	mac.Write([]byte(timeRange))
+	return hex.EncodeToString(mac.Sum(nil))
 }
