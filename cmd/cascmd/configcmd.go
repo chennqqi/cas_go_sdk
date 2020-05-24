@@ -55,7 +55,7 @@ func (p *configCmd) SetFlags(f *flag.FlagSet) {
 	f.StringVar(&p.key, "key", "", "user api key, required")
 
 	f.StringVar(&p.secret, "secret", "", "user api secret, using secret mode")
-	f.StringVar(&p.expire, "expire", "86400s", "set access secret expire")
+	f.StringVar(&p.expire, "expire", "86400s", "set sign time expire")
 
 	f.StringVar(&p.sign, "sign", "", "set signkey, using signkey mode")
 	f.Int64Var(&p.start, "start", 0, "set signkey start, if 'sign' set, this opition is required")
@@ -82,11 +82,12 @@ func (p *configCmd) Execute(_ context.Context, f *flag.FlagSet, _ ...interface{}
 
 	if p.secret != "" {
 		conf.AccessSecret = p.secret
-		conf.SecretExpire = du
+		conf.SignExpire = du
 	} else {
 		conf.SignKey = p.sign
 		conf.SignKeyStart = p.start
 		conf.SignKeyEnd = p.end
+		conf.SignExpire = du
 	}
 
 	if err := saveConf(p.configFile, conf); err != nil {

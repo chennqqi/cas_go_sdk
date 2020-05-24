@@ -99,15 +99,15 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.JobApi = (*JobApiService)(&c.common)
 	c.VaultApi = (*VaultApiService)(&c.common)
 
+	var du = cfg.SignExpire
+	if du == 0 {
+		du = DefaultAuthTimeout
+	}
 	if cfg.AccessSecret != "" {
-		var du = cfg.SecretExpire
-		if du == 0 {
-			du = DefaultAuthTimeout
-		}
 		c.ConfigurationAuthor = &ConfigurationModeSecret{
 			AccessKey:    cfg.AccessKey,
 			AccessSecret: cfg.AccessSecret,
-			SecretExpire: du,
+			SignExpire:   cfg.SignExpire,
 		}
 	} else {
 		c.ConfigurationAuthor = &ConfigurationModeSignKey{
@@ -115,6 +115,7 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 			SignKey:      cfg.SignKey,
 			SignKeyStart: cfg.SignKeyStart,
 			SignKeyEnd:   cfg.SignKeyEnd,
+			SignExpire:   cfg.SignExpire,
 		}
 	}
 	//use serverURL replace basePath
@@ -311,7 +312,7 @@ func statusCode4XX(code int) bool {
 type ConfigurationModeSecret struct {
 	AccessKey    string
 	AccessSecret string
-	SecretExpire time.Duration
+	SignExpire   time.Duration
 }
 
 func (c *ConfigurationModeSecret) Authorization(method, url, host string,
@@ -340,7 +341,7 @@ func (c *ConfigurationModeSecret) Authorization(method, url, host string,
 	//cal signKey
 	var signKey, timeRange string
 	var now = time.Now()
-	timeRange = fmt.Sprintf(`%d;%d`, now.Unix(), now.Add(c.SecretExpire).Unix())
+	timeRange = fmt.Sprintf(`%d;%d`, now.Unix(), now.Add(c.SignExpire).Unix())
 	mac := hmac.New(sha1.New, []byte(accessSecret))
 	mac.Write([]byte(timeRange))
 	signKey = hex.EncodeToString(mac.Sum(nil))
@@ -393,6 +394,7 @@ type ConfigurationModeSignKey struct {
 	SignKey      string
 	SignKeyStart int64
 	SignKeyEnd   int64
+	SignExpire   time.Duration
 }
 
 func (c *ConfigurationModeSignKey) Authorization(method, url, host string,
@@ -441,9 +443,21 @@ func (c *ConfigurationModeSignKey) Authorization(method, url, host string,
 
 	var stringToSign bytes.Buffer
 	stringToSign.WriteString("sha1\n")
-	stringToSign.WriteString(timeRange)
-	stringToSign.WriteByte('\n')
 
+	var signStart, signEnd int64
+	now := time.Now().Unix()
+	signStart = now - int64(c.SignExpire.Seconds())/2
+	signEnd = now + int64(c.SignExpire.Seconds())/2
+	if signStart < c.SignKeyStart {
+		signStart = c.SignKeyStart
+	}
+	if signEnd > c.SignKeyEnd {
+		signEnd = c.SignKeyEnd
+	}
+	signRange := fmt.Sprintf("%d;%d", signStart, signEnd)
+
+	stringToSign.WriteString(signRange)
+	stringToSign.WriteByte('\n')
 	//fmt.Println("stringToSign:", formatString.String(), stringToSign.String())
 
 	h := sha1.New()
@@ -456,7 +470,7 @@ func (c *ConfigurationModeSignKey) Authorization(method, url, host string,
 	var sign = hex.EncodeToString(mac2.Sum(nil))
 
 	return fmt.Sprintf(`q-sign-algorithm=sha1&q-ak=%s&q-sign-time=%s&q-key-time=%s&q-header-list=%s&q-url-param-list=%s&q-signature=%s`,
-		c.AccessKey, timeRange, timeRange,
+		c.AccessKey, signRange, timeRange,
 		strings.Join(headerKeys, ";"),
 		strings.Join(paramKeys, ";"), sign)
 }

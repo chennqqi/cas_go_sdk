@@ -73,11 +73,10 @@ type Configuration struct {
 	AppId        string        `json:"appid"`
 	AccessKey    string        `json:"access_key"`
 	AccessSecret string        `json:"access_secret"`
-	SecretExpire time.Duration `json:"secret_expire"`
-
-	SignKey      string `json:"sign_key"`
-	SignKeyStart int64  `json:"sign_key_start"`
-	SignKeyEnd   int64  `json:"sing_key_end"`
+	SignExpire   time.Duration `json:"secret_expire"`
+	SignKey      string        `json:"sign_key"`
+	SignKeyStart int64         `json:"sign_key_start"`
+	SignKeyEnd   int64         `json:"sing_key_end"`
 
 	BasePath      string            `json:"basePath,omitempty"`
 	Host          string            `json:"host,omitempty"`

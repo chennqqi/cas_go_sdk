@@ -20,23 +20,40 @@ import (
 	"encoding/hex"
 	"flag"
 	"fmt"
+	"time"
 )
 
-func init() {
-	var secretKey string
+const (
+	LAYOUT = "2006-01-02 15:04:05"
+)
+
+func main() {
+	var secret string
 	var after, at string
-	flag.StringVar(&secretKey, "key", "", "set secret key")
+	flag.StringVar(&secret, "secret", "", "set secret key")
 	flag.StringVar(&after, "after", "", "set key expire time from now")
 	flag.StringVar(&at, "at", "", "set key expire at time")
 	flag.Parse()
-	_, _, _ = secretKey, after, at
-}
 
-func main() {
-	// timeRange = fmt.Sprintf(`%d;%d`, now.Unix(), now.Add(expire).Unix())
-	timeRange := "1589817600;1609430400"
-	mac := hmac.New(sha1.New, []byte("SgkibEafTCm7D7lAXGoCRSFm7OJzPgiW"))
+	if after == "" {
+		after = time.Now().Format(LAYOUT)
+	}
+
+	start, err := time.Parse(LAYOUT, after)
+	if err != nil {
+		fmt.Println("parse start", err)
+		return
+	}
+	fmt.Println("start:", start.Unix())
+	end, err := time.Parse(LAYOUT, at)
+	if err != nil {
+		fmt.Println("parse end", err)
+		return
+	}
+	fmt.Println("end:", end.Unix())
+	timeRange := fmt.Sprintf("%d;%d", start.Unix(), end.Unix())
+	mac := hmac.New(sha1.New, []byte(secret))
 	mac.Write([]byte(timeRange))
 	signKey := hex.EncodeToString(mac.Sum(nil))
-	fmt.Println(signKey)
+	fmt.Println("sign_key", signKey)
 }
