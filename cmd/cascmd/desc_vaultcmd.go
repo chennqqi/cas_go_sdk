@@ -55,8 +55,8 @@ func (p *descVaultCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...interf
 	vault := client.VaultApi
 
 	info, _, err := vault.GetVault(ctx, p.vaultName)
-	if err != nil {
-		fmt.Println("ERROR:", err)
+	if goe, ok := err.(openapi.GenericOpenAPIError); ok {
+		fmt.Println("error", goe.Model())
 		return subcommands.ExitFailure
 	}
 	fmt.Println("vault info:")

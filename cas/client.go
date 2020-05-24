@@ -107,7 +107,7 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 		c.ConfigurationAuthor = &ConfigurationModeSecret{
 			AccessKey:    cfg.AccessKey,
 			AccessSecret: cfg.AccessSecret,
-			SignExpire:   cfg.SignExpire,
+			SignExpire:   du,
 		}
 	} else {
 		c.ConfigurationAuthor = &ConfigurationModeSignKey{
@@ -115,7 +115,7 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 			SignKey:      cfg.SignKey,
 			SignKeyStart: cfg.SignKeyStart,
 			SignKeyEnd:   cfg.SignKeyEnd,
-			SignExpire:   cfg.SignExpire,
+			SignExpire:   du,
 		}
 	}
 	//use serverURL replace basePath

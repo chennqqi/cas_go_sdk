@@ -29,6 +29,10 @@ import (
 	"github.com/google/subcommands"
 )
 
+func init() {
+	subcommands.Register(&postArchiveCmd{}, "")
+}
+
 type postArchiveCmd struct {
 	vaultName, localFile, desc string
 }
