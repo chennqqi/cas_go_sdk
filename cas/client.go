@@ -445,9 +445,10 @@ func (c *ConfigurationModeSignKey) Authorization(method, url, host string,
 	stringToSign.WriteString("sha1\n")
 
 	var signStart, signEnd int64
-	now := time.Now().Unix()
-	signStart = now - int64(c.SignExpire.Seconds())/2
-	signEnd = now + int64(c.SignExpire.Seconds())/2
+	now := time.Now()
+
+	signStart = now.Add(-c.SignExpire / 2).Unix()
+	signEnd = now.Add(c.SignExpire / 2).Unix()
 	if signStart < c.SignKeyStart {
 		signStart = c.SignKeyStart
 	}

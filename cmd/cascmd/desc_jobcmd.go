@@ -19,10 +19,8 @@ import (
 	"flag"
 	"fmt"
 
-	"github.com/google/subcommands"
-
-	//	"github.com/antihax/optional"
 	openapi "github.com/chennqqi/cas_go_sdk/cas"
+	"github.com/google/subcommands"
 )
 
 func init() {
@@ -35,10 +33,10 @@ type descJobCmd struct {
 }
 
 func (*descJobCmd) Name() string     { return "desc_job" }
-func (*descJobCmd) Synopsis() string { return "get job status description" }
+func (*descJobCmd) Synopsis() string { return "describe a job" }
 func (*descJobCmd) Usage() string {
-	return `print [-capitalize] <some text>:
-  Print args to stdout.
+	return `desc_job [-options]:
+  describe a job.
 `
 }
 
@@ -54,8 +52,8 @@ func (p *descJobCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...interfac
 		return subcommands.ExitFailure
 	}
 	p.vaultName = parseVaultName(p.vaultName)
-
 	client := openapi.NewAPIClient(conf)
+
 	job := client.JobApi
 	desc, _, err := job.VaultsVaultNameJobsJobIDGet(ctx, p.vaultName, p.jobId)
 	if err != nil {

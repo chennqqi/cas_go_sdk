@@ -12,9 +12,9 @@ package cas
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"github.com/buger/jsonparser"
-	"github.com/pkg/errors"
 )
 
 /*
@@ -26,7 +26,9 @@ type OneOfJobArchiveSearchInfoJobArchiveListSearchInfoJobArchiveImportInfoJobArc
 	*JobArchiveSearchInfo     `json:"-"`
 	*JobArchiveExportInfo     `json:"-"`
 	*JobArchiveImportInfo     `json:"-"`
+	*JobArchiveInvetory       `json:"-"`
 }
+
 // JobsList struct for JobsList
 type JobsList struct {
 	JobList []OneOfJobArchiveSearchInfoJobArchiveListSearchInfoJobArchiveImportInfoJobArchiveExportInfo `json:"JobList,omitempty"`
@@ -42,6 +44,8 @@ func (t OneOfJobArchiveSearchInfoJobArchiveListSearchInfoJobArchiveImportInfoJob
 		return json.Marshal(t.JobArchiveExportInfo)
 	} else if t.JobArchiveImportInfo != nil {
 		return json.Marshal(t.JobArchiveImportInfo)
+	} else if t.JobArchiveInvetory != nil {
+		return json.Marshal(t.JobArchiveInvetory)
 	}
 	return nil, nil
 }
@@ -84,8 +88,16 @@ func (t *OneOfJobArchiveSearchInfoJobArchiveListSearchInfoJobArchiveImportInfoJo
 		}
 		t.JobArchiveExportInfo = job
 
+	case "InventoryRetrieval":
+		job := new(JobArchiveInvetory)
+		err := json.Unmarshal(data, job)
+		if err != nil {
+			return err
+		}
+		t.JobArchiveInvetory = job
+
 	default:
-		return errors.Errorf("unknow action=[%v]", action)
+		return fmt.Errorf("unknow action=[%v]", action)
 	}
 	return nil
 }

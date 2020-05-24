@@ -172,9 +172,8 @@ func (a *JobApiService) VaultsVaultNameJobsJobIDGet(ctx _context.Context, vaultN
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/vaults/{VaultName}/jobs/<JobID>"
+	localVarPath := a.client.cfg.BasePath + "/vaults/{VaultName}/jobs/{JobID}"
 	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", _neturl.QueryEscape(parameterToString(vaultName, "")), -1)
-
 	localVarPath = strings.Replace(localVarPath, "{"+"JobID"+"}", _neturl.QueryEscape(parameterToString(jobID, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
@@ -282,7 +281,7 @@ func (a *JobApiService) VaultsVaultNameJobsJobIDOutputGet(ctx _context.Context, 
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/vaults/{VaultName}/jobs/<JobID>/output"
+	localVarPath := a.client.cfg.BasePath + "/vaults/{VaultName}/jobs/{JobID}/output"
 	localVarPath = strings.Replace(localVarPath, "{"+"VaultName"+"}", _neturl.QueryEscape(parameterToString(vaultName, "")), -1)
 
 	localVarPath = strings.Replace(localVarPath, "{"+"JobID"+"}", _neturl.QueryEscape(parameterToString(jobID, "")), -1)

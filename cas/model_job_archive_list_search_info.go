@@ -9,21 +9,23 @@
  */
 
 package cas
+
 import (
 	"time"
 )
+
 // JobArchiveListSearchInfo struct for JobArchiveListSearchInfo
 type JobArchiveListSearchInfo struct {
-	Action string `json:"Action,omitempty"`
-	JobId string `json:"JobId,omitempty"`
-	JobDescription string `json:"JobDescription,omitempty"`
-	CallBackUrl string `json:"CallBackUrl,omitempty"`
-	CreationDate time.Time `json:"CreationDate,omitempty"`
-	CompletionDate time.Time `json:"CompletionDate,omitempty"`
-	Completed bool `json:"Completed,omitempty"`
-	StatusCode string `json:"StatusCode,omitempty"`
-	StatusMessage string `json:"StatusMessage,omitempty"`
-	VaultQCS string `json:"VaultQCS,omitempty"`
-	InventorySizeInBytes string `json:"InventorySizeInBytes,omitempty"`
+	Action                       string                          `json:"Action,omitempty"`
+	JobId                        string                          `json:"JobId,omitempty"`
+	JobDescription               string                          `json:"JobDescription,omitempty"`
+	CallBackUrl                  string                          `json:"CallBackUrl,omitempty"`
+	CreationDate                 time.Time                       `json:"CreationDate,omitempty"`
+	CompletionDate               time.Time                       `json:"CompletionDate,omitempty"`
+	Completed                    bool                            `json:"Completed,omitempty"`
+	StatusCode                   string                          `json:"StatusCode,omitempty"`
+	StatusMessage                string                          `json:"StatusMessage,omitempty"`
+	VaultQCS                     string                          `json:"VaultQCS,omitempty"`
+	InventorySizeInBytes         int64                           `json:"InventorySizeInBytes,omitempty"`
 	InventoryRetrievalParameters JobInventoryRetrievalParameters `json:"InventoryRetrievalParameters,omitempty"`
 }

@@ -94,6 +94,8 @@ func (p *fetchJobOutputCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...i
 		status = req.StatusCode
 		fmt.Println("Unsupport PullFromCOS")
 		return subcommands.ExitFailure
+	} else if desc.JobArchiveInvetory != nil {
+
 	}
 	var jtype = "archive-retrieval"
 
@@ -115,8 +117,12 @@ func (p *fetchJobOutputCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...i
 		if len(rangeValues) > 1 {
 			fmt.Sscanf(rangeValues[1], "%d", &rangeB)
 		}
-	} else {
-		fmt.Sscanf(desc.InventorySizeInBytes, "%d", &rangeB)
+	} else if jtype == "" {
+		if desc.JobArchiveListSearchInfo != nil {
+			rangeB = desc.JobArchiveListSearchInfo.InventorySizeInBytes
+		} else if desc.JobArchiveInvetory != nil {
+			rangeB = desc.JobArchiveInvetory.InventorySizeInBytes
+		}
 		rangeB -= 1
 	}
 	if p.start == 0 && p.size == 0 {
@@ -192,8 +198,8 @@ func (p *fetchJobOutputCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...i
 	}
 
 	bar.FinishPrint("Download job output success")
-	if jtype == "inventory-retrieval" && desc.InventoryRetrievalParameters.Marker != "" {
-		fmt.Println(`NOTICE: Want more archive list? Create a new job with  --marker `, desc.InventoryRetrievalParameters.Marker)
+	if jtype == "inventory-retrieval" && desc.JobArchiveInvetory.InventoryRetrievalParameters.Marker != "" {
+		fmt.Println(`NOTICE: Want more archive list? Create a new job with  --marker `, desc.JobArchiveInvetory.InventoryRetrievalParameters.Marker)
 	}
 
 	fmt.Println()

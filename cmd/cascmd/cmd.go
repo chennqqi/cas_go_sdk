@@ -56,6 +56,9 @@ func loadConf(name string) (*openapi.Configuration, error) {
 	if conf.AppId == "" {
 		conf.AppId = "-"
 	}
+	if v := os.Getenv("CAS_DEBUG"); v == "on" {
+		conf.Debug = true
+	}
 	return conf, err
 }
 

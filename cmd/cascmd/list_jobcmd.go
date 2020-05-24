@@ -45,8 +45,8 @@ func (*listJobCmd) Usage() string {
 
 func (p *listJobCmd) SetFlags(f *flag.FlagSet) {
 	f.StringVar(&p.vaultName, "vault", "", `format cas://vault-name`)
-	f.StringVar(&p.marker, "--marker", "", `start list job position marker`)
-	f.IntVar(&p.limit, "--limit", 0, `number to be listed`)
+	f.StringVar(&p.marker, "-marker", "", `start list job position marker`)
+	f.IntVar(&p.limit, "-limit", 10, `number to be listed`)
 }
 
 func (p *listJobCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...interface{}) subcommands.ExitStatus {
@@ -55,7 +55,6 @@ func (p *listJobCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...interfac
 		fmt.Println("load conf error:", err)
 		return subcommands.ExitFailure
 	}
-
 	client := openapi.NewAPIClient(conf)
 	job := client.JobApi
 
@@ -69,7 +68,8 @@ func (p *listJobCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...interfac
 
 	jobs, _, err := job.VaultsVaultNameJobsGet(ctx, p.vaultName, &opt)
 	if err != nil {
-		fmt.Println("ERROR:", err)
+		ge := err.(openapi.GenericOpenAPIError)
+		fmt.Println("ERROR:", ge.Model(), err)
 		return subcommands.ExitFailure
 	}
 	fmt.Println("Marker:", jobs.Marker)

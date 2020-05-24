@@ -9,26 +9,57 @@
  */
 
 package cas
+
 import (
 	"time"
 )
+
 // JobArchiveImportInfo struct for JobArchiveImportInfo
 type JobArchiveImportInfo struct {
-	Action string `json:"Action,omitempty"`
-	JobId string `json:"JobId,omitempty"`
-	JobDescription string `json:"JobDescription,omitempty"`
-	CallBackUrl string `json:"CallBackUrl,omitempty"`
-	CreationDate time.Time `json:"CreationDate,omitempty"`
-	CompletionDate time.Time `json:"CompletionDate,omitempty"`
-	Completed bool `json:"Completed,omitempty"`
-	StatusCode string `json:"StatusCode,omitempty"`
-	StatusMessage string `json:"StatusMessage,omitempty"`
-	VaultQCS string `json:"VaultQCS,omitempty"`
-	ArchiveId string `json:"ArchiveId,omitempty"`
-	ArchiveSizeInBytes int64 `json:"ArchiveSizeInBytes,omitempty"`
-	ArchiveSHA256TreeHash string `json:"ArchiveSHA256TreeHash,omitempty"`
-	RetrievalByteRange string `json:"RetrievalByteRange,omitempty"`
-	Bucket string `json:"Bucket,omitempty"`
-	Object string `json:"Object,omitempty"`
-	Tier string `json:"Tier,omitempty"`
+	Action                string    `json:"Action,omitempty"`
+	JobId                 string    `json:"JobId,omitempty"`
+	JobDescription        string    `json:"JobDescription,omitempty"`
+	CallBackUrl           string    `json:"CallBackUrl,omitempty"`
+	CreationDate          time.Time `json:"CreationDate,omitempty"`
+	CompletionDate        time.Time `json:"CompletionDate,omitempty"`
+	Completed             bool      `json:"Completed,omitempty"`
+	StatusCode            string    `json:"StatusCode,omitempty"`
+	StatusMessage         string    `json:"StatusMessage,omitempty"`
+	VaultQCS              string    `json:"VaultQCS,omitempty"`
+	ArchiveId             string    `json:"ArchiveId,omitempty"`
+	ArchiveSizeInBytes    int64     `json:"ArchiveSizeInBytes,omitempty"`
+	ArchiveSHA256TreeHash string    `json:"ArchiveSHA256TreeHash,omitempty"`
+	RetrievalByteRange    string    `json:"RetrievalByteRange,omitempty"`
+	Bucket                string    `json:"Bucket,omitempty"`
+	Object                string    `json:"Object,omitempty"`
+	Tier                  string    `json:"Tier,omitempty"`
+}
+
+type JobArchiveInvetory struct {
+	Action                       string    `json:"Action"`
+	ArchiveID                    string    `json:"ArchiveId"`
+	ArchiveSHA256TreeHash        string    `json:"ArchiveSHA256TreeHash"`
+	ArchiveSizeInBytes           int64     `json:"ArchiveSizeInBytes"`
+	Bucket                       string    `json:"Bucket"`
+	Completed                    bool      `json:"Completed"`
+	CompletionDate               time.Time `json:"CompletionDate"`
+	CreationDate                 time.Time `json:"CreationDate"`
+	InventoryRetrievalParameters struct {
+		EndDate   time.Time `json:"EndDate"`
+		Format    string    `json:"Format"`
+		Limit     int64     `json:"Limit"`
+		Marker    string    `json:"Marker"`
+		StartDate time.Time `json:"StartDate"`
+	} `json:"InventoryRetrievalParameters"`
+	InventorySizeInBytes int64  `json:"InventorySizeInBytes"`
+	JobCallBackURL       string `json:"JobCallBackUrl"`
+	JobDescription       string `json:"JobDescription"`
+	JobID                string `json:"JobId"`
+	Object               string `json:"Object"`
+	RetrievalByteRange   string `json:"RetrievalByteRange"`
+	SHA256TreeHash       string `json:"SHA256TreeHash"`
+	StatusCode           string `json:"StatusCode"`
+	StatusMessage        string `json:"StatusMessage"`
+	Tier                 string `json:"Tier"`
+	VaultQCS             string `json:"VaultQCS"`
 }
